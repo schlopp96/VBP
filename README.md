@@ -16,13 +16,13 @@
 
 1. Open the script, which can be found inside the downloaded folder here: "ValheimBepInExPatcher/src/ValheimBepInExPatcher.py".
 
-- Once the script is run, you will be prompted to confirm whether the directory locations listed on screen are correct.
+2. Once the script is run, you will be prompted to confirm whether the directory locations listed on screen are correct.
 
-- Once confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
+3. Once confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
 
-- Upon successful patching, the script will ask the user to press [ENTER] to exit the application and close the console window.
+4. Upon successful patching, the script will ask the user to press [ENTER] to exit the application and close the console window.
 
-- Now you may run the game, either from the Steam client if you wish to choose what graphics API to use, or from a shortcut.
+5. Now you may run the game, either from the Steam client if you wish to choose what graphics API to use, or from a shortcut.
 
   - Works with both Vulkan and the default graphics API.
 
