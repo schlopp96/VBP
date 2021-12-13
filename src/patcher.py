@@ -53,7 +53,7 @@ def main() -> None:
 
         elif confirmation.lower() == 'n':
 
-            load('\nBepInEx v5.17.00 patch process cancelled', '\nClosing window...')
+            load('\nBepInEx v5.17.00 patch process cancelled', '\nClosing window...', False)
             break
 
         else:
@@ -82,7 +82,7 @@ def promptStart() -> NoReturn | None:
 
         elif startPrompt.lower() == 'n':
 
-            load('\nPatch successfully completed', '\nClosing window...')
+            load('\nPatch successfully completed', '\nClosing window...', False)
             return ex()
 
         else:
