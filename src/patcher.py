@@ -5,7 +5,7 @@
 
 #? Why?
 #$  - I created this script due to a personal issue I've been having with my modded copy of Valheim;
-#!  - BepInEx automatically DOWNGRADES itself to v5.4.11.0 upon using the Vortex mod manager.
+#!  - BepInEx automatically DOWNGRADES itself upon using the Vortex mod manager.
 #*      - This is likely due to Vortex using its own BepInEx downloader, thus overwriting any updated files.
 #&          - Has happened to me for BepInEx versions:
 #~              1. BepInEx v5.16.0
@@ -13,6 +13,7 @@
 #@ ====================================================================================================== @#
 #$ ====================================================================================================== $#
 from os import chdir
+from os.path import dirname
 from shutil import copytree
 from subprocess import call
 from sys import exit as ex
@@ -24,7 +25,7 @@ from loadingSequence import load
 #$ ====================================================================================================== $#
 
 #> Set working directory to folder containing my Python projects.
-chdir(r'C:\Users\Nick\Desktop\Python\Programs')
+chdir(dirname(dirname(dirname(__file__))))
 
 textborder: str = '=================================================='
 
@@ -36,14 +37,14 @@ def main() -> None:
     :rtype: None
     """
     #@ Declare variables containing patch files directory and destination:
-    patchContents = "ValheimBepInExPatcher\patch"
+    patchContents = "VBP\patch"
     patchDestination = "c:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
     while True:
 
         #@ Move BepInEx patch files to Valheim directory:
         confirmation = input(
-            f'\nReally install BepInEx v5.17.00 patch to location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+            f'\nReally patch BepInEx to latest build "30a1089" in location:\n\n====> "{patchDestination}"\n\n> Enter [y] or [n]:\n{textborder}\n> '
         )
 
         if confirmation.lower() == 'y':
@@ -53,7 +54,8 @@ def main() -> None:
 
         elif confirmation.lower() == 'n':
 
-            load('\nBepInEx v5.17.00 patch process cancelled', '\nClosing window...', False)
+            load('\nBepInEx patching process cancelled', '\nClosing window...',
+                 False)
             break
 
         else:
@@ -82,7 +84,8 @@ def promptStart() -> NoReturn | None:
 
         elif startPrompt.lower() == 'n':
 
-            load('\nPatch successfully completed', '\nClosing window...', False)
+            load('\nPatch successfully completed', '\nClosing window...',
+                 False)
             return ex()
 
         else:
@@ -103,7 +106,7 @@ def openValheim() -> int:
 
 
 def patch(patch, program) -> Any:
-    load(msg_load='\nPatching BepInEx to v5.17.00',
+    load(msg_load='\nPatching BepInEx to build 30a1089',
          msg_done='\nPatch successfully installed!')
     return copytree(patch, program, dirs_exist_ok=True)
 
