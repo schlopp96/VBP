@@ -1,4 +1,6 @@
-# Valheim BepInEx Patcher
+# VBP
+
+> Valheim BepInEx Patcher
 
 ## About
 
@@ -24,7 +26,7 @@
 
 5. Now you may run the game, either from the Steam client if you wish to choose what graphics API to use, or from a shortcut.
 
-  - Works with both Vulkan and the default graphics API.
+- Works with both Vulkan and the default graphics API.
 
 - If BepInEx lists its current version as v5.17.00, then it worked!
 
@@ -60,6 +62,24 @@
 - Patch files that will replace necessary core files (from within the BepInEx directory which itself):
 
   - "./patch/BepInEx/core/0Harmony.dll"
+
+  - "./patch/BepInEx/core/BepInEx.Core.dll"
+
+  - "./patch/BepInEx/core/BepInEx.Core.xml"
+
+  - "./patch/BepInEx/core/BepInEx.Preloader.Core.dll"
+
+  - "./patch/BepInEx/core/BepInEx.Preloader.Core.xml"
+
+  - "./patch/BepInEx/core/BepInEx.Preloader.Unity.dll"
+
+  - "./patch/BepInEx/core/BepInEx.Preloader.Unity.xml"
+
+  - "./patch/BepInEx/core/BepInEx.Unity.dll"
+
+  - "./patch/BepInEx/core/BepInEx.Unity.xml"
+
+  - "./patch/BepInEx/core/SemanticVersioning.dll"
 
   - "./patch/BepInEx/core/0Harmony.xml"
 
