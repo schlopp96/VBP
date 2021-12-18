@@ -24,10 +24,17 @@ from icecream import ic
 from loadingSequence import load
 #$ ====================================================================================================== $#
 
-#> Set working directory to folder containing my Python projects.
+#> Set working directory to location containing root VBP repository folder.
 chdir(dirname(dirname(dirname(__file__))))
 
 textborder: str = '=================================================='
+
+#@ Declare variables containing patch files directory and destination:
+patch_stable = "VBP\patch\stable"
+patch_latest = "VBP\patch\latestbuild"
+stable_title = "stable build v5.17.00"
+latest_title = "bleeding-edge build 30a1089"
+patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
 
 def main() -> None:
@@ -36,40 +43,64 @@ def main() -> None:
     :return: patch BepInEx to v5.17.00
     :rtype: None
     """
-    #@ Declare variables containing patch files directory and destination:
-    patchContents = "VBP\patch"
-    patchDestination = "c:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
     while True:
-
-        #@ Move BepInEx patch files to Valheim directory:
-        confirmation = input(
-            f'\nReally patch BepInEx to latest build "30a1089" in location:\n\n====> "{patchDestination}"\n\n> Enter [y] or [n]:\n{textborder}\n> '
+        choosePatch: str = input(
+            "Which patch build would you like to install?\n[1.] Stable Build: v5.17.00\n[2.] Bleeding-Edge Build: 30a1089\n\n> "
         )
-
-        if confirmation.lower() == 'y':
-
-            patch(patchContents, patchDestination)
-            promptStart()
-
-        elif confirmation.lower() == 'n':
-
-            load('\nBepInEx patching process cancelled', '\nClosing window...',
-                 False)
-            break
-
+        if choosePatch == "1":
+            while True:
+                confirmation: str = input(
+                    f'\nReally patch BepInEx to latest STABLE build v5.17.00 in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+                )
+                if confirmation.lower() in ['y', 'yes']:
+                    patch(patch_stable, patchDestination, stable_title)
+                    promptStart()
+                elif confirmation.lower() in ['n', 'no']:
+                    load('\nBepInEx patching process cancelled',
+                         '\nClosing window...', False)
+                    break
+                else:
+                    print('\n\t- ERROR: Invalid Input -\n')
+                    ic(confirmation)
+                    sleep(0.750)
+                    print(
+                        '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
+                    )
+                    sleep(1.250)
+                    continue
+        elif choosePatch == "2":
+            while True:
+                confirmation = input(
+                    f'\nReally patch BepInEx to latest BLEEDING-EDGE build "30a1089" in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+                )
+                if confirmation.lower() == 'y':
+                    patch(patch_latest, patchDestination, latest_title)
+                    promptStart()
+                elif confirmation.lower() == 'n':
+                    load('\nBepInEx patching process cancelled',
+                         '\nClosing window...', False)
+                    break
+                else:
+                    print('\n\t- ERROR: Invalid Input -\n')
+                    ic(confirmation)
+                    sleep(0.750)
+                    print(
+                        '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
+                    )
+                    sleep(1.250)
+                    continue
         else:
-
             print('\n\t- ERROR: Invalid Input -\n')
-            ic(confirmation)
+            ic(choosePatch)
             sleep(0.750)
             print(
-                '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
+                f'\n==> Must ONLY enter either [1] for {stable_title} or [2] for {latest_title} <==\n\n'
             )
             sleep(1.250)
             continue
 
-    exitPatcher()
+        exitPatcher()
 
 
 def promptStart() -> NoReturn | None:
@@ -77,12 +108,12 @@ def promptStart() -> NoReturn | None:
         startPrompt: str = input(
             f"\nStart Game?\n\n> Enter [y] or [n]:\n{textborder}\n> ")
 
-        if startPrompt.lower() == 'y':
+        if startPrompt.lower() in ['y', 'yes']:
 
             openValheim()
             return ex()
 
-        elif startPrompt.lower() == 'n':
+        elif startPrompt.lower() in ['n' 'no']:
 
             load('\nPatch successfully completed', '\nClosing window...',
                  False)
@@ -105,8 +136,8 @@ def openValheim() -> int:
     return call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970")
 
 
-def patch(patch, program) -> Any:
-    load(msg_load='\nPatching BepInEx to build 30a1089',
+def patch(patch, program, title) -> Any:
+    load(msg_load=f'\nPatching BepInEx to {title}',
          msg_done='\nPatch successfully installed!')
     return copytree(patch, program, dirs_exist_ok=True)
 
