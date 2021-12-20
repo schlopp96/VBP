@@ -16,19 +16,23 @@
 
 - Each time your modding tool is opened to edit Valheim, your files will be downgraded again, so **you must run this script every time before playing!**
 
-1. Open the script, which can be found inside the downloaded folder here: "ValheimBepInExPatcher/src/ValheimBepInExPatcher.py".
+1. Open the script, which can be found inside the downloaded folder here: "VBP/src/patcher.py".
 
-2. Once the script is run, you will be prompted to confirm whether the directory locations listed on screen are correct.
+2. Once the script is run, you will be prompted to choose whether to install the latest available build, or the latest available stable version of BepInEx patch.
 
-3. Once confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
+3. Once chosen, you will then be asked to confirm that the correct option/location is chosen.
 
-4. Upon successful patching, the script will ask the user to press [ENTER] to exit the application and close the console window.
+4. Once confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
 
-5. Now you may run the game, either from the Steam client if you wish to choose what graphics API to use, or from a shortcut.
+5. Upon successful patching, the script will ask the user if they'd like to open the game, or simply exit the patcher.
+
+6. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
+
+7. If you choose to NOT run the game, the patcher will prepare itself to close, and will penultimately prompt you to press [ENTER] to exit the application/close the console window.
 
 - Works with both Vulkan and the default graphics API.
 
-- If BepInEx lists its current version as v5.17.00, then it worked!
+- If BepInEx lists its current version as v5.17.00, then it worked for either build!
 
 ---
 
