@@ -34,6 +34,8 @@
 
 - If BepInEx lists its current version as v5.17.00, then it worked for either build!
 
+- **Note that you can also find the latest bleeding-edge-builds of _BepInEx_ [here](https://builds.bepis.io/projects/bepinex_be).**
+
 ---
 
 ## How It Works

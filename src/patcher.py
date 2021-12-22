@@ -25,7 +25,7 @@ textborder: str = '=================================================='
 patch_stable = "VBP\patch\stable"
 patch_latest = "VBP\patch\latestbuild"
 stable_title = "stable build v5.17.00"
-latest_title = "bleeding-edge build 30a1089"
+latest_title = "bleeding-edge build 3fd15d68"
 patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
 
@@ -40,7 +40,7 @@ def main() -> None | NoReturn:
 
     while True:
         choosePatch: str = input(
-            "Which patch build would you like to install?\n[1.] Stable Build: v5.17.00\n[2.] Bleeding-Edge Build: 30a1089\n\n> "
+            "Which patch build would you like to install?\n[1.] Stable Build: v5.17.00\n[2.] Bleeding-Edge Build: 3fd15d68\n\n> "
         )
         if choosePatch == "1":
             while True:
@@ -66,7 +66,7 @@ def main() -> None | NoReturn:
         elif choosePatch == "2":
             while True:
                 confirmLatest: str = input(
-                    f'\nReally patch BepInEx to latest BLEEDING-EDGE build "30a1089" in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+                    f'\nReally patch BepInEx to latest BLEEDING-EDGE build "3fd15d68" in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
                 )
                 if confirmLatest.lower() in ['y', 'yes']:
 
