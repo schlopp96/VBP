@@ -40,9 +40,9 @@ def main() -> None | NoReturn:
 
     while True:
         choosePatch: str = input(
-            "Which patch build would you like to install?\n[1.] Stable Build: v5.17.00\n[2.] Bleeding-Edge Build: 3fd15d68\n\n> "
+            "Which patch build would you like to install?\n[1.] Stable Build: v5.17.00\n[2.] Bleeding-Edge Build: 3fd15d68\n[3.] Exit Program\n\n> "
         )
-        if choosePatch == "1":
+        if choosePatch == '1':
             while True:
                 confirmStable: str = input(
                     f'\nReally patch BepInEx to latest STABLE build v5.17.00 in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
@@ -63,7 +63,7 @@ def main() -> None | NoReturn:
                     )
                     sleep(1.250)
                     continue
-        elif choosePatch == "2":
+        elif choosePatch == '2':
             while True:
                 confirmLatest: str = input(
                     f'\nReally patch BepInEx to latest BLEEDING-EDGE build "3fd15d68" in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
@@ -85,12 +85,14 @@ def main() -> None | NoReturn:
                     )
                     sleep(1.250)
                     continue
+        elif choosePatch == '3':
+            return exitPatcher()
         else:
             print('\n\t- ERROR: Invalid Input -\n')
             ic(choosePatch)
             sleep(0.750)
             print(
-                f'\n==> Must ONLY enter either [1] for {stable_title} or [2] for {latest_title} <==\n\n'
+                f'\n==> Must ONLY enter [1] for {stable_title}, [2] for {latest_title}, or [3] to exit program <==\n\n'
             )
             sleep(1.250)
             continue
