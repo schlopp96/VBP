@@ -1,0 +1,7 @@
+4 commits since v5.4.17
+
+Changelog (excluding merges):
+* (0d9baa3) [ghorsington] Bump version
+* (73ebc86) [ghorsington] Bump BepInEx.Harmony, HarmonyX, MonoMod
+* (48f312e) [ghorsington] Use CakeBuild 2.0.0
+* (ed7ae1a) [ghorsington] ConsoleEncoding: fix buffer size computation

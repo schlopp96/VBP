@@ -3,6 +3,7 @@
 > Valheim BepInEx Patcher
 
 ---
+
 ## About
 
 - The Valheim BepInEx Patcher _**(VBP)**_ is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.
@@ -33,11 +34,11 @@
 
 - Works with both Vulkan and the default graphics API.
 
-- NOTE: As of now, BepInEx will _still_ list its current version as v5.17.00, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
+- NOTE: As of now, BepInEx will _still_ list its current version as v5.18.00, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
 
   - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
 
-- **Note that you can also find the latest bleeding-edge-builds of _BepInEx_ [here](https://builds.bepis.io/projects/bepinex_be).**
+- ***Note that you can also find the latest bleeding-edge-builds of _BepInEx_ [here](https://builds.bepis.io/projects/bepinex_be).***
 
 ---
 
@@ -56,7 +57,7 @@
   - On Mac, the default install path for Valheim is:
     - `~/Library/Application Support/Steam/steamapps/common/Valheim`
 
-- One file, "./patch/winhttp.dll", will be copied directly inside the installation folder: "install_location/Valheim".
+- One file, "./patch/stable/winhttp.dll", will be copied directly inside the installation folder: "install_location/Valheim".
 
 - The rest will be copied within the BepInEx folder, itself found within the game's installation folder: "install_location/Valheim/BepInEx/core".
 
@@ -68,63 +69,65 @@
 
 - Patch file intended for the game's root install directory (contains BepInEx folder where all other files will go):
 
-  - "./patch/winhttp.dll"
+  - `"./patch/stable/winhttp.dll"`
 
 - Patch files that will replace necessary core files (from within the BepInEx directory itself):
 
-  - "./patch/BepInEx/core/0Harmony.dll"
+  - `"./patch/stable/BepInEx/core/0Harmony.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Core.dll"
+  - `"./patch/stable/BepInEx/core/BepInEx.Core.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Core.xml"
+  - `"./patch/stable/BepInEx/core/BepInEx.Core.xml"`
 
-  - "./patch/BepInEx/core/BepInEx.Preloader.Core.dll"
+  - `"./patch/stable/BepInEx/core/BepInEx.Preloader.Core.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Preloader.Core.xml"
+  - `"./patch/stable/BepInEx/core/BepInEx.Preloader.Core.xml"`
 
-  - "./patch/BepInEx/core/BepInEx.Preloader.Unity.dll"
+  - `"./patch/stable/BepInEx/core/BepInEx.Preloader.Unity.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Preloader.Unity.xml"
+  - `"./patch/stable/BepInEx/core/BepInEx.Preloader.Unity.xml"`
 
-  - "./patch/BepInEx/core/BepInEx.Unity.dll"
+  - `"./patch/stable/BepInEx/core/BepInEx.Unity.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Unity.xml"
+  - `"./patch/stable/BepInEx/core/BepInEx.Unity.xml"`
 
-  - "./patch/BepInEx/core/SemanticVersioning.dll"
+  - `"./patch/stable/BepInEx/core/SemanticVersioning.dll"`
 
-  - "./patch/BepInEx/core/0Harmony.xml"
+  - `"./patch/stable/BepInEx/core/0Harmony.xml"`
 
-  - "./patch/BepInEx/core/0Harmony20.dll"
+  - `"./patch/stable/BepInEx/core/0Harmony20.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.dll"
+  - `"./patch/stable/BepInEx/core/BepInEx.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Harmony.dll"
+  - `"./patch/stable/BepInEx/core/BepInEx.Harmony.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Harmony.xml"
+  - `"./patch/stable/BepInEx/core/BepInEx.Harmony.xml"`
 
-  - "./patch/BepInEx/core/BepInEx.Preloader.dll"
+  - `"./patch/stable/BepInEx/core/BepInEx.Preloader.dll"`
 
-  - "./patch/BepInEx/core/BepInEx.Preloader.xml"
+  - `"./patch/stable/BepInEx/core/BepInEx.Preloader.xml"`
 
-  - "./patch/BepInEx/core/BepInEx.xml"
+  - `"./patch/stable/BepInEx/core/BepInEx.xml"`
 
-  - "./patch/BepInEx/core/HarmonyXInterop.dll"
+  - `"./patch/stable/BepInEx/core/HarmonyXInterop.dll"`
 
-  - "./patch/BepInEx/core/Mono.Cecil.dll"
+  - `"./patch/stable/BepInEx/core/Mono.Cecil.dll"`
 
-  - "./patch/BepInEx/core/Mono.Cecil.Mdb.dll"
+  - `"./patch/stable/BepInEx/core/Mono.Cecil.Mdb.dll"`
 
-  - "./patch/BepInEx/core/Mono.Cecil.Pdb.dll"
+  - `"./patch/stable/BepInEx/core/Mono.Cecil.Pdb.dll"`
 
-  - "./patch/BepInEx/core/Mono.Cecil.Rocks.dll"
+  - `"./patch/stable/BepInEx/core/Mono.Cecil.Rocks.dll"`
 
-  - "./patch/BepInEx/core/MonoMod.RuntimeDetour.dll"
+  - `"./patch/stable/BepInEx/core/MonoMod.RuntimeDetour.dll"`
 
-  - "./patch/BepInEx/core/MonoMod.RuntimeDetour.xml"
+  - `"./patch/stable/BepInEx/core/MonoMod.RuntimeDetour.xml"`
 
-  - "./patch/BepInEx/core/MonoMod.Utils.dll"
+  - `"./patch/stable/BepInEx/core/MonoMod.Utils.dll"`
 
-  - "./patch/BepInEx/core/MonoMod.Utils.xml"
+  - `"./patch/stable/BepInEx/core/MonoMod.Utils.xml"`
+
+  - `"./patch/stable/stable/changelog.txt"`
 
 ---
 

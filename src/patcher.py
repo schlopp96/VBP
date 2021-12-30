@@ -24,8 +24,8 @@ textborder: str = '=================================================='
 #@ Declare variables containing patch files directory and destination:
 patch_stable = "VBP\patch\stable"
 patch_latest = "VBP\patch\latestbuild"
-stable_title = "stable build v5.17.00"
-latest_title = "bleeding-edge build 3fd15d68"
+build_Stable = "v5.18.00"
+build_BleedingEdge = "249a185"
 patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
 
@@ -40,15 +40,15 @@ def main() -> None | NoReturn:
 
     while True:
         choosePatch: str = input(
-            "Which patch build would you like to install?\n[1.] Stable Build: v5.17.00\n[2.] Bleeding-Edge Build: 3fd15d68\n[3.] Exit Program\n\n> "
+            f"Which patch build would you like to install?\n[1.] Stable Build: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Exit Program\n\n> "
         )
         if choosePatch == '1':
             while True:
                 confirmStable: str = input(
-                    f'\nReally patch BepInEx to latest {stable_title} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+                    f'\nReally patch BepInEx to the most recent stable-build {build_Stable} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
                 )
                 if confirmStable.lower() in ['y', 'yes']:
-                    patch(patch_stable, patchDestination, stable_title)
+                    patch(patch_stable, patchDestination, build_Stable)
                     promptStart()
                 elif confirmStable.lower() in ['n', 'no']:
                     load('\nBepInEx patching process cancelled',
@@ -66,11 +66,11 @@ def main() -> None | NoReturn:
         elif choosePatch == '2':
             while True:
                 confirmLatest: str = input(
-                    f'\nReally patch BepInEx to {latest_title} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+                    f'\nReally patch BepInEx to the very latest bleeding-edge build {build_BleedingEdge} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
                 )
                 if confirmLatest.lower() in ['y', 'yes']:
 
-                    patch(patch_latest, patchDestination, latest_title)
+                    patch(patch_latest, patchDestination, build_BleedingEdge)
                     promptStart()
                 elif confirmLatest.lower() in ['n', 'no']:
                     load('\nBepInEx patching process cancelled',
@@ -86,13 +86,15 @@ def main() -> None | NoReturn:
                     sleep(1.250)
                     continue
         elif choosePatch == '3':
+            print('\nBepInEx patching process cancelled...')
+            sleep(0.5)
             return exitPatcher()
         else:
             print('\n\t- ERROR: Invalid Input -\n')
             ic(choosePatch)
             sleep(0.750)
             print(
-                f'\n==> Must ONLY enter [1] for {stable_title}, [2] for {latest_title}, or [3] to exit program <==\n\n'
+                f'\n==> Must ONLY enter [1] for stable build {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, or [3] to exit program <==\n\n'
             )
             sleep(1.250)
             continue
@@ -127,10 +129,12 @@ def openValheim() -> int:
     return call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970")
 
 
-def patch(patch, program, title) -> Any:
-    load(msg_load=f'\nPatching BepInEx {title} to location: {program}',
-         msg_done=f'\nPatch {title} successfully installed!')
-    return copytree(patch, program, dirs_exist_ok=True)
+def patch(patchFile, patchLocation, patchTitle) -> Any:
+    load(
+        msg_load=
+        f'\nPatching BepInEx version/build {patchTitle} to location: {patchLocation}',
+        msg_done=f'\nPatch version/build {patchTitle} successfully installed!')
+    return copytree(patchFile, patchLocation, dirs_exist_ok=True)
 
 
 def exitPatcher() -> NoReturn:
