@@ -2,6 +2,7 @@
 
 > Valheim BepInEx Patcher
 
+---
 ## About
 
 - The Valheim BepInEx Patcher _**(VBP)**_ is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.
@@ -32,7 +33,9 @@
 
 - Works with both Vulkan and the default graphics API.
 
-- If BepInEx lists its current version as v5.17.00, then it worked for either build!
+- NOTE: As of now, BepInEx will _still_ list its current version as v5.17.00, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
+
+  - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
 
 - **Note that you can also find the latest bleeding-edge-builds of _BepInEx_ [here](https://builds.bepis.io/projects/bepinex_be).**
 
@@ -61,11 +64,13 @@
 
 ## Files Included in Patch
 
+> _This does not include contents of any bleeding-edge builds, as contents are likely to change frequently during BepInEx version build development_.
+
 - Patch file intended for the game's root install directory (contains BepInEx folder where all other files will go):
 
   - "./patch/winhttp.dll"
 
-- Patch files that will replace necessary core files (from within the BepInEx directory which itself):
+- Patch files that will replace necessary core files (from within the BepInEx directory itself):
 
   - "./patch/BepInEx/core/0Harmony.dll"
 
@@ -125,4 +130,4 @@
 
 ## Contact the Author
 
-- If you have any questions, comments, issues, complaints, etc, feel free to contact me through my listed email on my GitHub profile, or through the discussions page!
+- If you have any questions, comments, issues, complaints, etc, feel free to contact me through my email at: `schloppdaddy@gmail.com`

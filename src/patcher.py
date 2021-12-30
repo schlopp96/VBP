@@ -45,7 +45,7 @@ def main() -> None | NoReturn:
         if choosePatch == '1':
             while True:
                 confirmStable: str = input(
-                    f'\nReally patch BepInEx to latest STABLE build v5.17.00 in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+                    f'\nReally patch BepInEx to latest {stable_title} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
                 )
                 if confirmStable.lower() in ['y', 'yes']:
                     patch(patch_stable, patchDestination, stable_title)
@@ -66,7 +66,7 @@ def main() -> None | NoReturn:
         elif choosePatch == '2':
             while True:
                 confirmLatest: str = input(
-                    f'\nReally patch BepInEx to latest BLEEDING-EDGE build "3fd15d68" in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+                    f'\nReally patch BepInEx to {latest_title} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
                 )
                 if confirmLatest.lower() in ['y', 'yes']:
 
@@ -128,8 +128,8 @@ def openValheim() -> int:
 
 
 def patch(patch, program, title) -> Any:
-    load(msg_load=f'\nPatching BepInEx to {title}',
-         msg_done='\nPatch successfully installed!')
+    load(msg_load=f'\nPatching BepInEx {title} to location: {program}',
+         msg_done=f'\nPatch {title} successfully installed!')
     return copytree(patch, program, dirs_exist_ok=True)
 
 
