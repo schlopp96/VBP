@@ -13,7 +13,7 @@ from time import sleep
 from typing import Any, NoReturn
 
 from icecream import ic
-from loadingSequence import load
+from loadSequence import load
 #$ ====================================================================================================== $#
 
 #> Set working directory to location containing root VBP repository folder.
@@ -131,9 +131,8 @@ def openValheim() -> int:
 
 def patch(patchFile, patchLocation, patchTitle) -> Any:
     load(
-        msg_load=
         f'\nPatching BepInEx version/build {patchTitle} to location: {patchLocation}',
-        msg_done=f'\nPatch version/build {patchTitle} successfully installed!')
+        f'\nPatch version/build {patchTitle} successfully installed!')
     return copytree(patchFile, patchLocation, dirs_exist_ok=True)
 
 
