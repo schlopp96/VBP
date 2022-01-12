@@ -23,9 +23,9 @@ textborder: str = '=================================================='
 
 #@ Declare variables containing patch files directory and destination:
 patch_stable = "VBP\patch\stable"
-patch_latest = "VBP\patch\latestbuild"
+patch_latest = r"VBP\patch\bleeding-edge"
 build_Stable = "v5.18.00"
-build_BleedingEdge = "249a185"
+build_BleedingEdge = "692fb86"
 patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
 

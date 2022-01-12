@@ -1,6 +1,12 @@
-154 commits since v5.4.10
+161 commits since v5.4.10
 
 Changelog (excluding merges):
+* (4689787) [miniduikboot] CI: Emphasize architecture of game instead of OS
+* (39f6bf8) [ghorsington] Add temporary fix for crashes in some x86 games
+* (c76b09c) [ghorsington] IL2CPPDetourMethodPatcher: Improve struct handling on x64
+* (b7b8dd2) [ghorsington] Add HarmonyBackend config to Il2Cpp as well
+* (cbae410) [ghorsington] IL2CPPDetourMethodPatcher: Revert to original argument handling in x64
+* (82538d8) [ghorsington] Fix crash when logging some strings with long multi-byte characters
 * (249a185) [ghorsington] Bump Il2CppAssemblyUnhollower
 * (86549f5) [ghorsington] BepInExLogInterpolatedStringHandler: Fix typo
 * (3fd5d68) [ghorsington] ManualLogSource: Add string interpolation for Log* overloads; clean up logging
