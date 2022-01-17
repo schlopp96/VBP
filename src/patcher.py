@@ -40,7 +40,7 @@ def main() -> None | NoReturn:
 
     while True:
         choosePatch: str = input(
-            f"Which patch build would you like to install?\n[1.] Stable Build: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Full build upgrade (apply both patches in order of release): {build_Stable} then {build_BleedingEdge}\n[4.] Exit Program\n\n> "
+            f"Which patch build would you like to install?\n[1.] Stable Release: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Full build upgrade (apply both patches in order of release): {build_Stable} then {build_BleedingEdge}\n[4.] Exit Program\n\n> "
         )
         if choosePatch == '1':
             stable_patch()
@@ -57,7 +57,7 @@ def main() -> None | NoReturn:
             ic(choosePatch)
             sleep(0.750)
             print(
-                f'\n==> Must ONLY enter [1] for stable build {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, or [3] to exit program <==\n\n'
+                f'\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n\n'
             )
             sleep(1.250)
             continue
