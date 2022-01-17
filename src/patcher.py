@@ -40,52 +40,15 @@ def main() -> None | NoReturn:
 
     while True:
         choosePatch: str = input(
-            f"Which patch build would you like to install?\n[1.] Stable Build: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Exit Program\n\n> "
+            f"Which patch build would you like to install?\n[1.] Stable Build: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Full build upgrade (apply both patches in order of release): {build_Stable} then {build_BleedingEdge}\n[4.] Exit Program\n\n> "
         )
         if choosePatch == '1':
-            while True:
-                confirmStable: str = input(
-                    f'\nReally patch BepInEx to the most recent stable-build {build_Stable} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
-                )
-                if confirmStable.lower() in ['y', 'yes']:
-                    patch(patch_stable, patchDestination, build_Stable)
-                    promptStart()
-                elif confirmStable.lower() in ['n', 'no']:
-                    load('\nBepInEx patching process cancelled',
-                         '\nClosing window...', False)
-                    break
-                else:
-                    print('\n\t- ERROR: Invalid Input -\n')
-                    ic(confirmStable)
-                    sleep(0.750)
-                    print(
-                        '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
-                    )
-                    sleep(1.250)
-                    continue
+            stable_patch()
         elif choosePatch == '2':
-            while True:
-                confirmLatest: str = input(
-                    f'\nReally patch BepInEx to the very latest bleeding-edge build {build_BleedingEdge} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
-                )
-                if confirmLatest.lower() in ['y', 'yes']:
-
-                    patch(patch_latest, patchDestination, build_BleedingEdge)
-                    promptStart()
-                elif confirmLatest.lower() in ['n', 'no']:
-                    load('\nBepInEx patching process cancelled',
-                         '\nClosing window...', False)
-                    break
-                else:
-                    print('\n\t- ERROR: Invalid Input -\n')
-                    ic(confirmLatest)
-                    sleep(0.750)
-                    print(
-                        '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
-                    )
-                    sleep(1.250)
-                    continue
+            BE_patch()
         elif choosePatch == '3':
+            full_patch()
+        elif choosePatch == '4':
             print('\nBepInEx patching process cancelled...')
             sleep(0.5)
             return exitPatcher()
@@ -102,6 +65,76 @@ def main() -> None | NoReturn:
         return exitPatcher()
 
 
+def BE_patch() -> None:
+    while True:
+        confirmLatest: str = input(
+            f'\nReally patch BepInEx to the very latest bleeding-edge build {build_BleedingEdge} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+        )
+        if confirmLatest.lower() in ['y', 'yes']:
+            patch(patch_latest, patchDestination, build_BleedingEdge)
+            promptStart()
+        elif confirmLatest.lower() in ['n', 'no']:
+            load('\nBepInEx patching process cancelled', '\nClosing window...',
+                 False)
+            break
+        else:
+            print('\n\t- ERROR: Invalid Input -\n')
+            ic(confirmLatest)
+            sleep(0.750)
+            print(
+                '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
+            )
+            sleep(1.250)
+            continue
+
+
+def stable_patch() -> None:
+    while True:
+        confirmStable: str = input(
+            f'\nReally patch BepInEx to the most recent stable-build {build_Stable} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+        )
+        if confirmStable.lower() in ['y', 'yes']:
+            patch(patch_stable, patchDestination, build_Stable)
+            promptStart()
+        elif confirmStable.lower() in ['n', 'no']:
+            load('\nBepInEx patching process cancelled', '\nClosing window...',
+                 False)
+            break
+        else:
+            print('\n\t- ERROR: Invalid Input -\n')
+            ic(confirmStable)
+            sleep(0.750)
+            print(
+                '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
+            )
+            sleep(1.250)
+            continue
+
+
+def full_patch() -> None:
+    while True:
+        confirmFull: str = input(
+            f'\nReally install stable patch {build_Stable} then apply latest "bleeding-edge" build {build_BleedingEdge}?\n> Enter [y] or [n]:\n{textborder}\n> '
+        )
+        if confirmFull.lower() in ['y', 'yes']:
+            patch(patch_stable, patchDestination, build_Stable)
+            patch(patch_stable, patchDestination, build_BleedingEdge)
+            promptStart()
+        elif confirmFull.lower() in ['n', 'no']:
+            load('\nBepInEx patching process cancelled', '\nClosing window...',
+                 False)
+            break
+        else:
+            print('\n\t- ERROR: Invalid Input -\n')
+            ic(confirmFull)
+            sleep(0.750)
+            print(
+                '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
+            )
+            sleep(1.250)
+            continue
+
+
 def promptStart() -> NoReturn | None:
     while True:
         startPrompt: str = input(
@@ -110,8 +143,8 @@ def promptStart() -> NoReturn | None:
             openValheim()
             return ex()
         elif startPrompt.lower() in ['n', 'no']:
-            load('\nPatch successfully completed', '\nClosing window...',
-                 False)
+            load('\nPatching process successfully completed',
+                 '\nClosing window...', False)
             return ex()
         else:
             print('\n\t- ERROR: Invalid Input -\n')

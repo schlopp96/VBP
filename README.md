@@ -20,7 +20,7 @@
 
 1. Open the script, which can be found inside the downloaded folder here: "VBP/src/patcher.py".
 
-2. Once the script is run, you will be prompted to choose whether to install the latest available build, or the latest available stable version of BepInEx patch.
+2. Once the script is run, you will be prompted to choose whether to install the latest available build, the latest available stable version of BepInEx patch, or *both* to ensure the latest possible build available.
 
 3. Once chosen, you will then be asked to confirm that the correct option/location is chosen.
 
@@ -34,7 +34,7 @@
 
 - Works with both Vulkan and the default graphics API.
 
-- NOTE: As of now, BepInEx will _still_ list its current version as v5.18.00, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
+- NOTE: As of now, BepInEx will _still_ list its current version as the last stable build number, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
 
   - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
 
