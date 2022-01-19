@@ -1,6 +1,9 @@
-161 commits since v5.4.10
+165 commits since v5.4.10
 
 Changelog (excluding merges):
+* (c29fdcc) [js6pak] Fix process bitness detection
+* (ce04a24) [ghorsington] ProxyAssemblyGenerator: Handle exceptions better
+* (59c5adc) [ghorsington] Bump libraries
 * (4689787) [miniduikboot] CI: Emphasize architecture of game instead of OS
 * (39f6bf8) [ghorsington] Add temporary fix for crashes in some x86 games
 * (c76b09c) [ghorsington] IL2CPPDetourMethodPatcher: Improve struct handling on x64
