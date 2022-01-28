@@ -164,7 +164,7 @@ def promptStart() -> NoReturn | None:
     while True:
         startPrompt: str = input(
             f'\nStart Game?\n\n> Enter [y] or [n]:\n{textborder}\n> ')
-        match startPrompt:
+        match startPrompt.lower():
             case 'y'|'yes':
                 openValheim()
                 return ex()
