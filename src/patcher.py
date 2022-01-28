@@ -184,7 +184,7 @@ def promptStart() -> NoReturn | None:
 
 
 def openValheim() -> int:
-    """Calls command to open "Valheim".
+    """Calls command to open "Valheim" within Steam client.
 
     :return: Starts game.
     :rtype: int
