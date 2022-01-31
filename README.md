@@ -20,7 +20,7 @@
 
 1. Open the script, which can be found inside the downloaded folder here: "VBP/src/patcher.py".
 
-2. Once the script is run, you will be prompted to choose whether to install the latest available build, the latest available stable version of BepInEx patch, or *both* to ensure the latest possible build available.
+2. Once the script is run, you will be prompted to choose whether to install the latest available build, the latest available stable version of BepInEx patch, or _both_ to ensure the latest possible build available.
 
 3. Once chosen, you will then be asked to confirm that the correct option/location is chosen.
 
@@ -38,7 +38,7 @@
 
   - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
 
-- ***Note that you can also find the latest bleeding-edge-builds of _BepInEx_ [here](https://builds.bepis.io/projects/bepinex_be).***
+- **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
 ---
 
