@@ -26,7 +26,7 @@ textborder: str = '=================================================='
 patch_stable = "VBP\patch\stable"
 patch_latest = r"VBP\patch\bleeding-edge"
 build_Stable = "v5.18.00"
-build_BleedingEdge = "e21677f"
+build_BleedingEdge = "ao2c330"
 patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
 def main() -> None | NoReturn:

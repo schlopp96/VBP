@@ -4,6 +4,9 @@
         <name>BepInEx.Preloader.Core</name>
     </assembly>
     <members>
+        <member name="M:BepInEx.Preloader.Core.AssemblyBuildInfo.ToString">
+            <inheritdoc />
+        </member>
         <member name="T:BepInEx.Preloader.Core.EnvVars">
             <summary>
                 Doorstop environment variables, passed into the BepInEx preloader.

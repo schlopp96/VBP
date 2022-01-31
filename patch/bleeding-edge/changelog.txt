@@ -1,6 +1,9 @@
-165 commits since v5.4.10
+168 commits since v5.4.10
 
 Changelog (excluding merges):
+* (a02c330) [Bepis] Implement better platform identification and descriptions in preloader log
+* (7669b6d) [ghorsington] Il2Cpp: Fix OnInstallUnityTlsInterface not being static
+* (3f172db) [Bepis] Add assembly framework and architecture checks for xna launcher
 * (c29fdcc) [js6pak] Fix process bitness detection
 * (ce04a24) [ghorsington] ProxyAssemblyGenerator: Handle exceptions better
 * (59c5adc) [ghorsington] Bump libraries
