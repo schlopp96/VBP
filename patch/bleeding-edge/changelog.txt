@@ -1,6 +1,13 @@
-168 commits since v5.4.10
+175 commits since v5.4.10
 
 Changelog (excluding merges):
+* (1504d80) [ghorsington] Bump HarmonyX and MonoMod
+* (f590259) [Geoffrey Horsington] Update build_be.yml
+* (86ead2c) [Geoffrey Horsington] Update build_be.yml
+* (6daaa54) [ghorsington] Update CI build URL
+* (f3c3e89) [Bepis] Be more defensive about what executables .NET launcher can encounter
+* (bc20530) [Bepis] Move .NET framework common entrypoint code to shared project, and add silent exception logging
+* (5686f6a) [Bepis] Create .NET Core platform project
 * (a02c330) [Bepis] Implement better platform identification and descriptions in preloader log
 * (7669b6d) [ghorsington] Il2Cpp: Fix OnInstallUnityTlsInterface not being static
 * (3f172db) [Bepis] Add assembly framework and architecture checks for xna launcher
