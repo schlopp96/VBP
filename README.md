@@ -12,6 +12,18 @@
 
 ---
 
+## Installation
+
+1. Download the project from [GitHub](https://github.com/schlopp96/VBP) and extract to location of choice.
+
+2. Open terminal and navigate to "./VBP".
+
+3. Use `pip install -r requirements.txt` to install necessary dependencies.
+
+- That's all!
+
+---
+
 ## How to Use the Script
 
 - Make sure you **do not** have Vortex, Thunderstore, or any other modding tools running, and that you are done with any modding processes.
