@@ -16,7 +16,7 @@
 
 1. Download the project from [GitHub](https://github.com/schlopp96/VBP) and extract to location of choice.
 
-2. Open terminal and navigate to "./VBP".
+2. Open terminal and navigate to the extracted directory `"install_location/VBP"`.
 
 3. Use `pip install -r requirements.txt` to install necessary dependencies.
 
