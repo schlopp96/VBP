@@ -13,7 +13,6 @@ from sys import exit as ex
 from time import sleep
 from typing import Any, NoReturn
 
-from icecream import ic
 from loadSequence import load
 
 #$ ====================================================================================================== $#
@@ -21,15 +20,15 @@ from loadSequence import load
 #> Set working directory to location containing root VBP repository folder.
 chdir(dirname(__file__))
 
-basicConfig(filename='../logs/logfile.txt',
+basicConfig(filename='../logs/logfile.log',
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     level=INFO)
 
 textborder: str = '=================================================='
 
 #@ Declare variables containing patch files directory and destination:
-patch_stable = "..\patch\stable"
-patch_latest = "..\patch\bleeding-edge"
+patch_stable = "..\patch-files\stable"
+patch_latest = "..\patch-files\bleeding-edge"
 build_Stable = "v5.19.00"
 build_BleedingEdge = "1504d80"
 patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
@@ -45,7 +44,7 @@ def main() -> None | NoReturn:
     :return: patch BepInEx to chosen build.
     :rtype: None | NoReturn
     """
-    info('Started program VBP.')
+    info('Started program Valheim BepInEx Patcher...!')
     while True:
         choosePatch: str = input(
             f"Which patch build would you like to install?\n[1.] Stable Release: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Full build upgrade (apply both patches in order of release): {build_Stable} then {build_BleedingEdge}\n[4.] Exit Program\n\n> "
@@ -60,9 +59,8 @@ def main() -> None | NoReturn:
                 sleep(0.5)
                 return exitPatcher()
             case _:
-                warning(f'Invalid Input\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n')
-                print('\n\t- ERROR: Invalid Input -\n')
-                ic(choosePatch)
+                warning(f'Invalid Input: "{choosePatch}"\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n')
+                print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry:  "{choosePatch}".')
                 sleep(0.750)
                 print(
                     f'\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n\n'
@@ -89,14 +87,14 @@ def stable_patch() -> None:
                 patch(patch_stable, patchDestination, build_Stable)
                 promptStart()
             case 'n'|'no':
-                info('\nBepInEx patching process cancelled.\n\nClosing window...')
+                info('\nBepInEx patching process cancelled.\n')
                 load('\nBepInEx patching process cancelled', '\nClosing window...',
                 False)
+                info('\nClosing window...')
                 break
             case _:
-                warning('Invalid Input\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print('\n\t- ERROR: Invalid Input\n')
-                ic(confirmStable)
+                warning(f'Invalid Input: "{confirmStable}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                print(f'\n\t- ERROR: Invalid Input\n\nYour Entry: "{confirmStable}".')
                 sleep(0.750)
                 print(
                     '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
@@ -120,14 +118,14 @@ def BE_patch() -> None:
                 patch(patch_stable, patchDestination, build_BleedingEdge)
                 promptStart()
             case 'n'|'no':
-                info('\nBepInEx patching process cancelled.\n\nClosing window...')
+                info('\nBepInEx patching process cancelled...\n')
                 load('\nBepInEx patching process cancelled', '\nClosing window...',
                 False)
+                info('\nClosing window...')
                 break
             case _:
-                warning('Invalid Input\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print('\n\t- ERROR: Invalid Input -\n')
-                ic(confirmLatest)
+                warning(f'Invalid Input: "{confirmLatest}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry: "{confirmLatest}".')
                 sleep(0.750)
                 print(
                     '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
@@ -152,14 +150,13 @@ def full_patch() -> None:
                 patch(patch_stable, patchDestination, build_BleedingEdge)
                 promptStart()
             case 'n'|'no':
-                info('\nBepInEx patching process cancelled.\n\nClosing window...')
-                load('\nBepInEx patching process cancelled', '\nClosing window...',
-                 False)
+                info('\nBepInEx patching process cancelled...\n')
+                load('\nBepInEx patching process cancelled', '\nClosing window...', False)
+                info('\nClosing window...')
                 break
             case _:
-                warning('Invalid Input\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print('\n\t- ERROR: Invalid Input -\n')
-                ic(confirmFull)
+                warning(f'Invalid Input: "{confirmFull}"\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry: "{confirmFull}".')
                 sleep(0.750)
                 print(
                     '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
@@ -187,9 +184,8 @@ def promptStart() -> NoReturn | None:
                      '\nClosing window...', False)
                 return ex()
             case _:
-                warning('Invalid Input\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print('\n\t- ERROR: Invalid Input -\n')
-                ic(startPrompt)
+                warning(f'Invalid Input: "{startPrompt}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry: "{startPrompt}".')
                 sleep(0.750)
                 print(
                     '\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n'
@@ -221,10 +217,11 @@ def patch(patchFile: Any, patchLocation: Any, patchTitle: Any) -> Any:
     :return: Patch BepInEx with desired version build.
     :rtype: Any
     """
-    info('Patching BepInEx version/build {patchTitle} to location: {patchLocation}...\n\nPatch version/build {patchTitle} successfully installed!\n')
+    info(f'Patching BepInEx version/build {patchTitle} to location: {patchLocation}...\n\n')
     load(
         f'\nPatching BepInEx version/build {patchTitle} to location: {patchLocation}',
         f'\nPatch version/build {patchTitle} successfully installed!')
+    info(f'Patch version/build {patchTitle} successfully installed!\n')
     return copytree(patchFile, patchLocation, dirs_exist_ok=True)
 
 
