@@ -13,7 +13,7 @@ from sys import exit as ex
 from time import sleep
 from typing import Any, NoReturn
 
-from loadSequence import load
+from PyLoad import load
 
 #$ ====================================================================================================== $#
 
