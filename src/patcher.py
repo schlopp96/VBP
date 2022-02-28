@@ -7,28 +7,30 @@
 from logging import INFO, basicConfig, info, warning
 from os import chdir
 from os.path import dirname
+chdir(dirname(__file__))
+basicConfig(filename='../logs/logfile.log',
+            filemode='a',
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    level=INFO)
 from shutil import copytree
 from subprocess import call
 from sys import exit as ex
 from time import sleep
 from typing import Any, NoReturn
 
-from PyLoad import load
+from PyLoadBar import load
 
 #$ ====================================================================================================== $#
 
 #> Set working directory to location containing root VBP repository folder.
 chdir(dirname(__file__))
 
-basicConfig(filename='../logs/logfile.log',
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    level=INFO)
 
 textborder: str = '=================================================='
 
 #@ Declare variables containing patch files directory and destination:
-patch_stable = "..\patch-files\stable"
-patch_latest = "..\patch-files\bleeding-edge"
+patch_stable = "../patch-files/stable"
+patch_latest = "../patch-files/bleeding-edge"
 build_Stable = "v5.19.00"
 build_BleedingEdge = "1504d80"
 patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
