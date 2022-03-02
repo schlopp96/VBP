@@ -4,29 +4,26 @@
 #< Est. 10/24/21 >#
 #@ ====================================================================================================== @#
 #$ ====================================================================================================== $#
-from logging import INFO, basicConfig, info, warning
-from os import chdir, mkdir
-from os.path import dirname, exists
+from logging import INFO
+import logging
+from os import chdir
+from os.path import dirname
 
-textborder: str = "=".ljust((50),"=")
 chdir(dirname(__file__))
+textborder: str = "=".ljust((50),"=")
 
-def createLogs():
-    try:
-        if exists(r'../logs/logfile.log') == False:
-            mkdir(r'../logs')
-            with open('../logs/logfile.log', 'x') as fh:
-                fh.write(f'{textborder}\nStarted program Valheim BepInEx Patcher...!\n\n')
-    except FileExistsError:
-        with open(r'../logs/logfile.log', 'a') as fh:
-            fh.write(f'{textborder}\nStarted program Valheim BepInEx Patcher...!\n\n')
 
-createLogs()
+logger = logging.getLogger(__name__)
 
-basicConfig(filename='../logs/logfile.log',
-            filemode='a',
-                    format='%(asctime)s - %(levelname)s - %(message)s',
-                    level=INFO)
+logger.setLevel(INFO)
+
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+file_handler = logging.FileHandler('../logs/logfile.log')
+
+file_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
 
 from shutil import copytree
 from subprocess import call
@@ -37,11 +34,7 @@ from typing import Any, NoReturn
 from PyLoadBar import load
 
 #$ ====================================================================================================== $#
-
-#> Set working directory to location containing root VBP repository folder.
 chdir(dirname(__file__))
-
-
 
 #@ Declare variables containing patch files directory and destination:
 patch_stable = "../patch-files/stable"
@@ -61,6 +54,7 @@ def main() -> None | NoReturn:
     :return: patch BepInEx to chosen build.
     :rtype: None | NoReturn
     """
+    logger.info(f'Welcome to the Valheim Bepinex Patcher!\n\n')
     while True:
         choosePatch: str = input(
             f"Which patch build would you like to install?\n[1.] Stable Release: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Full build upgrade (apply both patches in order of release): {build_Stable} then {build_BleedingEdge}\n[4.] Open Valheim\n[5.] Exit Program\n\n> "
@@ -71,12 +65,12 @@ def main() -> None | NoReturn:
             case '3': full_patch()
             case '4': openValheim()
             case '5':
-                info('BepInEx patching process cancelled...\n')
+                logger.info('BepInEx patching process cancelled...\n')
                 print('\nBepInEx patching process cancelled...')
                 sleep(0.5)
                 return exitPatcher()
             case _:
-                warning(f'Invalid Input: "{choosePatch}"\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n')
+                logger.warning(f'Invalid Input: "{choosePatch}"\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n')
                 print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry:  "{choosePatch}".')
                 sleep(0.750)
                 print(
@@ -104,14 +98,14 @@ def stable_patch() -> None:
                 patch(patch_stable, patchDestination, build_Stable)
                 promptStart()
             case 'n'|'no':
-                info('\nBepInEx patching process cancelled.\n')
+                logger.info('\nBepInEx patching process cancelled.\n')
                 with open('../logs/logfile.log', 'a') as fh:
                     fh.write(f'{textborder}\n\n')
                 load('\nBepInEx patching process cancelled', '\nClosing window...',
                 False)
                 break
             case _:
-                warning(f'Invalid Input: "{confirmStable}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                logger.warning(f'Invalid Input: "{confirmStable}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
                 print(f'\n\t- ERROR: Invalid Input\n\nYour Entry: "{confirmStable}".')
                 sleep(0.750)
                 print(
@@ -136,14 +130,12 @@ def BE_patch() -> None:
                 patch(patch_stable, patchDestination, build_BleedingEdge)
                 promptStart()
             case 'n'|'no':
-                info('\nBepInEx patching process cancelled...\n')
-                with open('../logs/logfile.log', 'a') as fh:
-                    fh.write(f'{textborder}\n\n')
+                logger.info('\nBepInEx patching process cancelled...\n')
                 load('\nBepInEx patching process cancelled', '\nClosing window...',
                 False)
                 break
             case _:
-                warning(f'Invalid Input: "{confirmLatest}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                logger.warning(f'Invalid Input: "{confirmLatest}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
                 print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry: "{confirmLatest}".')
                 sleep(0.750)
                 print(
@@ -169,13 +161,13 @@ def full_patch() -> None:
                 patch(patch_stable, patchDestination, build_BleedingEdge)
                 promptStart()
             case 'n'|'no':
-                info('\nBepInEx patching process cancelled...\n')
+                logger.info('\nBepInEx patching process cancelled...\n')
                 with open('../logs/logfile.log', 'a') as fh:
                     fh.write(f'{textborder}\n\n')
                 load('\nBepInEx patching process cancelled', '\nClosing window...', False)
                 break
             case _:
-                warning(f'Invalid Input: "{confirmFull}"\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                logger.warning(f'Invalid Input: "{confirmFull}"\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
                 print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry: "{confirmFull}".')
                 sleep(0.750)
                 print(
@@ -199,12 +191,12 @@ def promptStart() -> NoReturn | None:
                 openValheim()
                 return exitPatcher()
             case 'n'|'no':
-                info('Patching process successfully completed...\n')
+                logger.info('Patching process successfully completed...\n')
                 load('\nPatching process successfully completed',
                      '\nClosing window...', False)
                 return exitPatcher()
             case _:
-                warning(f'Invalid Input: "{startPrompt}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
+                logger.warning(f'Invalid Input: "{startPrompt}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
                 print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry: "{startPrompt}".')
                 sleep(0.750)
                 print(
@@ -220,10 +212,8 @@ def openValheim() -> int:
     :return: Starts game.
     :rtype: int
     """
-    info(f'Starting Valheim...\n\n{textborder}')
+    logger.info('Starting Valheim...\n\n')
     load("\nStarting Game", "Opening Valheim...")
-    with open('../logs/logfile.log', 'a') as fh:
-        fh.write(f'{textborder}\n\n')
     return call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970")
 
 
@@ -239,16 +229,16 @@ def patch(patchFile: Any, patchLocation: Any, patchTitle: Any) -> Any:
     :return: Patch BepInEx with desired version build.
     :rtype: Any
     """
-    info(f'Patching BepInEx build {patchTitle} to location: {patchLocation}...\n\n')
+    logger.info(f'Patching BepInEx build {patchTitle} to location: {patchLocation}...\n\n')
     load(
         f'\nPatching BepInEx build {patchTitle} to location: {patchLocation}',
         f'\nPatch build {patchTitle} successfully installed!')
-    info(f'Patch build {patchTitle} successfully installed!\n')
+    logger.info(f'Patch build {patchTitle} successfully installed!\n')
     return copytree(patchFile, patchLocation, dirs_exist_ok=True)
 
 
 def exitPatcher() -> NoReturn:
-    info('Program closing...\nClosing log file...\n')
+    logger.info('Program closing...\n\nClosing log file...\n')
     with open('../logs/logfile.log', 'a') as fh:
         fh.write(f'{textborder}\n\n')
     ex()

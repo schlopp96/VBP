@@ -1,6 +1,1 @@
-asttokens==2.0.5
-colorama==0.4.4
-executing==0.8.2
-icecream==2.1.1
-Pygments==2.11.2
-six==1.16.0
+PyLoadBar==0.0.4
