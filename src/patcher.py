@@ -40,7 +40,7 @@ chdir(dirname(__file__))
 patch_stable = "../patch-files/stable"
 patch_latest = "../patch-files/bleeding-edge"
 build_Stable = "v5.19.00"
-build_BleedingEdge = "1504d80"
+build_BleedingEdge = "b7a05a6"
 patchDestination = "C:\Program Files (x86)\Steam\steamapps\common\Valheim"
 
 def main() -> None | NoReturn:
