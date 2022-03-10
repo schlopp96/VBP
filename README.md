@@ -46,11 +46,12 @@
 
 - Works with both Vulkan and the default graphics API.
 
-- NOTE: As of now, BepInEx will _still_ list its current version as the last stable build number, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
+- **_NOTE:_**
+  - As of now, BepInEx will _still_ list its current version as the last stable build number, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
 
   - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
 
-- **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
+  - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
 ---
 
@@ -69,12 +70,14 @@
   - On Mac, the default install path for Valheim is:
     - `~/Library/Application Support/Steam/steamapps/common/Valheim`
 
-- One file, "./patch/stable/winhttp.dll", will be copied directly inside the installation folder: "install_location/Valheim".
+- One file, "./patch/stable/winhttp.dll", will be copied directly inside the installation folder: "path/to/Valheim".
 
-- The rest will be copied within the BepInEx folder, itself found within the game's installation folder: "install_location/Valheim/BepInEx/core".
+- The rest will be copied within the BepInEx folder, itself found within the game's installation folder: "path/to/Valheim/BepInEx/core".
 
 ---
 
 ## Contact the Author
 
-- If you have any questions, comments, issues, complaints, etc, feel free to contact me through my email at: `schloppdaddy@gmail.com`
+- If you have any questions, comments, issues, complaints, etc, feel free to contact me through my:
+  - Email at: `schloppdaddy@gmail.com`.
+  - Submit an issue on the project's [GitHub repository](https://github.com/schlopp96/VBP)

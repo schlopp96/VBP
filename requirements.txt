@@ -1,1 +1,1 @@
-PyLoadBar==0.0.4
+PyLoadBar==0.0.5.1
