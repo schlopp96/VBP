@@ -1,1 +1,1 @@
-from .patcher import main
+from .patcher import main as patch

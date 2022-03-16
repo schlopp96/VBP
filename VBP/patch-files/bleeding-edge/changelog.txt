@@ -1,6 +1,12 @@
-175 commits since v5.4.10
+183 commits since v5.4.10
 
 Changelog (excluding merges):
+* (bf7b059) [Kasuromi] Convert managed bool to byte in detour
+* (b7a05a6) [ghorsington] Fix C# 10 CS8983 regression
+* (4cc7ab0) [ghorsington] Bump Il2CppUnhollower and Cpp2IL versions
+* (f2c0e0f) [Geoffrey Horsington] Update feature_request.yaml
+* (f10a1f6) [Geoffrey Horsington] Update error_report.yaml
+* (9efa51b) [ManlyMarco] Add ThreadingExtensions.ForEachParallel
 * (1504d80) [ghorsington] Bump HarmonyX and MonoMod
 * (f590259) [Geoffrey Horsington] Update build_be.yml
 * (86ead2c) [Geoffrey Horsington] Update build_be.yml

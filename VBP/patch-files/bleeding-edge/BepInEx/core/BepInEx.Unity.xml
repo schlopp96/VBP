@@ -209,11 +209,23 @@
             <typeparam name="TOut">Type of the output values.</typeparam>
             <param name="data">Input values for the work function.</param>
             <param name="work">Function to apply to the data on multiple threads at once.</param>
-            <param name="workerCount">Number of worker threads. By default SystemInfo.processorCount is used.</param>
+            <param name="workerCount">Number of worker threads. By default Environment.ProcessorCount is used.</param>
             <exception cref="T:System.Reflection.TargetInvocationException">
                 An exception was thrown inside one of the threads, and the operation was
                 aborted.
             </exception>
+            <exception cref="T:System.ArgumentException">Need at least 1 workerCount.</exception>
+        </member>
+        <member name="M:BepInEx.ThreadingExtensions.ForEachParallel``1(System.Collections.Generic.IList{``0},System.Action{``0},System.Int32)">
+            <summary>
+            Apply a function to a collection of data by spreading the work on multiple threads.
+            Lower overhead than RunParallel but it blocks the main thread until all work is completed or an exception has been thrown.
+            </summary>
+            <typeparam name="T">Type of the input values.</typeparam>
+            <param name="data">Input values for the work function.</param>
+            <param name="work">Function to apply to the data on multiple threads at once.</param>
+            <param name="workerCount">Number of worker threads. By default Environment.ProcessorCount is used.</param>
+            <exception cref="T:System.Reflection.TargetInvocationException">An exception was thrown inside one of the threads, and the operation was aborted.</exception>
             <exception cref="T:System.ArgumentException">Need at least 1 workerCount.</exception>
         </member>
         <member name="T:BepInEx.Shared.BuildInfoAttribute">
