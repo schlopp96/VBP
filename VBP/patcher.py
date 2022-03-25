@@ -20,7 +20,7 @@ chdir(dirname(__file__))
 patch_stable: str = './patch-files/stable'
 patch_latest: str = './patch-files/bleeding-edge'
 build_Stable: str = 'v5.19.00'
-build_BleedingEdge: str = 'b50a18a'
+build_BleedingEdge: str = 'fa9b1ab'
 patchDestination: str = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
 textborder: str = "=".ljust((50),"=")
 logFile: str = './logs/logfile.log'
