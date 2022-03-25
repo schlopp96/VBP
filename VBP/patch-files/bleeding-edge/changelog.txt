@@ -1,6 +1,7 @@
-183 commits since v5.4.10
+184 commits since v5.4.10
 
 Changelog (excluding merges):
+* (fa9b1ab) [ghorsington] CI: Only build for PRs and BEs for master
 * (bf7b059) [Kasuromi] Convert managed bool to byte in detour
 * (b7a05a6) [ghorsington] Fix C# 10 CS8983 regression
 * (4cc7ab0) [ghorsington] Bump Il2CppUnhollower and Cpp2IL versions

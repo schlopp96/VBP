@@ -158,7 +158,7 @@ def full_patch() -> None | bool:
                 logger.info('\nBepInEx patching process cancelled...\n')
                 with open(logFile, 'a') as fh:
                     fh.write(f'{textborder}\n\n')
-                return load('\nBepInEx patching process cancelled', '\nClosing window...', False)
+                return load('\nBepInEx patching process cancelled', '\nClosing window...', enable_display=False)
             case _:
                 logger.warning(f'Invalid Input: "{confirmFull}"\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
                 print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry: "{confirmFull}".')
@@ -186,7 +186,7 @@ def promptStart() -> NoReturn | None:
             case 'n'|'no':
                 logger.info('Patching process successfully completed...\n')
                 load('\nPatching process successfully completed',
-                     '\nClosing window...', False)
+                     '\nClosing window...', enable_display=False)
                 return exitPatcher()
             case _:
                 logger.warning(f'Invalid Input: "{startPrompt}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
