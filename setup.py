@@ -6,7 +6,7 @@ with open('requirements.txt', 'r') as fh2:
     reqs = fh2.read()
 
 setup(
-    name='VBP',
+    name='VBPatcher',
     version='0.4.0',
     description=
     'The Valheim BepInEx Patcher (VBP) is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.',
@@ -32,5 +32,5 @@ setup(
     keywords=[
         'python,'
         'Valheim', 'BepInEx', 'patcher', 'mods', 'nexus', 'vbp', 'stable',
-        'bleeding', ' edge'
+        'bleeding', ' edge', 'VBPatcher'
     ])
