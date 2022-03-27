@@ -25,7 +25,7 @@ build_BleedingEdge: str = 'fa9b1ab'
 patchDestination: str = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
 textborder: str = "=".ljust((50),"=")
 logFile: str = './logs/logfile.log'
-__version__: str = '0.3.1'
+__version__: str = '0.4.0'
 
 #* Establish Logger:
 class vbp_Logger():
