@@ -1,1 +1,1 @@
-from .patcher import main as patcher
+from .patcher import main as vbp_patcher
