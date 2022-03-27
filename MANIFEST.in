@@ -1,0 +1,5 @@
+include *.txt
+recursive-include VBP *.dll
+recursive-include VBP *.gitkeep
+recursive-include VBP *.txt
+recursive-include VBP *.xml
