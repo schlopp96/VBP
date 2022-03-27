@@ -65,7 +65,7 @@ logger = vbp_Logger(logFile)
 #$ ====================================================================================================== $#
 
 
-def main() -> None | NoReturn:
+def vbp() -> None | NoReturn:
     """Patcher for BepInEx, a modding console for Valheim.
 
     - User may choose between several patch installion options:
@@ -153,7 +153,7 @@ def BE_patch() -> None | NoReturn:
 
 
 def full_patch() -> None | bool:
-    """Install both latest BepInEx stable patch, before then installing bleeding-edge beta patch.
+    """Install both latest BepInEx stable build, before then installing latest bleeding-edge build.
 
     :return: Install both stable and bleeding edge patch builds in order of release to BepInEx directory.
     :rtype: None
@@ -257,4 +257,4 @@ def exitPatcher() -> None | NoReturn:
 
 
 if __name__ == '__main__':
-    main()
+    vbp()

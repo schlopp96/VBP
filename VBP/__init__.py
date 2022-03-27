@@ -1,1 +1,0 @@
-from .vbp import main as vbp
