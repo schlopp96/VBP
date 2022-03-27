@@ -1,1 +1,1 @@
-from vbp import main as vbp
+from .vbp import main as vbp
