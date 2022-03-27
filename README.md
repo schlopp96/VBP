@@ -16,7 +16,7 @@
 
 1. Download the project from [GitHub](https://github.com/schlopp96/VBP) and extract to location of choice.
 
-2. Open terminal and navigate to the extracted directory `"install_location/VBP"`.
+2. Open terminal and navigate to the extracted directory `"./path/to/VBP"`.
 
 3. Use `pip install -r requirements.txt` to install necessary dependencies.
 
@@ -55,7 +55,7 @@
   - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
   ```python
-    >>> from vbp import vbp
+    >>> from VBP import vbp
     >>> vbp()
         Welcome to the Valheim Bepinex Patcher!
 
