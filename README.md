@@ -30,7 +30,7 @@
 
 - Each time your modding tool is opened to edit Valheim, your files will be downgraded again, so **you must run this script every time before playing!**
 
-1. Open the script, which can be found inside the downloaded folder here: "VBP/src/patcher.py".
+1. Open the script, which can be found inside the downloaded folder here: "VBP/src/patcher.py":
 
 2. Once the script is run, you will be prompted to choose whether to install the latest available build, the latest available stable version of BepInEx patch, or _both_ to ensure the latest possible build available.
 
@@ -47,11 +47,59 @@
 - Works with both Vulkan and the default graphics API.
 
 - **_NOTE:_**
+
   - As of now, BepInEx will _still_ list its current version as the last stable build number, even if a "Bleeding-Edge Build" patch is installed. It will still work all the same.
 
   - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
 
   - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
+
+  ```python
+    >>> from vbp import vbp
+    >>> vbp()
+        Welcome to the Valheim Bepinex Patcher!
+
+   Which patch build would you like to install?
+
+   ==================================================
+   [1.] Stable Release: v5.19.00
+   [2.] Bleeding-Edge Build: fa9b1ab
+   [3.] Full Upgrade (apply both MAIN & BLEEDING-EDGE patches in order of release): v5.19.00 then fa9b1ab
+   [4.] Open Valheim
+   [5.] Exit Program
+
+   > 3
+
+   Really install latest stable patch v5.19.00 then apply latest "bleeding-edge" build fa9b1ab?
+   > Enter [y] or [n]:
+   ==================================================
+   > y
+
+   Patching BepInEx build v5.19.00 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
+
+   100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+
+   Patch build v5.19.00 successfully installed!
+
+   Patching BepInEx build fa9b1ab to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
+
+   100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
+
+
+   Patch build fa9b1ab successfully installed!
+
+   Start Game?
+
+   > Enter [y] or [n]:
+   ================
+   > n
+
+   Patching process successfully completed.....
+
+
+   Preparing to exit...
+  ```
 
 ---
 
