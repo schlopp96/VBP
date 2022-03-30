@@ -5,6 +5,7 @@
 #@ ====================================================================================================== @#
 #$ ====================================================================================================== $#
 import logging
+from datetime import datetime
 from os import chdir
 from os.path import dirname
 from shutil import copytree
@@ -23,22 +24,22 @@ patch_latest: str = './patch-files/bleeding-edge' #TODO: Retrieve/download build
 build_Stable: str = 'v5.19.00'
 build_BleedingEdge: str = 'fa9b1ab'
 patchDestination: str = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
-textborder: str = "=".ljust((50),"=")
 logFile: str = './logs/logfile.log'
-__version__: str = '0.4.0'
+datefmt: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+textborder: str = "=".ljust((50),"=")
+__version__: str = '0.5.0'
 
 #* Establish Logger:
 class vbp_Logger():
     """Generater for application logging.
     - Uses built-in Python `logging` module.
     """
-
     def __init__(self, log_file: str, log_format: str = '[%(asctime)s - %(levelname)s] : %(message)s'):
         """Initialize logger instance
 
         :param log_file: file to write logs to.
         :type log_file: str
-        :param log_format: formatting of log messages, defaults to '%(asctime)s - %(levelname)s - %(message)s'
+        :param log_format: formatting of log messages, defaults to '[%(asctime)s - %(levelname)s] : %(message)s')'
         :type log_format: str, optional
         """
         self.logger = logging.getLogger(__name__)
@@ -66,21 +67,23 @@ logger = vbp_Logger(logFile)
 
 
 def vbp() -> None | NoReturn:
-    """Patcher for BepInEx, a modding console for Valheim.
+    """Patcher for the Valheim BepInEx modding framework.
 
     - User may choose between several patch installion options:
-        - Latest stable build.
-        - Latest bleeding-edge (beta) build.
-        - Latest stable build, then latest bleeding-edge build afterwards.
+    1. Latest stable build.
+    2. Latest bleeding-edge (beta) build.
+    3. Both stable and bleeding-edge builds in order of release.
+    4. Open Valheim.
+    5. Exit patcher.
 
-    :return: patch BepInEx to chosen build.
+    :return: patch BepInEx for Valheim to chosen build.
     :rtype: None | NoReturn
     """
-    logger.info(f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n\n')
+    logger.info(f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n==> Session Start: {datefmt}\n\n')
     while True:
-        logger.debug('Display user menu...')
+        logger.info('Display user menu...')
         choosePatch: str = input(
-            f"Welcome to the Valheim Bepinex Patcher!\n\nWhich patch build would you like to install?\n\n{textborder}\n[1.] Stable Release: {build_Stable}\n[2.] Bleeding-Edge Build: {build_BleedingEdge}\n[3.] Full Upgrade (apply both MAIN & BLEEDING-EDGE patches in order of release): {build_Stable} then {build_BleedingEdge}\n[4.] Open Valheim\n[5.] Exit Program\n\n> "
+            f"Welcome to the Valheim Bepinex Patcher!\n\nWhich patch build would you like to install?\n\n{textborder}\n[1.] Stable Release: {build_Stable} (2/3/22)\n[2.] Bleeding-Edge Build: {build_BleedingEdge} (3/24/22)\n[3.] Full Upgrade (apply both MAIN & BLEEDING-EDGE patches in order of release): {build_Stable} then {build_BleedingEdge}\n[4.] Open Valheim\n[5.] Exit Program\n\n> "
         )
         match choosePatch:
             case '1': stable_patch()
@@ -88,12 +91,12 @@ def vbp() -> None | NoReturn:
             case '3': full_patch()
             case '4': openValheim()
             case '5':
-                logger.info('BepInEx patching process cancelled...\nPreparing to exit...\n')
+                logger.info('BepInEx patching process cancelled...\n==> Preparing to exit...\n')
                 load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                 return exitPatcher()
             case _:
-                logger.warning(f'Invalid Input:\n==> "{choosePatch}"\n\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n')
-                print(f'\n\t- ERROR: Invalid Input -\n\nYour Entry:  "{choosePatch}".\n\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order), or [4] to exit program <==\n\n')
+                logger.warning(f'Invalid Input:\n==> "{choosePatch}"\n\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order of release), [4] to open Valheim, or [5.] to exit program.\n')
+                print(f'\n==> ERROR: Invalid Input -\n\n==> Your Entry:  "{choosePatch}".\n\n==> Must ONLY enter [1] for stable release {build_Stable}, [2] for bleeding-edge build {build_BleedingEdge}, [3] for FULL upgrade (apply both patches in order of release), [4] to open Valheim, or [5.] to exit program.\n\n')
                 sleep(1.5)
                 continue
 
@@ -107,21 +110,21 @@ def stable_patch() -> None | NoReturn:
     :rtype: None
     """
     while True:
-        logger.debug('Confirmation prompt for BepInEx stable-build patch...')
+        logger.info(f'Displaying confirmation prompt to install BepInEx stable-release {build_Stable} patch...')
         confirmStable: str = input(
-            f'\nReally patch BepInEx to latest stable-build v{build_Stable} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+            f'\nReally patch BepInEx to latest stable-release {build_Stable} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
         )
         match confirmStable.lower():
             case 'yes'|'y':
                 patch(patch_stable, patchDestination, build_Stable)
                 promptStart()
             case 'n'|'no':
-                logger.info('BepInEx patching process cancelled...\nPreparing to exit...\n')
+                logger.info('BepInEx patching process cancelled...\n==> Preparing to exit...\n')
                 load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                 return exitPatcher()
             case _:
-                logger.warning(f'Invalid Input: "{confirmStable}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print(f'\n\t- ERROR: Invalid Input\n\nYour Entry: "{confirmStable}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n')
+                logger.warning(f'Invalid Input: "{confirmStable}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
+                print(f'\n==> ERROR: Invalid Input\n\n==> Your Entry: "{confirmStable}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
@@ -133,33 +136,33 @@ def BE_patch() -> None | NoReturn:
     :rtype: None
     """
     while True:
-        logger.debug('Confirmation prompt for BepInEx bleeding-edge patch...')
+        logger.info(f'Displaying confirmation prompt to install BepInEx bleeding-edge build {build_BleedingEdge} patch...')
         confirmLatest: str = input(
-            f'\nReally patch BepInEx to the latest bleeding-edge beta build {build_BleedingEdge} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
+            f'\nReally patch BepInEx to latest bleeding-edge build {build_BleedingEdge} in location:\n\n====> "{patchDestination}"?\n\n> Enter [y] or [n]:\n{textborder}\n> '
         )
         match confirmLatest.lower():
             case 'yes'|'y':
                 patch(patch_stable, patchDestination, build_BleedingEdge)
                 promptStart()
             case 'n'|'no':
-                logger.info('BepInEx patching process cancelled...\nPreparing to exit...\n')
+                logger.info('BepInEx patching process cancelled...\n==> Preparing to exit...\n')
                 load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                 return exitPatcher()
             case _:
-                logger.warning(f'Invalid Input: "{confirmLatest}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print(f'\n\t- ERROR: Invalid Input\n\nYour Entry: "{confirmLatest}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n')
+                logger.warning(f'Invalid Input: "{confirmLatest}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
+                print(f'\n==> ERROR: Invalid Input\n\n==> Your Entry: "{confirmLatest}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
 
 def full_patch() -> None | bool:
-    """Install both latest BepInEx stable build, before then installing latest bleeding-edge build.
+    """Install both available BepInEx patches in order of release (Stable -> Bleeding-Edge).
 
     :return: Install both stable and bleeding edge patch builds in order of release to BepInEx directory.
     :rtype: None
     """
     while True:
-        logger.debug('Confirmation prompt for BepInEx full patch (install stable then bleeding-edge build)...')
+        logger.info('Displaying confirmation prompt to install full-upgrade patch (install both stable and bleeding-edge builds in order of release)...')
         confirmFull: str = input(
             f'\nReally install latest stable patch {build_Stable} then apply latest "bleeding-edge" build {build_BleedingEdge}?\n> Enter [y] or [n]:\n{textborder}\n> '
         )
@@ -169,47 +172,46 @@ def full_patch() -> None | bool:
                 patch(patch_stable, patchDestination, build_BleedingEdge)
                 return promptStart()
             case 'n'|'no':
-                logger.info('BepInEx patching process cancelled...\nPreparing to exit...\n')
+                logger.info('BepInEx patching process cancelled...\n==> Preparing to exit...\n')
                 load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                 return exitPatcher()
             case _:
-                logger.warning(f'Invalid Input: "{confirmFull}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print(f'\n\t- ERROR: Invalid Input\n\nYour Entry: "{confirmFull}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n')
+                logger.warning(f'Invalid Input: "{confirmFull}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
+                print(f'\n==> ERROR: Invalid Input\n\n==> Your Entry: "{confirmFull}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
 
 def promptStart() -> NoReturn | None:
-    """Prompt user to choose whether or not to start the game post patching.
+    """Prompt user to choose whether or not to start the game post-patch.
 
     :return: Exits program or starts game.
     :rtype: NoReturn | None
     """
-
     while True:
-        logger.debug('Display user prompt to start game...\n')
+        logger.info('Displaying start game prompt...')
         startPrompt: str = input(
-            f'\nStart Game?\n\n> Enter [y] or [n]:\n{"=".ljust(16, "=")}\n> ')
+            f'\nStart Game?\n\n> Enter [y] or [n]:\n{textborder}\n> ')
         match startPrompt.lower():
             case 'y'|'yes':
                 openValheim()
                 return exitPatcher()
             case 'n'|'no':
-                logger.info('Patching process successfully completed!\nPreparing to exit...\n')
+                logger.info('Patching process successfully completed!\n==> Preparing to exit...\n')
                 load('\nPatching process successfully completed',
                      '\nPreparing to exit...', enable_display=False)
                 return exitPatcher()
             case _:
-                logger.warning(f'Invalid Input: "{startPrompt}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n')
-                print(f'\n\t- ERROR: Invalid Input\n\nYour Entry: "{startPrompt}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO" <==\n\n')
+                logger.warning(f'Invalid Input: "{startPrompt}"\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
+                print(f'\n==> ERROR: Invalid Input\n\n==> Your Entry: "{startPrompt}".\n\n==> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
 
-def openValheim():
+def openValheim() -> int | None:
     """Calls command to open "Valheim" within Steam client.
     - Will raise `TimeoutExpired` exception if executable doesn't start within 10 seconds.
-        - Prevents program from freezing.
+        - Prevents program from freezing due to any errors encountered during launch process.
 
     :return: Start game client.
     :rtype: int | None
@@ -221,22 +223,24 @@ def openValheim():
     except TimeoutExpired as exp:
         logger.error(f'Having trouble starting game...\n==> {exp}\n')
         print(f'Having trouble starting game...\n==> {exp}\n')
+        return exitPatcher()
 
 
-def patch(patchFile: Any, patchLocation: Any, patchTitle: Any) -> Any:
+def patch(patchFile: Any, patchLocation: Any, patchTitle: Any) -> None:
     """Patch BepInEx according to provided parameter values.
 
-    :param patchFile: Directory containing patch files.
-    :type patchFile: Any
-    :param patchLocation: Location of BepInEx install directory to install files.
-    :type patchLocation: Any
-    :param patchTitle: Build title of patch to be installed.
-    :type patchTitle: Any
-    :return: Patch BepInEx with desired version build.
-    :rtype: Any
+    Parameters:
+        :param patchFile: Directory containing patch files.
+        :type patchFile: Any
+        :param patchLocation: Location of BepInEx install directory to install files.
+        :type patchLocation: Any
+        :param patchTitle: Build title of patch to be installed.
+        :type patchTitle: Any
+        :return: Patch BepInEx with desired version build.
+        :rtype: None
     """
     try:
-        logger.info(f'Patching BepInEx build {patchTitle} to location: {patchLocation}...\n\n')
+        logger.info(f'Patching BepInEx build {patchTitle} to location: {patchLocation}...\n')
         load(
             f'\nPatching BepInEx build {patchTitle} to location: {patchLocation}',
             f'\nPatch build {patchTitle} successfully installed!')
@@ -252,7 +256,7 @@ def exitPatcher() -> None | NoReturn:
     :return: Exits application.
     :rtype: None | NoReturn
     """
-    logger.info(f'Exiting patcher...\n\n==> End of log...\n{textborder}\n\n')
+    logger.info(f'Exiting patcher...\n\n==> End of log...\n\n\n{textborder}\n\n')
     return ex()
 
 
