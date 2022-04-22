@@ -1,4 +1,4 @@
-# VBP
+# VBPatcher
 
 > Valheim BepInEx Patcher
 
@@ -6,7 +6,7 @@
 
 ## About
 
-- The Valheim BepInEx Patcher _**(VBP)**_ is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.
+- The Valheim BepInEx Patcher _**(VBPatcher)**_ is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.
 
 - For me, this is generally caused by the Vortex mod manager automatically downloading what it perceives to be the "necessary" files for modding.
 
@@ -16,7 +16,7 @@
 
 ### Using PIP _(Recommended)_
 
-- To install VBP using `pip`, enter the following:
+- To install VBPatcher using `pip`, enter the following:
 
   ```python
   pip --user install VBPatcher
@@ -24,9 +24,9 @@
 
 ### Manual Installation _(**NOT** Recommended)_
 
-1. Download the project from [GitHub](https://github.com/schlopp96/VBP) and extract to location of choice.
+1. Download the project from [GitHub](https://github.com/schlopp96/VBPatcher) and extract to location of choice.
 
-2. Open terminal and navigate to the extracted directory `"./path/to/VBP"`.
+2. Open terminal and navigate to the extracted directory `"./path/to/VBPatcher"`.
 
 3. Use `pip install -r requirements.txt` to install necessary dependencies.
 
@@ -40,7 +40,7 @@
 
 - Each time your modding tool is opened to edit Valheim, your files will be downgraded again, so **you must run this script every time before playing!**
 
-1. Open the script, which can be found inside the downloaded folder here: "VBP/src/patcher.py":
+1. Open the script, which can be found inside the downloaded folder here: "VBPatcher/src/patcher.py":
 
 2. Once the script is run, you will be prompted to choose whether to install the latest available build, the latest available stable version of BepInEx patch, or _both_ to ensure the latest possible build available.
 
@@ -65,7 +65,7 @@
   - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
   ```python
-    >>> from VBP import vbp
+    >>> from VBPatcher import vbp
     >>> vbp()
     Welcome to the Valheim Bepinex Patcher!
 
@@ -138,4 +138,4 @@
 
 - If you have any questions, comments, issues, complaints, etc, feel free to contact me through my:
   - Email at: `schloppdaddy@gmail.com`.
-  - Submit an issue on the project's [GitHub repository](https://github.com/schlopp96/VBP)
+  - Submit an issue on the project's [GitHub repository](https://github.com/schlopp96/VBPatcher)

@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-#@ ====================================================================================================== @#
-#> Valheim BepInEx Patcher <#
-#< Est. 10/24/21 >#
-#@ ====================================================================================================== @#
-#$ ====================================================================================================== $#
+
 import logging
 from datetime import datetime
 from os import chdir
@@ -31,7 +27,8 @@ __version__: str = '0.5.0'
 
 #* Establish Logger:
 class vbp_Logger():
-    """Generater for application logging.
+    """Generates application loggers.
+
     - Uses built-in Python `logging` module.
     """
     def __init__(self, log_file: str, log_format: str = '[%(asctime)s - %(levelname)s] : %(message)s'):
@@ -109,8 +106,11 @@ def vbp() -> None | NoReturn:
 def stable_patch() -> None | NoReturn:
     """Install latest BepInEx stable-build patch version to local directory.
 
-    :return: Installs BepInEx patch.
-    :rtype: None
+    ---
+
+    Parameters:
+        :return: Installs BepInEx patch.
+        :rtype: None
     """
     while True:
         logger.info(f'Displaying confirmation prompt to install BepInEx stable-release {b_stable} patch...')
@@ -135,8 +135,11 @@ def stable_patch() -> None | NoReturn:
 def BE_patch() -> None | NoReturn:
     """Install latest BepInEx bleeding-edge patch version to local directory.
 
-    :return: Install bleeding-edge patch to BepInEx directory.
-    :rtype: None
+    ---
+
+    Parameters:
+        :return: Install bleeding-edge patch to BepInEx directory.
+        :rtype: None
     """
     while True:
         logger.info(f'Displaying confirmation prompt to install BepInEx bleeding-edge build {b_latest} patch...')
@@ -161,8 +164,11 @@ def BE_patch() -> None | NoReturn:
 def full_patch() -> None | bool:
     """Install both available BepInEx patches in order of release (Stable -> Bleeding-Edge).
 
-    :return: Install both stable and bleeding edge patch builds in order of release to BepInEx directory.
-    :rtype: None
+    ---
+
+    Parameters:
+        :return: Install both stable and bleeding edge patch builds in order of release to BepInEx directory.
+        :rtype: None
     """
     while True:
         logger.info('Displaying confirmation prompt to install full-upgrade patch (install both stable and bleeding-edge builds in order of release)...')
@@ -188,8 +194,11 @@ def full_patch() -> None | bool:
 def promptStart() -> NoReturn | None:
     """Prompt user to choose whether or not to start the game post-patch.
 
-    :return: Exits program or starts game.
-    :rtype: NoReturn | None
+    ---
+
+    Parameters:
+        :return: Exits program or starts game.
+        :rtype: NoReturn | None
     """
     while True:
         logger.info('Displaying start game prompt...')
@@ -216,8 +225,13 @@ def openValheim() -> int | None:
     - Will raise `TimeoutExpired` exception if executable doesn't start within 10 seconds.
         - Prevents program from freezing due to any errors encountered during launch process.
 
-    :return: Start game client.
-    :rtype: int | None
+    - Steam must be running to properly initialize launch process.
+
+    ---
+
+    Parameters:
+        :return: Start game client.
+        :rtype: int | None
     """
     try:
         logger.info('Starting Valheim...\n\n')
@@ -230,7 +244,11 @@ def openValheim() -> int | None:
 
 
 def patch(patchDir: Any, targetDir: Any, ver: Any) -> None:
-    """Apply `patchDir` to `targetDir`.
+    """Apply `patchDir` files to `targetDir` directory.
+
+    - Will overwrite existing files.
+
+    ---
 
     Parameters:
         :param patchDir: Directory containing patch files.
@@ -256,8 +274,11 @@ def patch(patchDir: Any, targetDir: Any, ver: Any) -> None:
 def exitPatcher() -> None | NoReturn:
     """Exit the application and finalize log.
 
-    :return: Exits application.
-    :rtype: None | NoReturn
+    ---
+
+    Parameters:
+        :return: Exits application.
+        :rtype: None | NoReturn
     """
     logger.info(f'Exiting patcher...\n\n==> End of log...\n\n\n{_textborder}\n\n')
     return ex()

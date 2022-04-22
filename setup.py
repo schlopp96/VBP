@@ -9,8 +9,8 @@ setup(
     name='VBPatcher',
     version="0.5.0",
     description=
-    'The Valheim BepInEx Patcher (VBP) is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.',
-    url='https://github.com/schlopp96/VBP',
+    'The Valheim BepInEx Patcher (VBPatcher) is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.',
+    url='https://github.com/schlopp96/VBPatcher',
     author='schlopp96',
     author_email='schloppdaddy@gmail.com',
     license='GPL v3.0',
