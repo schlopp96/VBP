@@ -1,6 +1,11 @@
-184 commits since v5.4.10
+191 commits since v5.4.10
 
 Changelog (excluding merges):
+* (da48b77) [ghorsington] Bump Unhollower version
+* (810e556) [Kirai Chan] Add protected visibility of ConfigEntryBase ctor
+* (ff004dc) [Kasuromi] Use UnityVersionHandler's size providers
+* (4a290db) [ghorsington] ProxyAssemblyGenerator: fix to work with new Unhollower version
+* (16a7547) [ghorsington] Bump package versions
 * (fa9b1ab) [ghorsington] CI: Only build for PRs and BEs for master
 * (bf7b059) [Kasuromi] Convert managed bool to byte in detour
 * (b7a05a6) [ghorsington] Fix C# 10 CS8983 regression
