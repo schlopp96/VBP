@@ -136,9 +136,3 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
-
-# Update Notes
-update-notes.md
-
-# log files
-logs/logfile.log
