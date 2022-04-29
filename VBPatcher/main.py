@@ -17,17 +17,17 @@ import requests
 import tqdm
 from PyLoadBar import load
 
-#@ Declare variables containing patch files directory and destination:
+#@ Declare global variables containing file locations and patch-install destinations:
 chdir(dirname(__file__))
 
-p_stable: str = './patch-files/stable' #TODO: Retrieve/download build files with API rather than local storage.
-p_dev: str = './patch-files/development' #TODO: Retrieve/download build files with API rather than local storage.
+p_stable: str = './patch-files/stable'
+p_dev: str = './patch-files/development'
 b_stable: str = 'v5.19.00'
 b_dev: str = 'da48b77'
 p_targetDir: str = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
 _logFile: str = './logs/patchLog.log'
 _datefmt: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-_textborder: str = "=".ljust((50),"=")
+_textborder: str = "=".ljust((61),"=")
 __version__: str = '0.6.0'
 
 #* Establish Logger:
@@ -41,12 +41,12 @@ class LogGenerator():
 
         :param log_file: file to write logs to.
         :type log_file: str
-        :param log_format: formatting of log messages, defaults to '[%(asctime)s - %(levelname)s] : %(message)s')'
+        :param log_format: formatting of log messages, defaults to '[%(asctime)s - %(levelname)s] : %(message)s'
         :type log_format: str, optional
         """
         self.logger = logging.getLogger(__name__)
         self.log_format = log_format
-        self.formatter = logging.Formatter(log_format)
+        self.formatter = logging.Formatter(log_format, datefmt="%Y-%m-%d %H:%M:%S")
         self.log_file = log_file
         self.fhandler = logging.FileHandler(log_file)
         self.logger.addHandler(self.fhandler)
@@ -60,95 +60,14 @@ class LogGenerator():
     def warning(self, msg):
         return self.logger.warning(msg)
     def error(self, msg):
-        return self.logger.error(msg, exc_info=False)
+        return self.logger.error(msg)
 
 logger = LogGenerator(_logFile)
-
-class UpdateWrapper:
-    """Wrapper containing patch-file update functionality.
-    """
-    def __init__(self) -> None:
-        pass
-
-    def dl_stable(self):
-        """Download zip containing latest BepInEx stable release.
-
-        :return: zip archive with patch files.
-        :rtype: BufferedWriter
-        """
-        url = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
-
-        while True:
-            try:
-                logger.info('Downloading latest BepInEx stable release...')
-                rq = requests.get(url, allow_redirects=True, stream=True)
-                file_size = int(rq.headers.get('Content-Length'))
-                chunk_size = 1024  # 1 MB
-                num_bars = file_size // chunk_size
-                with open('./patch-files/stable/pack.zip', 'wb') as patch_stable:
-                    for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size), total=num_bars, unit='KB', desc='Downloading Stable Release', file=sys.stdout):
-                        patch_stable.write(chunk)
-                    logger.info(f'Completed BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n')
-                    print(f'\nCompleted BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n')
-                return patch_stable
-
-            except requests.exceptions.RequestException as err:
-                logger.error(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
-                print(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
-
-                while True:
-                    logger.info('Displaying retry update-check prompt...')
-                    again = input('\nTry again? [y/n]:\n>> ')
-                    match again.lower():
-                        case 'y':
-                            continue
-                        case _:
-                            print('\n>> Cancelled update-check.\n')
-                            break
-
-
-    def dl_latest(self):
-        """Download zip archive containing latest BepInEx development build.
-
-        :return: zip archive with patch files.
-        :rtype: BufferedWriter
-        """
-        url = 'https://builds.bepinex.dev/projects/bepinex_be/557/BepInEx_UnityMono_x64_da48b77_6.0.0-be.557.zip'
-        while True:
-            try:
-                logger.info('Downloading latest BepInEx development-build...')
-                rq = requests.get(url, allow_redirects=True, stream=True)
-                file_size = int(rq.headers.get('Content-Length'))
-                chunk_size = 1024  # 1 MB
-                num_bars = file_size // chunk_size
-                with open('./patch-files/development/pack.zip', 'wb') as patch_stable:
-                    for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size), total=num_bars, unit='KB', desc='Downloading Dev-Build', file=sys.stdout):
-                        patch_stable.write(chunk)
-                    logger.info(f'Completed BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
-                    print(f'\nCompleted BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
-                return patch_stable
-
-            except requests.exceptions.RequestException as err:
-                logger.error(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}\n')
-                print(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}')
-
-                while True:
-                    logger.info('Displaying retry update-check prompt...')
-                    again = input('\nTry again? [y/n]:\n>> ')
-                    match again.lower():
-                        case 'y':
-                            continue
-                        case _:
-                            print('\n>> Cancelled update-check.\n')
-                            break
-
-
-UpdateDL = UpdateWrapper()
 
 #$ ====================================================================================================== $#
 
 
-def vbp() -> None | NoReturn:
+def VBPatcher() -> None | NoReturn:
     """Program entry point.
 
     ---
@@ -166,7 +85,7 @@ def vbp() -> None | NoReturn:
             case '1': _patch_stable()
             case '2': _patch_dev()
             case '3': _patch_full()
-            case '4': _UpdatePatches()
+            case '4': _UpdatePatcher()
             case '5': _openValheim()
             case '6':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -179,6 +98,125 @@ def vbp() -> None | NoReturn:
                 continue
 
         return _exitPatcher()
+
+class _UpdateWrapper:
+    """Wrapper containing patch-file update functionality.
+
+    - Class Methods:
+        - `dl_stable(self) -> BufferedWriter`
+            - Download latest BepInEx stable release.
+        - `dl_dev(self) -> BufferedWriter`
+            - Download latest BepInEx development build.
+    """
+    def __init__(self) -> None:
+        pass
+
+    def dl_stable(self):
+        """Download zip containing latest BepInEx stable release.
+
+        :return: zip archive containing patch files.
+        :rtype: BufferedWriter
+        """
+        url = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
+
+        while True:
+            try:
+                logger.info('Downloading latest BepInEx stable release...')
+                rq = requests.get(url, allow_redirects=True, stream=True)
+                file_size = int(rq.headers.get('Content-Length'))
+                chunk_size = 1024  # 1 MB
+                num_bars = file_size // chunk_size
+                with open(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', 'wb') as patch_stable:
+                    for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size), total=num_bars, unit='KB', desc='Downloading Stable Release', file=sys.stdout):
+                        patch_stable.write(chunk)
+                    logger.info(f'Completed BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n')
+                    print(f'\nCompleted BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n')
+                return patch_stable
+
+            except [requests.exceptions.RequestException, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError, requests.exceptions.InvalidURL] as err:
+                logger.error(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
+                print(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
+
+                while True:
+                    logger.info('Displaying retry update-check prompt...')
+                    again = input('\nTry again? [y/n]:\n>> ')
+                    match again.lower():
+                        case 'y':
+                            continue
+                        case _:
+                            print('\n>> Cancelled update-check.\n')
+                            break
+
+    def dl_dev(self):
+        """Download zip archive containing latest BepInEx development build.
+
+        :return: zip archive containing patch files.
+        :rtype: BufferedWriter
+        """
+        url = 'https://builds.bepinex.dev/projects/bepinex_be/557/BepInEx_UnityMono_x64_da48b77_6.0.0-be.557.zip'
+        while True:
+            try:
+                logger.info('Downloading latest BepInEx development-build...')
+                rq = requests.get(url, allow_redirects=True, stream=True)
+                file_size = int(rq.headers.get('Content-Length'))
+                chunk_size = 1024  # 1 MB
+                num_bars = file_size // chunk_size
+                with open(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', 'wb') as patch_stable:
+                    for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size), total=num_bars, unit='KB', desc='Downloading Dev-Build', file=sys.stdout):
+                        patch_stable.write(chunk)
+                    logger.info(f'Completed BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
+                    print(f'\nCompleted BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
+                return patch_stable
+
+            except [requests.exceptions.RequestException, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError, requests.exceptions.InvalidURL] as err:
+                logger.error(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}\n')
+                print(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}')
+
+                while True:
+                    logger.info('Displaying retry update-check prompt...')
+                    again = input('\nTry again? [y/n]:\n>> ')
+                    match again.lower():
+                        case 'y':
+                            continue
+                        case _:
+                            print('\n>> Cancelled update-check.\n')
+                            break
+
+    def _unzip_patch(self, filename, stable: bool) -> None:
+        """Unzip downloaded patch files before deleting patch `.zip` archive.
+
+        ---
+
+        :param filename: filename of zip archive.
+        :type filename: str | PathLike
+        :param stable: determines whether or not zip archive contains files for BepInEx STABLE release patch. False if contains DEVELOPMENT build patch files.
+        :type stable: bool
+        :return: downloaded/extracted patch files.
+        :rtype: None
+        """
+        logger.info('Unzipping patch files...')
+        print('Unzipping patch files...')
+        try:
+            if stable:
+                with ZipFile(filename) as archive:
+                        archive.extractall(path='./patch-files/stable')
+                os.unlink('./patch-files/stable/doorstop_config.ini')
+                os.unlink(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip')
+            else:
+                with ZipFile(filename) as archive:
+                    archive.extractall(path='./patch-files/development')
+                os.unlink('./patch-files/development/doorstop_config.ini')
+                os.unlink(f'./patch-files/development/BepInEx_dev_{b_dev}.zip')
+
+            logger.info('Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
+            print('\n>> Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
+
+        except Exception as err:
+            logger.error(f'Encountered error while attempting to unzip archive...\n>> Exception: {err}\n')
+            print(f'Encountered error while attempting to unzip archive...\n>> Exception: {err}\n')
+
+
+UpdateDL = _UpdateWrapper()
 
 
 def _patch_stable() -> None | NoReturn:
@@ -238,7 +276,7 @@ def _patch_dev() -> None | NoReturn:
 
 
 def _patch_full() -> None | bool:
-    """Apply both available BepInEx patches in order of release (Stable -> Bleeding-Edge).
+    """Apply both available BepInEx patches in order of release (Stable -> Development).
 
     ---
 
@@ -317,9 +355,9 @@ def _openValheim() -> int | None:
 
 
 def _patch(patchDir: Any, targetDir: Any, ver: Any) -> None:
-    """Apply `patchDir` files to `targetDir` directory.
+    """Apply patch files (`patchDir`) to target directory (`targetDir`).
 
-    - Will overwrite existing files.
+    - WILL overwrite existing files.
 
     ---
 
@@ -344,39 +382,8 @@ def _patch(patchDir: Any, targetDir: Any, ver: Any) -> None:
         print(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {ver} to location: {targetDir}...')
 
 
-def _unzip_patch(filename, stable: bool) -> None:
-    """Unzip downloaded patch files before deleting remaining  `.zip` archive.
-
-    ---
-
-    :param filename: filename of zip archive.
-    :type filename: str | PathLike
-    :param stable: determines whether or not zip archive contains files for BepInEx STABLE release patch. False if contains DEVELOPMENT build patch files.
-    :type stable: bool
-    :return: downloaded/extracted patch files.
-    :rtype: None
-    """
-    logger.info('Unzipping patch files...')
-    print('Unzipping patch files...')
-    if stable:
-        with ZipFile(filename) as archive:
-                archive.extractall(path='./patch-files/stable')
-        os.unlink('./patch-files/stable/doorstop_config.ini')
-        os.unlink('./patch-files/stable/pack.zip')
-    else:
-        with ZipFile(filename) as archive:
-            archive.extractall(path='./patch-files/development')
-        os.unlink('./patch-files/development/doorstop_config.ini')
-        os.unlink('./patch-files/development/pack.zip')
-
-    logger.info('Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
-    print('\n>> Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
-
-
-
-
-def _UpdatePatches() -> None:
-    """Process for updating patch files.
+def _UpdatePatcher() -> None:
+    """Process to retrieve latest available patch files.
 
     ---
 
@@ -384,12 +391,13 @@ def _UpdatePatches() -> None:
     :rtype: None
     """
     UpdateDL.dl_stable()
-    _unzip_patch('./patch-files/stable/pack.zip', True)
-    UpdateDL.dl_latest()
-    _unzip_patch('./patch-files/development/pack.zip', False)
+    UpdateDL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', True)
+    UpdateDL.dl_dev()
+    UpdateDL._unzip_patch(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', False)
 
-    logger.info('Completed Patcher Update!')
-    print('\n>> Completed Patcher Update!\n')
+    logger.info('Completed Patcher Update!\n>> Restart program to use updated patch files.\n')
+    print('\n>> Completed Patcher Update!\n>> Restart program to use updated patch files..\n')
+    input('Press [ENTER] to exit application.\n')
 
 
 
@@ -406,4 +414,4 @@ def _exitPatcher() -> None | NoReturn:
 
 
 if __name__ == '__main__':
-    vbp()
+    VBPatcher()
