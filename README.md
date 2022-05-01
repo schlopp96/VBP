@@ -100,7 +100,7 @@
 
   > 3
 
-  Really apply both latest stable release v5.19.00, and latest development build da48b77 patches?
+  Really apply both latest stable release v5.19.00, and latest development build da48b77?
   > Enter [y] or [n]:
   =============================================================
   > y

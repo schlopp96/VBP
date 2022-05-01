@@ -4,7 +4,7 @@ import logging
 import os
 import sys
 from datetime import datetime
-from os import chdir
+from os import chdir, listdir, unlink
 from os.path import dirname
 from shutil import copytree
 from subprocess import TimeoutExpired, call
@@ -21,10 +21,14 @@ from PyLoadBar import load
 chdir(dirname(__file__))
 
 p_stable: str = './patch-files/stable'
-p_dev: str = './patch-files/development'
 b_stable: str = 'v5.19.00'
+url_stable = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
+
+p_dev: str = './patch-files/development'
 b_dev: str = 'da48b77'
+url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/557/BepInEx_UnityMono_x64_da48b77_6.0.0-be.557.zip'
 p_targetDir: str = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
+
 _logFile: str = './logs/patchLog.log'
 _datefmt: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 _textborder: str = "=".ljust((61),"=")
@@ -76,6 +80,9 @@ def VBPatcher() -> None | NoReturn:
     :rtype: None | NoReturn
     """
     logger.info(f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n>> Session Start: {_datefmt}\n\n')
+
+    _start_checks() # Ensure presence of patch files.
+
     while True:
         logger.info('Display user menu...')
         choosePatch: str = input(
@@ -85,7 +92,9 @@ def VBPatcher() -> None | NoReturn:
             case '1': _patch_stable()
             case '2': _patch_dev()
             case '3': _patch_full()
-            case '4': _UpdatePatcher()
+            case '4':
+                _UpdatePatcher()
+                continue
             case '5': _openValheim()
             case '6':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -99,6 +108,7 @@ def VBPatcher() -> None | NoReturn:
 
         return _exitPatcher()
 
+
 class _UpdateWrapper:
     """Wrapper containing patch-file update functionality.
 
@@ -111,13 +121,12 @@ class _UpdateWrapper:
     def __init__(self) -> None:
         pass
 
-    def dl_stable(self):
+    def dl_stable(self, url):
         """Download zip containing latest BepInEx stable release.
 
         :return: zip archive containing patch files.
         :rtype: BufferedWriter
         """
-        url = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
 
         while True:
             try:
@@ -133,7 +142,7 @@ class _UpdateWrapper:
                     print(f'\nCompleted BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n')
                 return patch_stable
 
-            except [requests.exceptions.RequestException, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError, requests.exceptions.InvalidURL] as err:
+            except Exception as err:
                 logger.error(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
                 print(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
 
@@ -147,13 +156,12 @@ class _UpdateWrapper:
                             print('\n>> Cancelled update-check.\n')
                             break
 
-    def dl_dev(self):
+    def dl_dev(self, url):
         """Download zip archive containing latest BepInEx development build.
 
         :return: zip archive containing patch files.
         :rtype: BufferedWriter
         """
-        url = 'https://builds.bepinex.dev/projects/bepinex_be/557/BepInEx_UnityMono_x64_da48b77_6.0.0-be.557.zip'
         while True:
             try:
                 logger.info('Downloading latest BepInEx development-build...')
@@ -168,7 +176,7 @@ class _UpdateWrapper:
                     print(f'\nCompleted BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
                 return patch_stable
 
-            except [requests.exceptions.RequestException, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.HTTPError, requests.exceptions.InvalidURL] as err:
+            except Exception as err:
                 logger.error(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}\n')
                 print(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}')
 
@@ -219,6 +227,96 @@ class _UpdateWrapper:
 UpdateDL = _UpdateWrapper()
 
 
+def _start_checks() -> None:
+    """Verify application has latest BepInEx patches upon start.
+    """
+    logger.info('Checking for application BepInEx patch files...\n')
+
+    if _verify_stable(url_stable) and _verify_dev(url_dev) == True:
+        logger.info('Successfully verified BepInEx patch files!\n')
+    else:
+        logger.info('One or more patch files were not able to be verified...')
+        load('ERROR: One or more patch files were not able to be verified', 'Exiting Patcher', enable_display=False)
+        return _exitPatcher()
+
+
+def _verify_stable(url):
+    """Validate presence of BepInEx stable release patch files.
+
+    :param url: url to download BepInEx stable release from if not found.
+    :type url: Any
+    :return: validation of patch files.
+    :rtype: bool
+    """
+    logger.info('Validating STABLE patch files...')
+
+    stable_files: list = ['changelog.txt', 'doorstop_config.ini', 'winhttp.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/0Harmony.xml', 'BepInEx/core/0Harmony20.dll', 'BepInEx/core/BepInEx.dll', 'BepInEx/core/BepInEx.Harmony.dll', 'BepInEx/core/BepInEx.Harmony.xml', 'BepInEx/core/BepInEx.Preloader.dll', 'BepInEx/core/BepInEx.Preloader.xml', 'BepInEx/core/BepInEx.xml', 'BepInEx/core/HarmonyXInterop.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/MonoMod.RuntimeDetour.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/MonoMod.Utils.xml']
+
+    stable_match: bool = False
+
+    try:
+        if listdir('./patch-files/development') == stable_files:
+            stable_match = True
+            logger.info('STABLE patch found!')
+
+        else:
+            logger.info('NO stable patch files found!\n>> Attempting to download...\n')
+            rq = requests.get(url, allow_redirects=True)
+            with open(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', 'wb') as patch_stable:
+                patch_stable.write(rq.content)
+            with ZipFile(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip') as archive:
+                    archive.extractall(path='./patch-files/stable')
+            os.unlink('./patch-files/stable/doorstop_config.ini')
+            os.unlink(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip')
+            stable_match = True
+            logger.info('Dowloaded stable patch!\n')
+        return stable_match
+
+    except Exception as err:
+        stable_match = False
+        logger.error(f'Encountered error during application start checks...\n>> Exception: {err}\n')
+        return stable_match
+
+
+def _verify_dev(url):
+    """Validate presence of BepInEx development build patch files.
+
+    :param url: url to download BepInEx development build from if not found.
+    :type url: PathLike | str
+    :return: validation of patch files.
+    :rtype: bool
+    """
+    logger.info('Validating DEVELOPMENT patch files...')
+
+    dev_files: list = ['doorstop_config.ini', 'changelog.txt', 'winhttp.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/BepInEx.Core.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/BepInEx.Unity.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/BepInEx.Preloader.Unity.dll', 'BepInEx/core/BepInEx.Preloader.Core.xml', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/SemanticVersioning.dll', 'BepInEx/core/BepInEx.Core.dll', 'BepInEx/core/BepInEx.Preloader.Unity.xml', 'BepInEx/core/BepInEx.Unity.xml', 'BepInEx/core/BepInEx.Preloader.Core.dll']
+
+    dev_match: bool = False
+
+    try:
+        if listdir('./patch-files/development') == dev_files:
+            dev_match = True
+            logger.info('STABLE patch found!')
+
+        else:
+            logger.info('NO development patch files found!\n>> Attempting to download...\n')
+
+            rq = requests.get(url, allow_redirects=True)
+            with open(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', 'wb') as patch_dev:
+                patch_dev.write(rq.content)
+            with ZipFile(f'./patch-files/development/BepInEx_dev_{b_dev}.zip') as archive:
+                archive.extractall(path='./patch-files/development')
+            os.unlink('./patch-files/development/doorstop_config.ini')
+            os.unlink(f'./patch-files/development/BepInEx_dev_{b_dev}.zip')
+            dev_match = True
+            logger.info('Dowloaded development patch!\n')
+        return dev_match
+
+    except Exception as err:
+        dev_match = False
+        logger.error(f'Encountered error during application start checks...\n>> Exception: {err}\n')
+        return dev_match
+
+
 def _patch_stable() -> None | NoReturn:
     """Install latest BepInEx stable-build release version to local directory.
 
@@ -235,6 +333,7 @@ def _patch_stable() -> None | NoReturn:
         match confirmStable.lower():
             case 'yes'|'y':
                 _patch(p_stable, p_targetDir, b_stable)
+                unlink(f'{p_targetDir}/.gitkeep')
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -263,6 +362,7 @@ def _patch_dev() -> None | NoReturn:
         match confirmLatest.lower():
             case 'yes'|'y':
                 _patch(p_stable, p_targetDir, b_dev)
+                unlink(f'{p_targetDir}/.gitkeep')
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -286,12 +386,13 @@ def _patch_full() -> None | bool:
     while True:
         logger.info('Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...')
         confirmFull: str = input(
-            f'\nReally apply both latest stable release {b_stable}, and latest development build {b_dev} patches?\n> Enter [y] or [n]:\n{_textborder}\n> '
+            f'\nReally apply both latest stable release {b_stable}, and latest development build {b_dev}?\n> Enter [y] or [n]:\n{_textborder}\n> '
         )
         match confirmFull.lower():
             case 'yes'|'y':
                 _patch(p_stable, p_targetDir, b_stable)
                 _patch(p_dev, p_targetDir, b_dev)
+                unlink(f'{p_targetDir}/.gitkeep')
                 return _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -390,14 +491,14 @@ def _UpdatePatcher() -> None:
     :return: most recent release/build patch files.
     :rtype: None
     """
-    UpdateDL.dl_stable()
+    UpdateDL.dl_stable(url_stable)
     UpdateDL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', True)
-    UpdateDL.dl_dev()
+    UpdateDL.dl_dev(url_dev)
     UpdateDL._unzip_patch(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', False)
 
-    logger.info('Completed Patcher Update!\n>> Restart program to use updated patch files.\n')
-    print('\n>> Completed Patcher Update!\n>> Restart program to use updated patch files..\n')
-    input('Press [ENTER] to exit application.\n')
+    logger.info('Completed Patcher Update!\n>> Patches ready for deployment!\n')
+    print('\n>> Completed Patcher Update!\n>> Patches ready for deployment!\n')
+    input('>> Press [ENTER] to continue.\n')
 
 
 
