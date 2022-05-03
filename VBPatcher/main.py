@@ -4,13 +4,13 @@ import logging
 import os
 import sys
 from datetime import datetime
-from os import chdir, listdir, unlink
+from os import PathLike, chdir, unlink
 from os.path import dirname
 from shutil import copytree
 from subprocess import TimeoutExpired, call
 from sys import exit as ex
 from time import sleep
-from typing import Any, NoReturn
+from typing import NoReturn
 from zipfile import ZipFile
 
 import requests
@@ -35,38 +35,72 @@ _textborder: str = "=".ljust((61),"=")
 __version__: str = '0.6.0'
 
 #* Establish Logger:
-class LogGenerator():
+class _LogGenerator():
     """Generates application loggers.
 
     - Uses built-in Python `logging` module.
     """
-    def __init__(self, log_file: str, log_format: str = '[%(asctime)s - %(levelname)s] : %(message)s'):
-        """Initialize logger instance
 
-        :param log_file: file to write logs to.
-        :type log_file: str
-        :param log_format: formatting of log messages, defaults to '[%(asctime)s - %(levelname)s] : %(message)s'
+    CRITICAL = 50
+    FATAL = CRITICAL
+    ERROR = 40
+    WARNING = 30
+    WARN = WARNING
+    INFO = 20
+    DEBUG = 10
+    NOTSET = 0
+
+    def __init__(self, log_file: str = __name__, log_format: str = '[%(asctime)s - %(levelname)s] : %(message)s', date_fmt: str = "%Y-%m-%d %H:%M:%S", log_lvl = INFO):
+        """Initialize logger instance.
+
+        - For the `log_lvl` parameter, the level of logging can be any of the following:
+            - CRITICAL = 50
+            - FATAL = CRITICAL
+            - ERROR = 40
+            - WARNING = 30
+            - WARN = WARNING
+            - INFO = 20
+            - DEBUG = 10
+            - NOTSET = 0
+
+        ---
+
+        :param log_file: assign specific name to logger, defaults to `__name__`.
+        :type log_file: str, optional
+        :param log_format: Initialize the formatter either with the specified format string, or a default as described above, defaults to '[%(asctime)s - %(levelname)s] : %(message)s'
         :type log_format: str, optional
+        :param date_fmt: set date formatting, defaults to "%Y-%m-%d %H:%M:%S"
+        :type date_fmt: str, optional
+        :param log_lvl: Set the logging level of this logger. Level must be an int or a str, defaults to `INFO`.
+        :type log_lvl: int, optional
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(log_file)
         self.log_format = log_format
-        self.formatter = logging.Formatter(log_format, datefmt="%Y-%m-%d %H:%M:%S")
+        self.datefmt = date_fmt
+        self.log_lvl = log_lvl
+        self.formatter = logging.Formatter(log_format, datefmt=date_fmt)
         self.log_file = log_file
         self.fhandler = logging.FileHandler(log_file)
         self.logger.addHandler(self.fhandler)
         self.fhandler.setFormatter(self.formatter)
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(log_lvl)
 
     def debug(self, msg):
         return self.logger.debug(msg)
+
     def info(self, msg):
         return self.logger.info(msg)
+
     def warning(self, msg):
         return self.logger.warning(msg)
+
     def error(self, msg):
         return self.logger.error(msg)
 
-logger = LogGenerator(_logFile)
+    def critical(self, msg):
+        return self.logger.critical(msg)
+
+logger = _LogGenerator(_logFile)
 
 #$ ====================================================================================================== $#
 
@@ -229,10 +263,13 @@ UpdateDL = _UpdateWrapper()
 
 def _start_checks() -> None:
     """Verify application has latest BepInEx patches upon start.
+
+    :return: continue to application if verification is successful, otherwise exits program.
+    :rtype: None
     """
     logger.info('Checking for application BepInEx patch files...\n')
 
-    if _verify_stable(url_stable) and _verify_dev(url_dev) == True:
+    if _verify_stable(url_stable) and _verify_dev(url_dev):
         logger.info('Successfully verified BepInEx patch files!\n')
     else:
         logger.info('One or more patch files were not able to be verified...')
@@ -248,19 +285,22 @@ def _verify_stable(url):
     :return: validation of patch files.
     :rtype: bool
     """
-    logger.info('Validating STABLE patch files...')
+    logger.info(f'Validating stable-build {b_stable} patch files...\n')
 
-    stable_files: list = ['changelog.txt', 'doorstop_config.ini', 'winhttp.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/0Harmony.xml', 'BepInEx/core/0Harmony20.dll', 'BepInEx/core/BepInEx.dll', 'BepInEx/core/BepInEx.Harmony.dll', 'BepInEx/core/BepInEx.Harmony.xml', 'BepInEx/core/BepInEx.Preloader.dll', 'BepInEx/core/BepInEx.Preloader.xml', 'BepInEx/core/BepInEx.xml', 'BepInEx/core/HarmonyXInterop.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/MonoMod.RuntimeDetour.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/MonoMod.Utils.xml']
+    stable_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/0Harmony.dll', 'BepInEx/core/0Harmony.xml', 'BepInEx/core/0Harmony20.dll', 'BepInEx/core/BepInEx.dll', 'BepInEx/core/BepInEx.Harmony.dll', 'BepInEx/core/BepInEx.Harmony.xml', 'BepInEx/core/BepInEx.Preloader.dll', 'BepInEx/core/BepInEx.Preloader.xml', 'BepInEx/core/BepInEx.xml', 'BepInEx/core/HarmonyXInterop.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/MonoMod.RuntimeDetour.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/MonoMod.Utils.xml']]
 
     stable_match: bool = False
 
+    found = []
+
     try:
-        if listdir('./patch-files/development') == stable_files:
+        found.extend(file for (root, dirs, file) in os.walk('./patch-files/stable', topdown=True))
+        if found.sort() == stable_files.sort():
             stable_match = True
-            logger.info('STABLE patch found!')
+            logger.info(f'Stable-build {b_stable} patch files verified successfully!\n')
 
         else:
-            logger.info('NO stable patch files found!\n>> Attempting to download...\n')
+            logger.info(f'Unable to verify stable patch {b_stable} files...\n>> Attempting to download...\n')
             rq = requests.get(url, allow_redirects=True)
             with open(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', 'wb') as patch_stable:
                 patch_stable.write(rq.content)
@@ -269,12 +309,14 @@ def _verify_stable(url):
             os.unlink('./patch-files/stable/doorstop_config.ini')
             os.unlink(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip')
             stable_match = True
-            logger.info('Dowloaded stable patch!\n')
+            logger.info(f'Successfully downloaded stable-build {b_stable} patch files!\n')
         return stable_match
 
     except Exception as err:
         stable_match = False
         logger.error(f'Encountered error during application start checks...\n>> Exception: {err}\n')
+
+    finally:
         return stable_match
 
 
@@ -286,20 +328,22 @@ def _verify_dev(url):
     :return: validation of patch files.
     :rtype: bool
     """
-    logger.info('Validating DEVELOPMENT patch files...')
+    logger.info(f'Validating development patch {b_dev} files...\n')
 
-    dev_files: list = ['doorstop_config.ini', 'changelog.txt', 'winhttp.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/BepInEx.Core.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/BepInEx.Unity.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/BepInEx.Preloader.Unity.dll', 'BepInEx/core/BepInEx.Preloader.Core.xml', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/SemanticVersioning.dll', 'BepInEx/core/BepInEx.Core.dll', 'BepInEx/core/BepInEx.Preloader.Unity.xml', 'BepInEx/core/BepInEx.Unity.xml', 'BepInEx/core/BepInEx.Preloader.Core.dll']
+    dev_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/BepInEx.Core.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/BepInEx.Unity.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/BepInEx.Preloader.Unity.dll', 'BepInEx/core/BepInEx.Preloader.Core.xml', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/SemanticVersioning.dll', 'BepInEx/core/BepInEx.Core.dll', 'BepInEx/core/BepInEx.Preloader.Unity.xml', 'BepInEx/core/BepInEx.Unity.xml', 'BepInEx/core/BepInEx.Preloader.Core.dll']]
 
     dev_match: bool = False
 
+    found = []
+
     try:
-        if listdir('./patch-files/development') == dev_files:
+        found.extend(file for (root, dirs, file) in os.walk('./patch-files/development/', topdown=True))
+        if found.sort() == dev_files.sort():
             dev_match = True
-            logger.info('STABLE patch found!')
+            logger.info(f'Development patch {b_dev} files verified successfully!\n')
 
         else:
-            logger.info('NO development patch files found!\n>> Attempting to download...\n')
-
+            logger.info(f'Unable to verify development patch {b_dev} files...\n>> Attempting to download...\n')
             rq = requests.get(url, allow_redirects=True)
             with open(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', 'wb') as patch_dev:
                 patch_dev.write(rq.content)
@@ -308,12 +352,14 @@ def _verify_dev(url):
             os.unlink('./patch-files/development/doorstop_config.ini')
             os.unlink(f'./patch-files/development/BepInEx_dev_{b_dev}.zip')
             dev_match = True
-            logger.info('Dowloaded development patch!\n')
+            logger.info(f'Successfully downloaded development patch {b_dev} files!\n')
         return dev_match
 
     except Exception as err:
         dev_match = False
         logger.error(f'Encountered error during application start checks...\n>> Exception: {err}\n')
+
+    finally:
         return dev_match
 
 
@@ -455,7 +501,7 @@ def _openValheim() -> int | None:
         return _exitPatcher()
 
 
-def _patch(patchDir: Any, targetDir: Any, ver: Any) -> None:
+def _patch(patchDir: PathLike | str, targetDir: PathLike | str, patch_version: int | str) -> None:
     """Apply patch files (`patchDir`) to target directory (`targetDir`).
 
     - WILL overwrite existing files.
@@ -472,18 +518,18 @@ def _patch(patchDir: Any, targetDir: Any, ver: Any) -> None:
     :rtype: None
     """
     try:
-        logger.info(f'Patching BepInEx build {ver} to location: {targetDir}...\n')
+        logger.info(f'Patching BepInEx build {patch_version} to location: {targetDir}...\n')
         load(
-            f'\nPatching BepInEx build {ver} to location: {targetDir}',
-            f'\nPatch build {ver} successfully installed!')
+            f'\nPatching BepInEx build {patch_version} to location: {targetDir}',
+            f'\nPatch build {patch_version} successfully installed!')
         copytree(patchDir, targetDir, dirs_exist_ok=True)
-        logger.info(f'Patch build {ver} successfully installed!\n')
+        logger.info(f'Patch build {patch_version} successfully installed!\n')
     except Exception as exc:
-        logger.error(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {ver} to location: {targetDir}...\n')
-        print(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {ver} to location: {targetDir}...')
+        logger.error(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_version} to location: {targetDir}...\n')
+        print(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_version} to location: {targetDir}...')
 
 
-def _UpdatePatcher() -> None:
+def _UpdatePatcher():
     """Process to retrieve latest available patch files.
 
     ---
@@ -498,7 +544,10 @@ def _UpdatePatcher() -> None:
 
     logger.info('Completed Patcher Update!\n>> Patches ready for deployment!\n')
     print('\n>> Completed Patcher Update!\n>> Patches ready for deployment!\n')
-    input('>> Press [ENTER] to continue.\n')
+    import msvcrt as m
+    print('>> Press anything to continue.\n')
+    m.getch()
+
 
 
 
