@@ -214,15 +214,14 @@ class _UpdateWrapper:
                 logger.error(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}\n')
                 print(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}')
 
-                while True:
-                    logger.info('Displaying retry update-check prompt...')
-                    again = input('\nTry again? [y/n]:\n>> ')
-                    match again.lower():
-                        case 'y':
-                            continue
-                        case _:
-                            print('\n>> Cancelled update-check.\n')
-                            break
+                logger.info('Displaying retry update-check prompt...')
+                again = input('\nTry again? [y/n]:\n>> ')
+                match again.lower():
+                    case 'y':
+                        continue
+                    case _:
+                        print('\n>> Cancelled update-check.\n')
+                        break
 
     def _unzip_patch(self, filename, stable: bool) -> None:
         """Unzip downloaded patch files before deleting patch `.zip` archive.
