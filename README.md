@@ -6,9 +6,9 @@
 
 ## About
 
-- The Valheim BepInEx Patcher _**(VBPatcher)**_ is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.
+- The Valheim BepInEx Patcher _**(VBPatcher)**_ is a CLI program created to solve the weird automatic version downgrading issue of the BepInEx modding tool while using the Vortex modding tool.
 
-- For me, this is generally caused by the Vortex mod manager automatically downloading what it perceives to be the "necessary" files for modding.
+- For me, this is generally caused by the Vortex mod manager automatically downloading what it incorrectly perceives to be the "latest" version of BepInEx.
 
 ---
 
@@ -24,17 +24,15 @@
 
 ### Manual Installation _(**NOT** Recommended)_
 
-1. Download the project's source code .zip archive from [GitHub](https://github.com/schlopp96/VBPatcher/releases) and extract to location of choice.
+1. Download the project's latest release **.zip archive** from the ["releases"](https://github.com/schlopp96/VBPatcher/releases) tab and extract to location of choice.
 
 2. Open terminal and navigate to the extracted directory `"~/VBPatcher"`.
 
-3. Use `pip install -r requirements.txt` to install necessary dependencies.
-
-- That's all!
+3. Enter `pip install -r requirements.txt` to install necessary dependencies.
 
 ---
 
-## How to Use the Script
+## Usage
 
 - Make sure you **do not** have Vortex, Thunderstore, or any other modding tools running, and that you are done with any modding processes.
 
@@ -64,30 +62,29 @@
 
   - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
+### Opening VBPatcher
+
 ---
 
-## How It Works
+- Within a python environment, open VBPatcher with:
 
-- The script simply copies the relevant patch files & places/overwrites core files responsible for the BepInEx version downgrade.
+  ```python
+  >>> import VBPatcher # Import package
+  >>> VBPatcher.vbp()  # Call method to open program
 
-- The patch files will all be placed in either one of two potential locations within Valheim's install directory
+  ```
 
-- The location of the game's install directory is different depending on the operating system of the user.
-
-  - For _Windows_, the default install path for Valheim is:
-
-    - `C:\Program Files (x86)\Steam\steamapps\common\Valheim`
-
-  - For _MacOS_, the default install path for Valheim is:
-    - `~/Library/Application Support/Steam/steamapps/common/Valheim`
-
-- Patches will be applied to the BepInEx folder, itself found within the game's installation folder: `~/Steam/steamapps/common/Valheim/BepInEx`.
+- Or optionally:
 
   ```python
     >>> from VBPatcher import vbp
     >>> vbp()
-    Welcome to the Valheim Bepinex Patcher!
+  ```
 
+- Example output from VBPatcher installing the stable version of BepInEx before installing the latest experimental patch build [option 3 in the program]:
+
+  ```python
+  Welcome to the Valheim Bepinex Patcher!
   Please Choose an Option by Entering its Corresponding Number:
 
   =============================================================
@@ -130,6 +127,26 @@
 
   Preparing to exit...
   ```
+
+---
+---
+
+## How It Works
+
+- The script simply copies the relevant patch files & places/overwrites core files responsible for the BepInEx version downgrade.
+
+- The patch files will all be placed in either one of two potential locations within Valheim's install directory
+
+- The location of the game's install directory is different depending on the operating system of the user.
+
+  - For _Windows_, the default install path for Valheim is:
+
+    - `C:\Program Files (x86)\Steam\steamapps\common\Valheim`
+
+  - For _MacOS_, the default install path for Valheim is:
+    - `~/Library/Application Support/Steam/steamapps/common/Valheim`
+
+- Patches will be applied to the BepInEx folder, itself found within the game's installation folder: `~/Steam/steamapps/common/Valheim/BepInEx`.
 
 ---
 
