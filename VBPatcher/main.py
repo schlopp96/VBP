@@ -21,12 +21,13 @@ from PyLoadBar import load
 chdir(dirname(__file__))
 
 p_stable: str = './patch-files/stable'
-b_stable: str = 'v5.19.00'
 url_stable = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
+b_stable: str = url_stable[53:60] #release version
 
 p_dev: str = './patch-files/development'
-b_dev: str = 'da48b77'
-url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/557/BepInEx_UnityMono_x64_da48b77_6.0.0-be.557.zip'
+url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/560/BepInEx_UnityMono_x64_eaf38ef_6.0.0-be.560.zip'
+b_dev: str = url_dev[73:80] # build number
+
 p_targetDir: str = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
 
 _logFile: str = './logs/patchLog.log'
@@ -511,8 +512,8 @@ def _patch(patchDir: PathLike | str, targetDir: PathLike | str, patch_version: i
     :type patchDir: Any
     :param targetDir: location of BepInEx install directory to install files.
     :type targetDir: Any
-    :param ver: title of patch to be installed.
-    :type ver: Any
+    :param patch_version: title of patch to be installed.
+    :type patch_version: Any
     :return: patch BepInEx with files from desired version build.
     :rtype: None
     """
@@ -520,7 +521,7 @@ def _patch(patchDir: PathLike | str, targetDir: PathLike | str, patch_version: i
         logger.info(f'Patching BepInEx build {patch_version} to location: {targetDir}...\n')
         load(
             f'\nPatching BepInEx build {patch_version} to location: {targetDir}',
-            f'\nPatch build {patch_version} successfully installed!')
+            f'Patch build {patch_version} successfully installed!')
         copytree(patchDir, targetDir, dirs_exist_ok=True)
         logger.info(f'Patch build {patch_version} successfully installed!\n')
     except Exception as exc:
