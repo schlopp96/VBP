@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import logging
 import os
 import sys
 from datetime import datetime
@@ -12,7 +11,7 @@ from sys import exit as ex
 from time import sleep
 from typing import NoReturn
 from zipfile import ZipFile
-
+import msvcrt as m
 import applogger
 import requests
 import tqdm
@@ -141,12 +140,12 @@ class _Downloader:
                 file_size = int(rq.headers.get('Content-Length'))
                 chunk_size = 1024  # 1 MB
                 num_bars = file_size // chunk_size
-                with open(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', 'wb') as patch_stable:
+                with open(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', 'wb') as patch_dev:
                     for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size), total=num_bars, unit='KB', desc='Downloading Dev-Build', file=sys.stdout):
-                        patch_stable.write(chunk)
+                        patch_dev.write(chunk)
                     logger.info(f'Completed BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
                     print(f'\nCompleted BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
-                return patch_stable
+                return patch_dev
 
             except Exception as err:
                 logger.error(f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}\n')
@@ -233,13 +232,14 @@ def _verify_stable(url):
     try:
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/stable', topdown=True))
 
-        if found == stable_files:
+        if found.sort() == stable_files.sort():
             stable_match = True
             logger.info(f'Stable-build {b_stable} patch files verified successfully!\n')
 
         else:
             logger.info(f'Unable to verify stable patch {b_stable} files...\n>> Attempting to download...\n')
             DL.dl_stable(url)
+            DL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', True)
             stable_match = True
             logger.info(f'Successfully downloaded stable-build {b_stable} patch files!\n')
         return stable_match
@@ -277,6 +277,7 @@ def _verify_dev(url):
         else:
             logger.info(f'Unable to verify development patch {b_dev} files...\n>> Attempting to download...\n')
             DL.dl_dev(url)
+            DL._unzip_patch(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', False)
             dev_match = True
             logger.info(f'Successfully downloaded development patch {b_dev} files!\n')
         return dev_match
@@ -305,7 +306,6 @@ def _patch_stable() -> None | NoReturn:
         match confirmStable.lower():
             case 'yes'|'y':
                 _patch(p_stable, p_targetDir, b_stable)
-                unlink(f'{p_targetDir}/.gitkeep')
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -333,8 +333,7 @@ def _patch_dev() -> None | NoReturn:
         )
         match confirmLatest.lower():
             case 'yes'|'y':
-                _patch(p_stable, p_targetDir, b_dev)
-                unlink(f'{p_targetDir}/.gitkeep')
+                _patch(p_dev, p_targetDir, b_dev)
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -364,7 +363,6 @@ def _patch_full() -> None | bool:
             case 'yes'|'y':
                 _patch(p_stable, p_targetDir, b_stable)
                 _patch(p_dev, p_targetDir, b_dev)
-                unlink(f'{p_targetDir}/.gitkeep')
                 return _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -445,10 +443,11 @@ def _patch(patchDir: PathLike | str, targetDir: PathLike | str, patch_version: i
     """
     try:
         logger.info(f'Patching BepInEx build {patch_version} to location: {targetDir}...\n')
+        copytree(patchDir, targetDir, dirs_exist_ok=True)
+        unlink(f'{p_targetDir}/.gitkeep')
         load(
             f'\nPatching BepInEx build {patch_version} to location: {targetDir}',
             f'Patch build {patch_version} successfully installed!')
-        copytree(patchDir, targetDir, dirs_exist_ok=True)
         logger.info(f'Patch build {patch_version} successfully installed!\n')
     except Exception as exc:
         logger.error(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_version} to location: {targetDir}...\n')
@@ -470,7 +469,6 @@ def _UpdatePatcher():
 
     logger.info('Completed Patcher Update!\n>> Patches ready for deployment!\n')
     print('\nCompleted Patcher Update!\n>> Patches ready for deployment!\n')
-    import msvcrt as m
     print('Press anything to continue...')
     m.getch()
 
@@ -485,7 +483,7 @@ def _exitPatcher() -> None | NoReturn:
     :return: Exits application.
     :rtype: None | NoReturn
     """
-    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n\n{_textborder}\n\n')
+    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n{_textborder}\n')
     return ex()
 
 
