@@ -21,17 +21,17 @@ from PyLoadBar import load
 #@ Declare global variables containing file locations and patch-install destinations:
 chdir(dirname(__file__))
 
-p_stable: str = './patch-files/stable'
+p_stable: str = r'.\patch-files\stable'
 url_stable = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
 b_stable: str = url_stable[53:60] #release version
 
-p_dev: str = './patch-files/development'
+p_dev: str = r'.\patch-files\development'
 url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/560/BepInEx_UnityMono_x64_eaf38ef_6.0.0-be.560.zip'
 b_dev: str = url_dev[73:80] # build number
 
-p_targetDir: str = 'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
+p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
 
-_logFile: str = './logs/patchLog.log'
+_logFile: str = r'.\logs\patchLog.log'
 _datefmt: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 _textborder: str = "=".ljust((61),"=")
 __version__: str = '0.6.0'
@@ -75,14 +75,14 @@ def VBPatcher() -> None | NoReturn:
                 return _exitPatcher()
             case _:
                 logger.warning(f'Invalid Input:\n>> "{choosePatch}"\n\n>> Must ONLY enter:\n>> [1] for stable release {b_stable}\n>> [2] for development build {b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n')
-                print(f'\n>> ERROR: Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {b_stable}\n>> [2] for development build {b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n')
+                print(f'\nERROR: Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {b_stable}\n>> [2] for development build {b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n')
                 sleep(1.5)
                 continue
 
         return _exitPatcher()
 
 
-class _UpdateWrapper:
+class _Downloader:
     """Wrapper containing patch-file update functionality.
 
     - Class Methods:
@@ -119,15 +119,14 @@ class _UpdateWrapper:
                 logger.error(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
                 print(f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n')
 
-                while True:
-                    logger.info('Displaying retry update-check prompt...')
-                    again = input('\nTry again? [y/n]:\n>> ')
-                    match again.lower():
-                        case 'y':
-                            continue
-                        case _:
-                            print('\n>> Cancelled update-check.\n')
-                            break
+                logger.info('Displaying retry update-check prompt...')
+                again = input('\nTry again? [y/n]:\n>> ')
+                match again.lower():
+                    case 'y':
+                        continue
+                    case _:
+                        print('\nCancelled update-check.\n')
+                        break
 
     def dl_dev(self, url):
         """Download zip archive containing latest BepInEx development build.
@@ -159,7 +158,7 @@ class _UpdateWrapper:
                     case 'y':
                         continue
                     case _:
-                        print('\n>> Cancelled update-check.\n')
+                        print('\nCancelled update-check.\n')
                         break
 
     def _unzip_patch(self, filename, stable: bool) -> None:
@@ -189,14 +188,14 @@ class _UpdateWrapper:
                 os.unlink(f'./patch-files/development/BepInEx_dev_{b_dev}.zip')
 
             logger.info('Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
-            print('\n>> Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
+            print('\nSuccessfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
 
         except Exception as err:
             logger.error(f'Encountered error while attempting to unzip archive...\n>> Exception: {err}\n')
-            print(f'Encountered error while attempting to unzip archive...\n>> Exception: {err}\n')
+            print(f'\nEncountered error while attempting to unzip archive...\n>> Exception: {err}\n')
 
 
-UpdateDL = _UpdateWrapper()
+DL = _Downloader()
 
 
 def _start_checks() -> None:
@@ -240,13 +239,7 @@ def _verify_stable(url):
 
         else:
             logger.info(f'Unable to verify stable patch {b_stable} files...\n>> Attempting to download...\n')
-            rq = requests.get(url, allow_redirects=True)
-            with open(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', 'wb') as patch_stable:
-                patch_stable.write(rq.content)
-            with ZipFile(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip') as archive:
-                    archive.extractall(path='./patch-files/stable')
-            os.unlink('./patch-files/stable/doorstop_config.ini')
-            os.unlink(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip')
+            DL.dl_stable(url)
             stable_match = True
             logger.info(f'Successfully downloaded stable-build {b_stable} patch files!\n')
         return stable_match
@@ -283,13 +276,7 @@ def _verify_dev(url):
 
         else:
             logger.info(f'Unable to verify development patch {b_dev} files...\n>> Attempting to download...\n')
-            rq = requests.get(url, allow_redirects=True)
-            with open(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', 'wb') as patch_dev:
-                patch_dev.write(rq.content)
-            with ZipFile(f'./patch-files/development/BepInEx_dev_{b_dev}.zip') as archive:
-                archive.extractall(path='./patch-files/development')
-            os.unlink('./patch-files/development/doorstop_config.ini')
-            os.unlink(f'./patch-files/development/BepInEx_dev_{b_dev}.zip')
+            DL.dl_dev(url)
             dev_match = True
             logger.info(f'Successfully downloaded development patch {b_dev} files!\n')
         return dev_match
@@ -311,7 +298,7 @@ def _patch_stable() -> None | NoReturn:
     :rtype: None
     """
     while True:
-        logger.info(f'Displaying confirmation prompt to install BepInEx {b_stable} release...')
+        logger.info(f'Prompting user for installation of BepInEx stable release {b_dev} patch...')
         confirmStable: str = input(
             f'\nReally patch BepInEx to latest stable-release {b_stable} in location:\n\n>> "{p_targetDir}"?\n\n> Enter [y] or [n]:\n{_textborder}\n> '
         )
@@ -326,7 +313,7 @@ def _patch_stable() -> None | NoReturn:
                 return _exitPatcher()
             case _:
                 logger.warning(f'Invalid Input: "{confirmStable}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
-                print(f'\n>> ERROR: Invalid Input\n\n>> Your Entry: "{confirmStable}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
+                print(f'\nERROR: Invalid Input\n\n>> Your Entry: "{confirmStable}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
@@ -340,7 +327,7 @@ def _patch_dev() -> None | NoReturn:
     :rtype: None
     """
     while True:
-        logger.info(f'Displaying confirmation prompt to install BepInEx development build {b_dev} patch...')
+        logger.info(f'Prompting user for installation of BepInEx development build {b_dev} patch...')
         confirmLatest: str = input(
             f'\nReally patch BepInEx to latest development build {b_dev} in location:\n\n>> "{p_targetDir}"?\n\n> Enter [y] or [n]:\n{_textborder}\n> '
         )
@@ -355,7 +342,7 @@ def _patch_dev() -> None | NoReturn:
                 return _exitPatcher()
             case _:
                 logger.warning(f'Invalid Input: "{confirmLatest}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
-                print(f'\n>> ERROR: Invalid Input\n\n>> Your Entry: "{confirmLatest}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
+                print(f'\nERROR: Invalid Input\n\n>> Your Entry: "{confirmLatest}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
@@ -385,7 +372,7 @@ def _patch_full() -> None | bool:
                 return _exitPatcher()
             case _:
                 logger.warning(f'Invalid Input: "{confirmFull}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
-                print(f'\n>> ERROR: Invalid Input\n\n>> Your Entry: "{confirmFull}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
+                print(f'\nERROR: Invalid Input\n\n>> Your Entry: "{confirmFull}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
@@ -413,7 +400,7 @@ def _startPrompt() -> NoReturn | None:
                 return _exitPatcher()
             case _:
                 logger.warning(f'Invalid Input: "{startPrompt}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
-                print(f'\n>> ERROR: Invalid Input\n\n>> Your Entry: "{startPrompt}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
+                print(f'\nERROR: Invalid Input\n\n>> Your Entry: "{startPrompt}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n')
                 sleep(1.250)
                 continue
 
@@ -476,15 +463,15 @@ def _UpdatePatcher():
     :return: most recent release/build patch files.
     :rtype: None
     """
-    UpdateDL.dl_stable(url_stable)
-    UpdateDL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', True)
-    UpdateDL.dl_dev(url_dev)
-    UpdateDL._unzip_patch(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', False)
+    DL.dl_stable(url_stable)
+    DL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{b_stable}.zip', True)
+    DL.dl_dev(url_dev)
+    DL._unzip_patch(f'./patch-files/development/BepInEx_dev_{b_dev}.zip', False)
 
     logger.info('Completed Patcher Update!\n>> Patches ready for deployment!\n')
-    print('\n>> Completed Patcher Update!\n>> Patches ready for deployment!\n')
+    print('\nCompleted Patcher Update!\n>> Patches ready for deployment!\n')
     import msvcrt as m
-    print('>> Press anything to continue.\n')
+    print('Press anything to continue...')
     m.getch()
 
 
