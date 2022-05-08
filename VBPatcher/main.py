@@ -26,7 +26,7 @@ url_stable = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepIn
 b_stable: str = url_stable[53:60]  #release version
 
 p_dev: str = r'.\patch-files\development'
-url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/560/BepInEx_UnityMono_x64_eaf38ef_6.0.0-be.560.zip'
+url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/562/BepInEx_UnityMono_x64_7a97bdd_6.0.0-be.562.zip'
 b_dev: str = url_dev[73:80]  # build number
 
 p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
@@ -262,7 +262,7 @@ def VBPatcher() -> None | NoReturn:
     while True:
         logger.info('Display user menu...')
         choosePatch: str = input(
-            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{_textborder}\n>> [1] Patch BepInEx to latest stable release: {b_stable} (2/3/22)\n>> [2] Patch BepInEx to latest development/expiremental build: {b_dev} (4/21/22)\n>> [3] Apply both patches to BepInEx in chronological order of release ({b_stable} then {b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
+            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{_textborder}\n>> [1] Patch BepInEx to latest stable release: {b_stable} (2/3/22)\n>> [2] Patch BepInEx to latest development/expiremental build: {b_dev} (5/7/22)\n>> [3] Apply both patches to BepInEx in chronological order of release ({b_stable} then {b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
         )
         match choosePatch:
             case '1': _patch_stable()

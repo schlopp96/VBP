@@ -89,8 +89,8 @@
 
   =============================================================
   >> [1] Patch BepInEx to latest stable release: v5.19.00 (2/3/22)
-  >> [2] Patch BepInEx to latest development/expiremental build: da48b77 (4/21/22)
-  >> [3] Apply both patches to BepInEx in chronological order of release (v5.19.00 then da48b77)
+  >> [2] Patch BepInEx to latest development/expiremental build: 7a97bdd (5/7/22)
+  >> [3] Apply both patches to BepInEx in chronological order of release (v5.19.00 then 7a97bdd)
   >> [4] Check for updates to newest patch versions
   >> [5] Open Valheim
   >> [6] Exit Program
