@@ -3,6 +3,7 @@
 import msvcrt as m
 import os
 import sys
+from datetime import datetime
 from os import PathLike, chdir, unlink
 from os.path import dirname
 from shutil import copytree
@@ -16,56 +17,104 @@ import requests
 import tqdm
 from PyLoadBar import load
 
-import applogger
-
 #@ Declare global variables containing file locations and patch-install destinations:
 chdir(dirname(__file__))
 
-from globals import (__version__, _datefmt, _logFile, _textborder, b_dev,
-                     b_stable, p_dev, p_stable, p_targetDir, url_dev,
-                     url_stable)
+p_stable: str = r'.\patch-files\stable'
 
-logger = applogger._LogGenerator(_logFile)
+url_stable = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
+b_stable: str = url_stable[53:60]  #release version
+
+p_dev: str = r'.\patch-files\development'
+url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/560/BepInEx_UnityMono_x64_eaf38ef_6.0.0-be.560.zip'
+b_dev: str = url_dev[73:80]  # build number
+
+p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
+
+_logFile: str = r'.\logs\patchLog.log'
+
+_datefmt: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+_textborder: str = "=".ljust((61), "=")
+
+__version__: str = '0.6.0'
+
 
 #$ ====================================================================================================== $#
+import logging
 
 
-def VBPatcher() -> None | NoReturn:
-    """Program entry point.
+class _LogGenerator():
+    """Generates application loggers.
 
-    ---
-
-    :return: start VBPatcher.
-    :rtype: None | NoReturn
+    - Uses built-in Python `logging` module.
     """
-    logger.info(f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n>> Session Start: {_datefmt}\n\n')
 
-    _start_checks() # Ensure presence of patch files.
+    CRITICAL = 50
+    FATAL = CRITICAL
+    ERROR = 40
+    WARNING = 30
+    WARN = WARNING
+    INFO = 20
+    DEBUG = 10
+    NOTSET = 0
 
-    while True:
-        logger.info('Display user menu...')
-        choosePatch: str = input(
-            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{_textborder}\n>> [1] Patch BepInEx to latest stable release: {b_stable} (2/3/22)\n>> [2] Patch BepInEx to latest development/expiremental build: {b_dev} (4/21/22)\n>> [3] Apply both patches to BepInEx in chronological order of release ({b_stable} then {b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
-        )
-        match choosePatch:
-            case '1': _patch_stable()
-            case '2': _patch_dev()
-            case '3': _patch_full()
-            case '4':
-                _UpdatePatcher()
-                continue
-            case '5': _openValheim()
-            case '6':
-                logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-                load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
-                return _exitPatcher()
-            case _:
-                logger.warning(f'Invalid Input:\n>> "{choosePatch}"\n\n>> Must ONLY enter:\n>> [1] for stable release {b_stable}\n>> [2] for development build {b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n')
-                print(f'\nERROR: Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {b_stable}\n>> [2] for development build {b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n')
-                sleep(1.5)
-                continue
+    def __init__(
+            self,
+            log_file: str = __name__,
+            log_format: str = '[%(asctime)s - %(levelname)s] : %(message)s',
+            date_fmt: str = "%Y-%m-%d %H:%M:%S",
+            log_lvl=INFO):
+        """Initialize logger instance.
 
-        return _exitPatcher()
+        - For the `log_lvl` parameter, the level of logging can be any of the following:
+            - CRITICAL = 50
+            - FATAL = CRITICAL
+            - ERROR = 40
+            - WARNING = 30
+            - WARN = WARNING
+            - INFO = 20
+            - DEBUG = 10
+            - NOTSET = 0
+
+        ---
+
+        :param log_file: assign specific name to logger, defaults to `__name__`.
+        :type log_file: str, optional
+        :param log_format: Initialize the formatter either with the specified format string, or a default as described above, defaults to '[%(asctime)s - %(levelname)s] : %(message)s'
+        :type log_format: str, optional
+        :param date_fmt: set date formatting, defaults to "%Y-%m-%d %H:%M:%S"
+        :type date_fmt: str, optional
+        :param log_lvl: Set the logging level of this logger. Level must be an int or a str, defaults to `INFO`.
+        :type log_lvl: int, optional
+        """
+        self.logger = logging.getLogger(log_file)
+        self.log_format = log_format
+        self.datefmt = date_fmt
+        self.log_lvl = log_lvl
+        self.formatter = logging.Formatter(log_format, datefmt=date_fmt)
+        self.log_file = log_file
+        self.fhandler = logging.FileHandler(log_file)
+        self.logger.addHandler(self.fhandler)
+        self.fhandler.setFormatter(self.formatter)
+        self.logger.setLevel(log_lvl)
+
+    def debug(self, msg):
+        return self.logger.debug(msg)
+
+    def info(self, msg):
+        return self.logger.info(msg)
+
+    def warning(self, msg):
+        return self.logger.warning(msg)
+
+    def error(self, msg):
+        return self.logger.error(msg)
+
+    def critical(self, msg):
+        return self.logger.critical(msg)
+
+logger = _LogGenerator(_logFile)
 
 class _Downloader:
     """Wrapper containing patch-file update functionality.
@@ -195,6 +244,44 @@ def _start_checks() -> None:
     else:
         logger.info('One or more patch files were not able to be verified...')
         load('ERROR: One or more patch files were not able to be verified', 'Exiting Patcher', enable_display=False)
+        return _exitPatcher()
+
+
+def VBPatcher() -> None | NoReturn:
+    """Program entry point.
+
+    ---
+
+    :return: start VBPatcher.
+    :rtype: None | NoReturn
+    """
+    logger.info(f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n>> Session Start: {_datefmt}\n\n')
+
+    _start_checks() # Ensure presence of patch files.
+
+    while True:
+        logger.info('Display user menu...')
+        choosePatch: str = input(
+            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{_textborder}\n>> [1] Patch BepInEx to latest stable release: {b_stable} (2/3/22)\n>> [2] Patch BepInEx to latest development/expiremental build: {b_dev} (4/21/22)\n>> [3] Apply both patches to BepInEx in chronological order of release ({b_stable} then {b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
+        )
+        match choosePatch:
+            case '1': _patch_stable()
+            case '2': _patch_dev()
+            case '3': _patch_full()
+            case '4':
+                _UpdatePatcher()
+                continue
+            case '5': _openValheim()
+            case '6':
+                logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
+                load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
+                return _exitPatcher()
+            case _:
+                logger.warning(f'Invalid Input:\n>> "{choosePatch}"\n\n>> Must ONLY enter:\n>> [1] for stable release {b_stable}\n>> [2] for development build {b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n')
+                print(f'\nERROR: Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {b_stable}\n>> [2] for development build {b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n')
+                sleep(1.5)
+                continue
+
         return _exitPatcher()
 
 
