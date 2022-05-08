@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
+import msvcrt as m
 import os
 import sys
-from datetime import datetime
 from os import PathLike, chdir, unlink
 from os.path import dirname
 from shutil import copytree
@@ -11,32 +11,19 @@ from sys import exit as ex
 from time import sleep
 from typing import NoReturn
 from zipfile import ZipFile
-import msvcrt as m
-import applogger
+
 import requests
 import tqdm
 from PyLoadBar import load
 
+import applogger
+
 #@ Declare global variables containing file locations and patch-install destinations:
 chdir(dirname(__file__))
 
-p_stable: str = r'.\patch-files\stable'
-url_stable = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
-b_stable: str = url_stable[53:60] #release version
-
-p_dev: str = r'.\patch-files\development'
-url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/560/BepInEx_UnityMono_x64_eaf38ef_6.0.0-be.560.zip'
-b_dev: str = url_dev[73:80] # build number
-
-p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
-
-_logFile: str = r'.\logs\patchLog.log'
-_datefmt: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-_textborder: str = "=".ljust((61),"=")
-__version__: str = '0.6.0'
-
-#* Establish Logger:
-
+from globals import (__version__, _datefmt, _logFile, _textborder, b_dev,
+                     b_stable, p_dev, p_stable, p_targetDir, url_dev,
+                     url_stable)
 
 logger = applogger._LogGenerator(_logFile)
 
@@ -79,7 +66,6 @@ def VBPatcher() -> None | NoReturn:
                 continue
 
         return _exitPatcher()
-
 
 class _Downloader:
     """Wrapper containing patch-file update functionality.
@@ -192,7 +178,6 @@ class _Downloader:
         except Exception as err:
             logger.error(f'Encountered error while attempting to unzip archive...\n>> Exception: {err}\n')
             print(f'\nEncountered error while attempting to unzip archive...\n>> Exception: {err}\n')
-
 
 DL = _Downloader()
 
