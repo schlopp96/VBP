@@ -16,7 +16,7 @@ setup(
     license='GPL v3.0',
     long_description=readme,
     long_description_content_type='text/markdown',
-    packages=find_packages(),
+    packages=find_packages(where='./VBPatcher'),
     include_package_data=True,
     install_requires=[reqs],
     classifiers=[
