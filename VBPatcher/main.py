@@ -21,7 +21,6 @@ from PyLoadBar import load
 chdir(dirname(__file__))
 
 p_stable: str = r'.\patch-files\stable'
-
 url_stable = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.19/BepInEx_x64_5.4.19.0.zip'
 b_stable: str = url_stable[53:60]  #release version
 
@@ -45,7 +44,7 @@ import logging
 
 
 class _LogGenerator():
-    """Generates application loggers.
+    """Wrapper for application logging.
 
     - Uses built-in Python `logging` module.
     """
