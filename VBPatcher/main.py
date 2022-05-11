@@ -12,7 +12,7 @@ from sys import exit as ex
 from time import sleep
 from typing import NoReturn
 from zipfile import ZipFile
-import logger.applogger
+import applogger.applogger
 import requests
 import tqdm
 from PyLoadBar import load
@@ -44,7 +44,7 @@ __version__: str = '0.6.0'
 
 #$ ====================================================================================================== $#
 
-logger = logger.applogger._LogGenerator(_logFile)
+logger = applogger.applogger._LogGenerator(_logFile)
 
 class _Downloader:
     """Wrapper containing patch-file update functionality.
