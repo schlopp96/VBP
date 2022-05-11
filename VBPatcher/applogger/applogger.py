@@ -1,5 +1,7 @@
 import logging
+import sys
 
+sys.path.append('../')
 
 class _LogGenerator():
     """Wrapper for application logging.
