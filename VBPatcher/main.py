@@ -2,8 +2,6 @@
 
 import msvcrt as m
 import os
-import globalvars.globalvars
-from downloader.downloader import _Downloader
 from os import PathLike, chdir, unlink
 from os.path import dirname
 from shutil import copytree
@@ -11,8 +9,12 @@ from subprocess import TimeoutExpired, call
 from sys import exit as ex
 from time import sleep
 from typing import NoReturn
-import applogger.applogger
+
 from PyLoadBar import load
+
+import globalvars.globalvars
+from applogger.applogger import _LogGenerator
+from downloader.downloader import _Downloader
 
 chdir(dirname(__file__))
 
@@ -26,7 +28,7 @@ __version__: str = '0.6.0'
 
 
 #$ ====================================================================================================== $#
-logger = applogger.applogger._LogGenerator(globalvars.globalvars._logFile)
+logger = _LogGenerator(globalvars.globalvars._logFile)
 
 
 DL = _Downloader()
@@ -86,7 +88,7 @@ def VBPatcher() -> None | NoReturn:
         return _exitPatcher()
 
 
-def _verify_stable(url):
+def _verify_stable(url) -> bool:
     """Validate presence of BepInEx stable release patch files.
 
     :param url: url to download BepInEx stable release from if not found.
@@ -100,7 +102,7 @@ def _verify_stable(url):
 
     stable_match: bool = False
 
-    found = []
+    found: list = []
 
     try:
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/stable', topdown=True))
@@ -124,7 +126,7 @@ def _verify_stable(url):
         return stable_match
 
 
-def _verify_dev(url):
+def _verify_dev(url) -> bool:
     """Validate presence of BepInEx development build patch files.
 
     :param url: url to download BepInEx development build from if not found.
@@ -139,7 +141,7 @@ def _verify_dev(url):
 
     dev_match: bool = False
 
-    found = []
+    found: list = []
 
     try:
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/development/', topdown=True))
@@ -327,7 +329,7 @@ def _patch(patchDir: PathLike | str, targetDir: PathLike | str, patch_version: i
         print(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_version} to location: {targetDir}...')
 
 
-def _UpdatePatcher():
+def _UpdatePatcher() -> None:
     """Process to retrieve latest available patch files.
 
     ---
