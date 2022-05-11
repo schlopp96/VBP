@@ -2,7 +2,7 @@
 
 import msvcrt as m
 import os
-from globals import *
+import globalvars.globalvars
 from downloader.downloader import _Downloader
 from os import PathLike, chdir, unlink
 from os.path import dirname
@@ -26,8 +26,7 @@ __version__: str = '0.6.0'
 
 
 #$ ====================================================================================================== $#
-
-logger = applogger.applogger._LogGenerator(globals._logFile)
+logger = applogger.applogger._LogGenerator(globalvars.globalvars._logFile)
 
 
 DL = _Downloader()
@@ -41,7 +40,7 @@ def _start_checks() -> None:
     """
     logger.info('Checking for application BepInEx patch files...\n')
 
-    if _verify_stable(globals.url_stable) and _verify_dev(globals.url_dev):
+    if _verify_stable(globalvars.globalvars.url_stable) and _verify_dev(globalvars.globalvars.url_dev):
         logger.info('Successfully verified BepInEx patch files!\n')
     else:
         logger.info('One or more patch files were not able to be verified...')
@@ -57,14 +56,14 @@ def VBPatcher() -> None | NoReturn:
     :return: start VBPatcher.
     :rtype: None | NoReturn
     """
-    logger.info(f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n>> Session Start: {globals._datefmt}\n\n')
+    logger.info(f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n>> Session Start: {globalvars.globalvars._datefmt}\n\n')
 
     _start_checks() # Ensure presence of patch files.
 
     while True:
         logger.info('Display user menu...')
         choosePatch: str = input(
-            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{globals._textborder}\n>> [1] Patch BepInEx to latest stable release: {globals.b_stable} (2/3/22)\n>> [2] Patch BepInEx to latest development/expiremental build: {globals.b_dev} (5/7/22)\n>> [3] Apply both patches to BepInEx in chronological order of release ({globals.b_stable} then {globals.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
+            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{globalvars.globalvars._textborder}\n>> [1] Patch BepInEx to latest stable release: {globalvars.globalvars.b_stable} (2/3/22)\n>> [2] Patch BepInEx to latest development/expiremental build: {globalvars.globalvars.b_dev} (5/7/22)\n>> [3] Apply both patches to BepInEx in chronological order of release ({globalvars.globalvars.b_stable} then {globalvars.globalvars.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
         )
         match choosePatch:
             case '1': _patch_stable()
@@ -79,8 +78,8 @@ def VBPatcher() -> None | NoReturn:
                 load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                 return _exitPatcher()
             case _:
-                logger.warning(f'Invalid Input:\n>> "{choosePatch}"\n\n>> Must ONLY enter:\n>> [1] for stable release {globals.globals.b_stable}\n>> [2] for development build {globals.globals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n')
-                print(f'\nERROR: Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {globals.globals.b_stable}\n>> [2] for development build {globals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n')
+                logger.warning(f'Invalid Input:\n>> "{choosePatch}"\n\n>> Must ONLY enter:\n>> [1] for stable release {globalvars.globalvars.b_stable}\n>> [2] for development build {globalvars.globalvars.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n')
+                print(f'\nERROR: Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {globalvars.globalvars.b_stable}\n>> [2] for development build {globalvars.globalvars.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n')
                 sleep(1.5)
                 continue
 
@@ -95,7 +94,7 @@ def _verify_stable(url):
     :return: validation of patch files.
     :rtype: bool
     """
-    logger.info(f'Validating stable-build {globals.globals.b_stable} patch files...\n')
+    logger.info(f'Validating stable-build {globalvars.globalvars.b_stable} patch files...\n')
 
     stable_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/0Harmony.dll', 'BepInEx/core/0Harmony.xml', 'BepInEx/core/0Harmony20.dll', 'BepInEx/core/BepInEx.dll', 'BepInEx/core/BepInEx.Harmony.dll', 'BepInEx/core/BepInEx.Harmony.xml', 'BepInEx/core/BepInEx.Preloader.dll', 'BepInEx/core/BepInEx.Preloader.xml', 'BepInEx/core/BepInEx.xml', 'BepInEx/core/HarmonyXInterop.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/MonoMod.RuntimeDetour.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/MonoMod.Utils.xml']]
 
@@ -108,14 +107,14 @@ def _verify_stable(url):
 
         if found.sort() == stable_files.sort():
             stable_match = True
-            logger.info(f'Stable-build {globals.globals.b_stable} patch files verified successfully!\n')
+            logger.info(f'Stable-build {globalvars.globalvars.b_stable} patch files verified successfully!\n')
 
         else:
-            logger.info(f'Unable to verify stable patch {globals.globals.b_stable} files...\n>> Attempting to download...\n')
+            logger.info(f'Unable to verify stable patch {globalvars.globalvars.b_stable} files...\n>> Attempting to download...\n')
             DL.dl_stable(url)
-            DL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{globals.globals.b_stable}.zip', True)
+            DL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{globalvars.globalvars.b_stable}.zip', True)
             stable_match = True
-            logger.info(f'Successfully downloaded stable-build {globals.globals.b_stable} patch files!\n')
+            logger.info(f'Successfully downloaded stable-build {globalvars.globalvars.b_stable} patch files!\n')
         return stable_match
 
     except Exception as err:
@@ -134,7 +133,7 @@ def _verify_dev(url):
     :return: validation of patch files.
     :rtype: bool
     """
-    logger.info(f'Validating development patch {globals.b_dev} files...\n')
+    logger.info(f'Validating development patch {globalvars.globalvars.b_dev} files...\n')
 
     dev_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/BepInEx.Core.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/BepInEx.Unity.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/BepInEx.Preloader.Unity.dll', 'BepInEx/core/BepInEx.Preloader.Core.xml', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/SemanticVersioning.dll', 'BepInEx/core/BepInEx.Core.dll', 'BepInEx/core/BepInEx.Preloader.Unity.xml', 'BepInEx/core/BepInEx.Unity.xml', 'BepInEx/core/BepInEx.Preloader.Core.dll']]
 
@@ -146,14 +145,14 @@ def _verify_dev(url):
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/development/', topdown=True))
         if found.sort() == dev_files.sort():
             dev_match = True
-            logger.info(f'Development patch {globals.b_dev} files verified successfully!\n')
+            logger.info(f'Development patch {globalvars.globalvars.b_dev} files verified successfully!\n')
 
         else:
-            logger.info(f'Unable to verify development patch {globals.b_dev} files...\n>> Attempting to download...\n')
+            logger.info(f'Unable to verify development patch {globalvars.globalvars.b_dev} files...\n>> Attempting to download...\n')
             DL.dl_dev(url)
-            DL._unzip_patch(f'./patch-files/development/BepInEx_dev_{globals.b_dev}.zip', False)
+            DL._unzip_patch(f'./patch-files/development/BepInEx_dev_{globalvars.globalvars.b_dev}.zip', False)
             dev_match = True
-            logger.info(f'Successfully downloaded development patch {globals.b_dev} files!\n')
+            logger.info(f'Successfully downloaded development patch {globalvars.globalvars.b_dev} files!\n')
         return dev_match
 
     except Exception as err:
@@ -173,13 +172,13 @@ def _patch_stable() -> None | NoReturn:
     :rtype: None
     """
     while True:
-        logger.info(f'Prompting user for installation of BepInEx stable release {globals.b_dev} patch...')
+        logger.info(f'Prompting user for installation of BepInEx stable release {globalvars.globalvars.b_dev} patch...')
         confirmStable: str = input(
-            f'\nReally patch BepInEx to latest stable-release {globals.b_stable} in location:\n\n>> "{globals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{globals._textborder}\n> '
+            f'\nReally patch BepInEx to latest stable-release {globalvars.globalvars.b_stable} in location:\n\n>> "{globalvars.globalvars.p_targetDir}"?\n\n> Enter [y] or [n]:\n{globalvars.globalvars._textborder}\n> '
         )
         match confirmStable.lower():
             case 'yes'|'y':
-                _patch(globals.p_stable, globals.p_targetDir, globals.b_stable)
+                _patch(globalvars.globalvars.p_stable, globalvars.globalvars.p_targetDir, globalvars.globalvars.b_stable)
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -201,13 +200,13 @@ def _patch_dev() -> None | NoReturn:
     :rtype: None
     """
     while True:
-        logger.info(f'Prompting user for installation of BepInEx development build {globals.b_dev} patch...')
+        logger.info(f'Prompting user for installation of BepInEx development build {globalvars.globalvars.b_dev} patch...')
         confirmLatest: str = input(
-            f'\nReally patch BepInEx to latest development build {globals.b_dev} in location:\n\n>> "{globals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{globals._textborder}\n> '
+            f'\nReally patch BepInEx to latest development build {globalvars.globalvars.b_dev} in location:\n\n>> "{globalvars.globalvars.p_targetDir}"?\n\n> Enter [y] or [n]:\n{globalvars.globalvars._textborder}\n> '
         )
         match confirmLatest.lower():
             case 'yes'|'y':
-                _patch(globals.p_dev, globals.p_targetDir, globals.b_dev)
+                _patch(globalvars.globalvars.p_dev, globalvars.globalvars.p_targetDir, globalvars.globalvars.b_dev)
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -231,12 +230,12 @@ def _patch_full() -> None | bool:
     while True:
         logger.info('Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...')
         confirmFull: str = input(
-            f'\nReally apply both latest stable release {globals.b_stable}, and latest development build {globals.b_dev}?\n> Enter [y] or [n]:\n{globals._textborder}\n> '
+            f'\nReally apply both latest stable release {globalvars.globalvars.b_stable}, and latest development build {globalvars.globalvars.b_dev}?\n> Enter [y] or [n]:\n{globalvars.globalvars._textborder}\n> '
         )
         match confirmFull.lower():
             case 'yes'|'y':
-                _patch(globals.globals.p_stable, globals.globals.p_targetDir, globals.globals.b_stable)
-                _patch(globals.p_dev, globals.globals.p_targetDir, globals.b_dev)
+                _patch(globalvars.globalvars.p_stable, globalvars.globalvars.p_targetDir, globalvars.globalvars.b_stable)
+                _patch(globalvars.globalvars.p_dev, globalvars.globalvars.p_targetDir, globalvars.globalvars.b_dev)
                 return _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -260,7 +259,7 @@ def _startPrompt() -> NoReturn | None:
     while True:
         logger.info('Displaying start game prompt...')
         startPrompt: str = input(
-            f'\nStart Game?\n\n> Enter [y] or [n]:\n{globals._textborder}\n> ')
+            f'\nStart Game?\n\n> Enter [y] or [n]:\n{globalvars.globalvars._textborder}\n> ')
         match startPrompt.lower():
             case 'y'|'yes':
                 _openValheim()
@@ -318,7 +317,7 @@ def _patch(patchDir: PathLike | str, targetDir: PathLike | str, patch_version: i
     try:
         logger.info(f'Patching BepInEx build {patch_version} to location: {targetDir}...\n')
         copytree(patchDir, targetDir, dirs_exist_ok=True)
-        unlink(f'{globals.p_targetDir}/.gitkeep')
+        unlink(f'{globalvars.globalvars.p_targetDir}/.gitkeep')
         load(
             f'\nPatching BepInEx build {patch_version} to location: {targetDir}',
             f'Patch build {patch_version} successfully installed!')
@@ -336,10 +335,10 @@ def _UpdatePatcher():
     :return: most recent release/build patch files.
     :rtype: None
     """
-    DL.dl_stable(globals.url_stable)
-    DL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{globals.b_stable}.zip', True)
-    DL.dl_dev(globals.url_dev)
-    DL._unzip_patch(f'./patch-files/development/BepInEx_dev_{globals.b_dev}.zip', False)
+    DL.dl_stable(globalvars.globalvars.url_stable)
+    DL._unzip_patch(f'./patch-files/stable/BepInEx_stable_{globalvars.globalvars.b_stable}.zip', True)
+    DL.dl_dev(globalvars.globalvars.url_dev)
+    DL._unzip_patch(f'./patch-files/development/BepInEx_dev_{globalvars.globalvars.b_dev}.zip', False)
 
     logger.info('Completed Patcher Update!\n>> Patches ready for deployment!\n')
     print('\nCompleted Patcher Update!\n>> Patches ready for deployment!\n')
@@ -357,7 +356,7 @@ def _exitPatcher() -> None | NoReturn:
     :return: Exits application.
     :rtype: None | NoReturn
     """
-    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n{globals._textborder}\n')
+    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n{globalvars.globalvars._textborder}\n')
     return ex()
 
 

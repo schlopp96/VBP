@@ -6,8 +6,7 @@ from zipfile import ZipFile
 import tqdm
 import applogger.applogger
 import requests
-from globals import *
-
+import globalvars.globalvars
 
 
 logger = applogger.applogger._LogGenerator('downloader')
@@ -37,7 +36,7 @@ class _Downloader:
                 file_size = int(rq.headers.get('Content-Length'))
                 chunk_size = 1024  # 1 MB
                 num_bars = file_size // chunk_size
-                with open(f'./patch-files/stable/BepInEx_stable_{globals.b_stable}.zip', 'wb') as patch_stable:
+                with open(f'./patch-files/stable/BepInEx_stable_{globalvars.globalvars.b_stable}.zip', 'wb') as patch_stable:
                     for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size), total=num_bars, unit='KB', desc='Downloading Stable Release', file=sys.stdout):
                         patch_stable.write(chunk)
                     logger.info(f'Completed BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n')
@@ -70,7 +69,7 @@ class _Downloader:
                 file_size = int(rq.headers.get('Content-Length'))
                 chunk_size = 1024  # 1 MB
                 num_bars = file_size // chunk_size
-                with open(f'./patch-files/development/BepInEx_dev_{globals.b_dev}.zip', 'wb') as patch_dev:
+                with open(f'./patch-files/development/BepInEx_dev_{globalvars.globalvars.b_dev}.zip', 'wb') as patch_dev:
                     for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size), total=num_bars, unit='KB', desc='Downloading Dev-Build', file=sys.stdout):
                         patch_dev.write(chunk)
                     logger.info(f'Completed BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n')
@@ -109,12 +108,12 @@ class _Downloader:
                 with ZipFile(filename) as archive:
                         archive.extractall(path='./patch-files/stable')
                 os.unlink('./patch-files/stable/doorstop_config.ini')
-                os.unlink(f'./patch-files/stable/BepInEx_stable_{globals.b_stable}.zip')
+                os.unlink(f'./patch-files/stable/BepInEx_stable_{globalvars.globalvars.b_stable}.zip')
             else:
                 with ZipFile(filename) as archive:
                     archive.extractall(path='./patch-files/development')
                 os.unlink('./patch-files/development/doorstop_config.ini')
-                os.unlink(f'./patch-files/development/BepInEx_dev_{globals.b_dev}.zip')
+                os.unlink(f'./patch-files/development/BepInEx_dev_{globalvars.globalvars.b_dev}.zip')
 
             logger.info('Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
             print('\nSuccessfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n')
