@@ -96,7 +96,7 @@ def _verify_stable(url):
     """
     logger.info(f'Validating stable-build {globalvars.globalvars.b_stable} patch files...\n')
 
-    stable_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/0Harmony.dll', 'BepInEx/core/0Harmony.xml', 'BepInEx/core/0Harmony20.dll', 'BepInEx/core/BepInEx.dll', 'BepInEx/core/BepInEx.Harmony.dll', 'BepInEx/core/BepInEx.Harmony.xml', 'BepInEx/core/BepInEx.Preloader.dll', 'BepInEx/core/BepInEx.Preloader.xml', 'BepInEx/core/BepInEx.xml', 'BepInEx/core/HarmonyXInterop.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/MonoMod.RuntimeDetour.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/MonoMod.Utils.xml']]
+    stable_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['0Harmony.dll', '0Harmony.xml', '0Harmony20.dll', 'BepInEx.dll', 'BepInEx.Harmony.dll', 'BepInEx.Harmony.xml', 'BepInEx.Preloader.dll', 'BepInEx.Preloader.xml', 'BepInEx.xml', 'HarmonyXInterop.dll', 'Mono.Cecil.dll', 'Mono.Cecil.Mdb.dll', 'Mono.Cecil.Pdb.dll', 'Mono.Cecil.Rocks.dll', 'MonoMod.RuntimeDetour.dll', 'MonoMod.RuntimeDetour.xml', 'MonoMod.Utils.dll', 'MonoMod.Utils.xml']]
 
     stable_match: bool = False
 
@@ -104,8 +104,7 @@ def _verify_stable(url):
 
     try:
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/stable', topdown=True))
-
-        if found.sort() == stable_files.sort():
+        if found == stable_files:
             stable_match = True
             logger.info(f'Stable-build {globalvars.globalvars.b_stable} patch files verified successfully!\n')
 
@@ -135,7 +134,8 @@ def _verify_dev(url):
     """
     logger.info(f'Validating development patch {globalvars.globalvars.b_dev} files...\n')
 
-    dev_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/BepInEx.Core.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/BepInEx.Unity.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/BepInEx.Preloader.Unity.dll', 'BepInEx/core/BepInEx.Preloader.Core.xml', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/SemanticVersioning.dll', 'BepInEx/core/BepInEx.Core.dll', 'BepInEx/core/BepInEx.Preloader.Unity.xml', 'BepInEx/core/BepInEx.Unity.xml', 'BepInEx/core/BepInEx.Preloader.Core.dll']]
+    dev_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['0Harmony.dll', 'BepInEx.Core.dll', 'BepInEx.Core.xml', 'BepInEx.Preloader.Core.dll', 'BepInEx.Preloader.Core.xml', 'BepInEx.Preloader.Unity.dll', 'BepInEx.Preloader.Unity.xml', 'BepInEx.Unity.dll', 'BepInEx.Unity.xml', 'Mono.Cecil.dll', 'Mono.Cecil.Mdb.dll',
+'Mono.Cecil.Pdb.dll', 'Mono.Cecil.Rocks.dll', 'MonoMod.RuntimeDetour.dll', 'MonoMod.Utils.dll', 'SemanticVersioning.dll']]
 
     dev_match: bool = False
 
@@ -143,7 +143,7 @@ def _verify_dev(url):
 
     try:
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/development/', topdown=True))
-        if found.sort() == dev_files.sort():
+        if found == dev_files:
             dev_match = True
             logger.info(f'Development patch {globalvars.globalvars.b_dev} files verified successfully!\n')
 
