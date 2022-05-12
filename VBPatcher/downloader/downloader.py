@@ -1,23 +1,27 @@
 
+import msvcrt as m
 import os
 import sys
 from zipfile import ZipFile
 
-import tqdm
 import applogger.applogger
-import requests
 import globalvars.globalvars
+import requests
+import tqdm
 
-
-logger = applogger.applogger._LogGenerator('downloader')
+logger = applogger.applogger._LogGenerator(globalvars.globalvars._logFile)
 class _Downloader:
     """Wrapper containing patch-file update functionality.
 
     - Class Methods:
-        - `dl_stable(self) -> BufferedWriter`
+        - `dl_stable(self, url) -> BufferedWriter`
             - Download latest BepInEx stable release.
-        - `dl_dev(self) -> BufferedWriter`
+        - `dl_dev(self, url) -> BufferedWriter`
             - Download latest BepInEx development build.
+        - `unzip_patch(self, filename, stable) -> None`
+            - Unzip downloaded patch files before deleting patch `.zip` archive.
+        - `_UpdatePatcher(self) -> None`
+            - Process to retrieve latest available patch files using class methods.
     """
     def __init__(self) -> None:
         pass
@@ -121,3 +125,21 @@ class _Downloader:
         except Exception as err:
             logger.error(f'Encountered error while attempting to unzip archive...\n>> Exception: {err}\n')
             print(f'\nEncountered error while attempting to unzip archive...\n>> Exception: {err}\n')
+
+    def _UpdatePatcher(self) -> None:
+        """Process to retrieve latest available patch files using class methods.
+
+        ---
+
+        :return: most recent release/build patch files.
+        :rtype: None
+        """
+        self.dl_stable(globalvars.globalvars.url_stable)
+        self._unzip_patch(f'./patch-files/stable/BepInEx_stable_{globalvars.globalvars.b_stable}.zip', True)
+        self.dl_dev(globalvars.globalvars.url_dev)
+        self._unzip_patch(f'./patch-files/development/BepInEx_dev_{globalvars.globalvars.b_dev}.zip', False)
+
+        logger.info('Completed Patcher Update!\n>> Patches ready for deployment!\n')
+        print('\nCompleted Patcher Update!\n>> Patches ready for deployment!\n')
+        print('Press anything to continue...')
+        m.getch()
