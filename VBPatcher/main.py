@@ -16,8 +16,6 @@ from validation.validation import _Validate
 
 chdir(dirname(__file__))
 
-# Declare global classes containing important methods and patch-install destinations:
-
 __version__: str = '0.6.0'
 
 logger = _LogGenerator(globalvars.globalvars._logFile)
