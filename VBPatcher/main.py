@@ -115,6 +115,7 @@ class _LogGenerator():
 
 logger = _LogGenerator(_logFile)
 
+
 class _Downloader:
     """Wrapper containing patch-file update functionality.
 
@@ -246,8 +247,8 @@ def _start_checks() -> None:
         return _exitPatcher()
 
 
-def VBPatcher() -> None | NoReturn:
-    """Program entry point.
+def main() -> None | NoReturn:
+    """Program entry point function.
 
     ---
 
@@ -569,4 +570,4 @@ def _exitPatcher() -> None | NoReturn:
 
 
 if __name__ == '__main__':
-    VBPatcher()
+    main()
