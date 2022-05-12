@@ -27,7 +27,7 @@ Validations = _Validate()
 
 #$ ====================================================================================================== $#
 
-def VBPatcher() -> None | NoReturn:
+def main() -> None | NoReturn:
     """Program entry point.
 
     ---
@@ -65,4 +65,4 @@ def VBPatcher() -> None | NoReturn:
         return _exitPatcher()
 
 if __name__ == '__main__':
-    VBPatcher()
+    main()

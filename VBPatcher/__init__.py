@@ -1,1 +1,1 @@
-from .main import VBPatcher as vbp
+from .main import main as vbp
