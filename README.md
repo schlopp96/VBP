@@ -6,9 +6,15 @@
 
 ## About
 
-- The Valheim BepInEx Patcher _**(VBPatcher)**_ is a CLI program created to solve the weird automatic version downgrading issue of the BepInEx modding tool while using the Vortex modding tool.
+- **V**alheim **B**epInEx **P**atcher is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx) to its latest release (whether LTS or experimental).
 
-- For me, this is generally caused by the Vortex mod manager automatically downloading what it incorrectly perceives to be the "latest" version of BepInEx.
+- **VBP** was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://) modding tool to mod the game **Valheim**, whilst having **BepInEx** installed.
+
+  - When opening **Vortex** to begin modding Valheim, the modding tool automatically downloads what it _incorrectly_ perceives to be the "latest" version of **BepInEx** (a necessary requirement for the vast majority of mods available) which is generally incorrect, and often takes a long time to be fixed.
+
+  - Unfortunately, this means if you were using an experimental/newer/different build of **BepInEx**, it has been overwritten by whatever build **Vortex** installed.
+
+  - This occurs _each and every time_ you open **Vortex**, and became a major annoyance for me, so I decided to create a quick solution to make this problem less annoying.
 
 ---
 
@@ -34,25 +40,33 @@
 
 ## Usage
 
-- Make sure you **do not** have Vortex, Thunderstore, or any other modding tools running, and that you are done with any modding processes.
+- Make sure you **do not** have **Vortex**, **Thunderstore**, or any other modding tools running, and that you are done with any modding processes.
 
 - Each time your modding tool is opened to edit Valheim, your files will be downgraded again, so **I highly recommend running this script every time before playing!**
 
-1. Open the script, which can be found inside the downloaded folder here: `~/VBPatcher/main.py`.
+1. Open the application, which can be run within a terminal using the following command:
 
-2. Once the script is run, you will be prompted to choose whether to install the latest available build, the latest available stable version of BepInEx patch, or _both_ to ensure the latest possible build available. You may also choose to check for new BepInEx patch releases.
+   - **`> start_vbp`**
+   - You can also run **VBP** from the main program file:
+   - `~/VBPatcher/main.py`.
+
+2. Once the script is run, you will be presented with an option menu, allowing you to choose whether to:
+
+   - Patch **BepInEx** to the latest developmental/experimental "bleeding-edge" build
+   - Patch **BepInEx** to the latest stable release
+   - Patch **BepInEx** first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation
+   - Check to ensure required patch-files are present and ready to be deployed (is also done at start of program, but I decided to leave this option in for now)
+   - Check for and download new releases/builds of **BepInEx** _**(COMING SOON!)**_
 
 3. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
 
-4. For example, once the option to apply a patch is confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
+   - For example, once the option to apply a patch is confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
 
-5. Upon successful patching, the script will ask the user if they'd like to open the game, or simply exit the patcher.
+4. Upon successful patching, the script will ask the user if they'd like to start **Valheim**, or simply exit the patcher.
 
-6. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
+5. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
 
-7. If you choose to NOT run the game, the patcher will then close itself.
-
-- Works with both Vulkan and the default graphics API.
+6. If you choose to **NOT** run the game, the patcher simply closes itself.
 
 - **_NOTE:_**
 
@@ -66,15 +80,19 @@
 
 ---
 
-- Within a python environment, open VBPatcher with:
+- Within a terminal, open **VBP** with the following command:
+
+  ```text
+  > start_vbp
+  ```
+
+- Or optionally within a python environment:
 
   ```python
   >>> import VBPatcher # Import package
   >>> VBPatcher.vbp()  # Call method to open program
 
   ```
-
-- Or optionally:
 
   ```python
     >>> from VBPatcher import vbp
@@ -129,6 +147,7 @@
   ```
 
 ---
+
 ---
 
 ## How It Works
