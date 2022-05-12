@@ -17,14 +17,19 @@ setup(
     long_description=readme,
     long_description_content_type='text/markdown',
     packages=find_packages(),
+    entry_points={'console_scripts': ['start_vbp=VBPatcher.VBPatcher:main']},
     include_package_data=True,
     install_requires=[reqs],
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 2 - Pre-Alpha",
         "Environment :: Console",
+        "Operating System :: Microsoft :: Windows",
         "Intended Audience :: End Users/Desktop",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Topic :: Utilities",
@@ -32,5 +37,5 @@ setup(
     keywords=[
         'python,'
         'Valheim', 'BepInEx', 'patcher', 'mods', 'nexus', 'vbp', 'stable',
-        'bleeding', ' edge', 'VBPatcher'
+        'bleeding', ' edge', 'VBPatcher', 'vortex'
     ])
