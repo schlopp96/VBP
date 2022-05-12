@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logging
 import msvcrt as m
 import os
 import sys
@@ -28,7 +29,7 @@ p_dev: str = r'.\patch-files\development'
 url_dev = 'https://builds.bepinex.dev/projects/bepinex_be/562/BepInEx_UnityMono_x64_7a97bdd_6.0.0-be.562.zip'
 b_dev: str = url_dev[73:80]  # build number
 
-p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
+targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'
 
 _logFile: str = r'.\logs\patchLog.log'
 
@@ -40,7 +41,6 @@ __version__: str = '0.6.0'
 
 
 #$ ====================================================================================================== $#
-import logging
 
 
 class _LogGenerator():
@@ -294,7 +294,18 @@ def _verify_stable(url):
     """
     logger.info(f'Validating stable-build {b_stable} patch files...\n')
 
-    stable_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/0Harmony.dll', 'BepInEx/core/0Harmony.xml', 'BepInEx/core/0Harmony20.dll', 'BepInEx/core/BepInEx.dll', 'BepInEx/core/BepInEx.Harmony.dll', 'BepInEx/core/BepInEx.Harmony.xml', 'BepInEx/core/BepInEx.Preloader.dll', 'BepInEx/core/BepInEx.Preloader.xml', 'BepInEx/core/BepInEx.xml', 'BepInEx/core/HarmonyXInterop.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/MonoMod.RuntimeDetour.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/MonoMod.Utils.xml']]
+    stable_files: list = [
+            ['.gitkeep', 'changelog.txt', 'winhttp.dll'], [],
+            [
+                '0Harmony.dll', '0Harmony.xml', '0Harmony20.dll',
+                'BepInEx.dll', 'BepInEx.Harmony.dll', 'BepInEx.Harmony.xml',
+                'BepInEx.Preloader.dll', 'BepInEx.Preloader.xml',
+                'BepInEx.xml', 'HarmonyXInterop.dll', 'Mono.Cecil.dll',
+                'Mono.Cecil.Mdb.dll', 'Mono.Cecil.Pdb.dll',
+                'Mono.Cecil.Rocks.dll', 'MonoMod.RuntimeDetour.dll',
+                'MonoMod.RuntimeDetour.xml', 'MonoMod.Utils.dll',
+                'MonoMod.Utils.xml'
+            ]]
 
     stable_match: bool = False
 
@@ -302,8 +313,7 @@ def _verify_stable(url):
 
     try:
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/stable', topdown=True))
-
-        if found.sort() == stable_files.sort():
+        if found == stable_files:
             stable_match = True
             logger.info(f'Stable-build {b_stable} patch files verified successfully!\n')
 
@@ -333,7 +343,7 @@ def _verify_dev(url):
     """
     logger.info(f'Validating development patch {b_dev} files...\n')
 
-    dev_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['BepInEx/core/MonoMod.RuntimeDetour.dll', 'BepInEx/core/BepInEx.Core.xml', 'BepInEx/core/MonoMod.Utils.dll', 'BepInEx/core/0Harmony.dll', 'BepInEx/core/BepInEx.Unity.dll', 'BepInEx/core/Mono.Cecil.Pdb.dll', 'BepInEx/core/BepInEx.Preloader.Unity.dll', 'BepInEx/core/BepInEx.Preloader.Core.xml', 'BepInEx/core/Mono.Cecil.Mdb.dll', 'BepInEx/core/Mono.Cecil.dll', 'BepInEx/core/Mono.Cecil.Rocks.dll', 'BepInEx/core/SemanticVersioning.dll', 'BepInEx/core/BepInEx.Core.dll', 'BepInEx/core/BepInEx.Preloader.Unity.xml', 'BepInEx/core/BepInEx.Unity.xml', 'BepInEx/core/BepInEx.Preloader.Core.dll']]
+    dev_files: list = [['.gitkeep', 'changelog.txt', 'winhttp.dll'], [], ['0Harmony.dll', 'BepInEx.Core.dll', 'BepInEx.Core.xml', 'BepInEx.Preloader.Core.dll', 'BepInEx.Preloader.Core.xml', 'BepInEx.Preloader.Unity.dll', 'BepInEx.Preloader.Unity.xml', 'BepInEx.Unity.dll', 'BepInEx.Unity.xml', 'Mono.Cecil.dll', 'Mono.Cecil.Mdb.dll', 'Mono.Cecil.Pdb.dll', 'Mono.Cecil.Rocks.dll', 'MonoMod.RuntimeDetour.dll', 'MonoMod.Utils.dll', 'SemanticVersioning.dll']]
 
     dev_match: bool = False
 
@@ -341,7 +351,7 @@ def _verify_dev(url):
 
     try:
         found.extend(file for (root, dirs, file) in os.walk('./patch-files/development/', topdown=True))
-        if found.sort() == dev_files.sort():
+        if found == dev_files:
             dev_match = True
             logger.info(f'Development patch {b_dev} files verified successfully!\n')
 
@@ -372,11 +382,11 @@ def _patch_stable() -> None | NoReturn:
     while True:
         logger.info(f'Prompting user for installation of BepInEx stable release {b_dev} patch...')
         confirmStable: str = input(
-            f'\nReally patch BepInEx to latest stable-release {b_stable} in location:\n\n>> "{p_targetDir}"?\n\n> Enter [y] or [n]:\n{_textborder}\n> '
+            f'\nReally patch BepInEx to latest stable-release {b_stable} in location:\n\n>> "{targetDir}"?\n\n> Enter [y] or [n]:\n{_textborder}\n> '
         )
         match confirmStable.lower():
             case 'yes'|'y':
-                _patch(p_stable, p_targetDir, b_stable)
+                _patch(p_stable, targetDir, b_stable)
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -400,11 +410,11 @@ def _patch_dev() -> None | NoReturn:
     while True:
         logger.info(f'Prompting user for installation of BepInEx development build {b_dev} patch...')
         confirmLatest: str = input(
-            f'\nReally patch BepInEx to latest development build {b_dev} in location:\n\n>> "{p_targetDir}"?\n\n> Enter [y] or [n]:\n{_textborder}\n> '
+            f'\nReally patch BepInEx to latest development build {b_dev} in location:\n\n>> "{targetDir}"?\n\n> Enter [y] or [n]:\n{_textborder}\n> '
         )
         match confirmLatest.lower():
             case 'yes'|'y':
-                _patch(p_dev, p_targetDir, b_dev)
+                _patch(p_dev, targetDir, b_dev)
                 _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -432,8 +442,8 @@ def _patch_full() -> None | bool:
         )
         match confirmFull.lower():
             case 'yes'|'y':
-                _patch(p_stable, p_targetDir, b_stable)
-                _patch(p_dev, p_targetDir, b_dev)
+                _patch(p_stable, targetDir, b_stable)
+                _patch(p_dev, targetDir, b_dev)
                 return _startPrompt()
             case 'n'|'no':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -515,7 +525,7 @@ def _patch(patchDir: PathLike | str, targetDir: PathLike | str, patch_version: i
     try:
         logger.info(f'Patching BepInEx build {patch_version} to location: {targetDir}...\n')
         copytree(patchDir, targetDir, dirs_exist_ok=True)
-        unlink(f'{p_targetDir}/.gitkeep')
+        unlink(f'{targetDir}/.gitkeep')
         load(
             f'\nPatching BepInEx build {patch_version} to location: {targetDir}',
             f'Patch build {patch_version} successfully installed!')
