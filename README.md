@@ -48,7 +48,7 @@
 
    - **`> start_vbp`**
    - You can also run **VBP** from the main program file:
-   - `~/VBPatcher/main.py`.
+     - `~/VBPatcher/main.py`.
 
 2. Once the script is run, you will be presented with an option menu, allowing you to choose whether to:
 
@@ -76,9 +76,29 @@
 
   - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
-### Opening VBPatcher
+---
+
+### How It Works
+
+- **VBP** functions by simply copying the relevant patch files & places/overwrites core files responsible for the BepInEx version downgrade.
+
+- The patch files will all be placed in either one of two potential locations within Valheim's install directory
+
+- The location of the game's install directory is different depending on the operating system of the user.
+
+  - For _Windows_, the default install path for Valheim is:
+
+    - `C:\Program Files (x86)\Steam\steamapps\common\Valheim`
+
+  - For _MacOS_, the default install path for Valheim is:
+    - `~/Library/Application Support/Steam/steamapps/common/Valheim`
+
+- Patches will be applied to the BepInEx folder, itself found within the game's installation folder:
+  - `~/Steam/steamapps/common/Valheim/BepInEx`.
 
 ---
+
+### Opening VBPatcher
 
 - Within a terminal, open **VBP** with the following command:
 
@@ -95,8 +115,8 @@
   ```
 
   ```python
-    >>> from VBPatcher import vbp
-    >>> vbp()
+    >>> from VBPatcher import vbp # Import package
+    >>> vbp() # Call method to open program
   ```
 
 - Example output from VBPatcher installing the stable version of BepInEx before installing the latest experimental patch build [option 3 in the program]:
@@ -145,27 +165,6 @@
 
   Preparing to exit...
   ```
-
----
-
----
-
-## How It Works
-
-- The script simply copies the relevant patch files & places/overwrites core files responsible for the BepInEx version downgrade.
-
-- The patch files will all be placed in either one of two potential locations within Valheim's install directory
-
-- The location of the game's install directory is different depending on the operating system of the user.
-
-  - For _Windows_, the default install path for Valheim is:
-
-    - `C:\Program Files (x86)\Steam\steamapps\common\Valheim`
-
-  - For _MacOS_, the default install path for Valheim is:
-    - `~/Library/Application Support/Steam/steamapps/common/Valheim`
-
-- Patches will be applied to the BepInEx folder, itself found within the game's installation folder: `~/Steam/steamapps/common/Valheim/BepInEx`.
 
 ---
 
