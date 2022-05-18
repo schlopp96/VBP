@@ -8,7 +8,7 @@
 
 - _**V**alheim **B**epInEx **P**atcher_ is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx) to its latest release (whether LTS or experimental).
 
-- _**VBPatcher**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
+- _**VBPatcher**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://www.nexusmods.com/site/mods/1) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
 
   - When opening **_Vortex_** to begin modding **_Valheim_**, the modding tool automatically downloads what it _incorrectly_ perceives to be the "latest" version of _**BepInEx**_ (a necessary requirement for the vast majority of mods available) which is generally incorrect, and often takes a long time to be fixed.
 
