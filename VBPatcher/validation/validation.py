@@ -1,13 +1,13 @@
 import os
 
-import applogger.applogger
-import downloader.downloader
-import globalvars.globalvars
+import VBPatcher.applogger.applogger
+import VBPatcher.downloader.downloader
+import VBPatcher.globalvars.globalvars
 from PyLoadBar import load
-from subprocessing.subprocessing import _exitPatcher
+from VBPatcher.subprocessing.subprocessing import _exitPatcher
 
-logger = applogger.applogger._LogGenerator(globalvars.globalvars._logFile)
-DL = downloader.downloader._Downloader()
+logger = VBPatcher.applogger.applogger._LogGenerator(VBPatcher.globalvars.globalvars._logFile)
+DL = VBPatcher.downloader.downloader._Downloader()
 
 
 class _Validate:
@@ -31,7 +31,7 @@ class _Validate:
         :rtype: bool
         """
         logger.info(
-            f'Validating stable-build {globalvars.globalvars.b_stable} patch files...\n'
+            f'Validating stable-build {VBPatcher.globalvars.globalvars.b_stable} patch files...\n'
         )
 
         stable_files: list = [
@@ -60,20 +60,20 @@ class _Validate:
             if found == stable_files:
                 stable_match = True
                 logger.info(
-                    f'Stable-build {globalvars.globalvars.b_stable} patch files verified successfully!\n'
+                    f'Stable-build {VBPatcher.globalvars.globalvars.b_stable} patch files verified successfully!\n'
                 )
 
             else:
                 logger.info(
-                    f'Unable to verify stable patch {globalvars.globalvars.b_stable} files...\n>> Attempting to download...\n'
+                    f'Unable to verify stable patch {VBPatcher.globalvars.globalvars.b_stable} files...\n>> Attempting to download...\n'
                 )
                 DL.dl_stable(url)
                 DL._unzip_patch(
-                    f'./patch-files/stable/BepInEx_stable_{globalvars.globalvars.b_stable}.zip',
+                    f'./patch-files/stable/BepInEx_stable_{VBPatcher.globalvars.globalvars.b_stable}.zip',
                     True)
                 stable_match = True
                 logger.info(
-                    f'Successfully downloaded stable-build {globalvars.globalvars.b_stable} patch files!\n'
+                    f'Successfully downloaded stable-build {VBPatcher.globalvars.globalvars.b_stable} patch files!\n'
                 )
             return stable_match
 
@@ -95,7 +95,7 @@ class _Validate:
         :rtype: bool
         """
         logger.info(
-            f'Validating development patch {globalvars.globalvars.b_dev} files...\n'
+            f'Validating development patch {VBPatcher.globalvars.globalvars.b_dev} files...\n'
         )
 
         dev_files: list = [
@@ -122,20 +122,20 @@ class _Validate:
             if found == dev_files:
                 dev_match = True
                 logger.info(
-                    f'Development patch {globalvars.globalvars.b_dev} files verified successfully!\n'
+                    f'Development patch {VBPatcher.globalvars.globalvars.b_dev} files verified successfully!\n'
                 )
 
             else:
                 logger.info(
-                    f'Unable to verify development patch {globalvars.globalvars.b_dev} files...\n>> Attempting to download...\n'
+                    f'Unable to verify development patch {VBPatcher.globalvars.globalvars.b_dev} files...\n>> Attempting to download...\n'
                 )
                 DL.dl_dev(url)
                 DL._unzip_patch(
-                    f'./patch-files/development/BepInEx_dev_{globalvars.globalvars.b_dev}.zip',
+                    f'./patch-files/development/BepInEx_dev_{VBPatcher.globalvars.globalvars.b_dev}.zip',
                     False)
                 dev_match = True
                 logger.info(
-                    f'Successfully downloaded development patch {globalvars.globalvars.b_dev} files!\n'
+                    f'Successfully downloaded development patch {VBPatcher.globalvars.globalvars.b_dev} files!\n'
                 )
             return dev_match
 
@@ -157,8 +157,8 @@ class _Validate:
         logger.info('Checking for application BepInEx patch files...\n')
 
         if self._verify_stable(
-                globalvars.globalvars.url_stable) and self._verify_dev(
-                    globalvars.globalvars.url_dev):
+                VBPatcher.globalvars.globalvars.url_stable) and self._verify_dev(
+                    VBPatcher.globalvars.globalvars.url_dev):
             logger.info('Successfully verified BepInEx patch files!\n')
         else:
             logger.info(

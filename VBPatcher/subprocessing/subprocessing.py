@@ -3,11 +3,11 @@ from sys import exit as ex
 from time import sleep
 from typing import NoReturn
 
-import applogger.applogger
-import globalvars.globalvars
+import VBPatcher.applogger.applogger
+import VBPatcher.globalvars.globalvars
 from PyLoadBar import load
 
-logger = applogger.applogger._LogGenerator(globalvars.globalvars._logFile)
+logger = VBPatcher.applogger.applogger._LogGenerator(VBPatcher.globalvars.globalvars._logFile)
 
 def _startPrompt() -> NoReturn | None:
     """Prompt user to decide whether to start Valheim immediately after program exit or not.
@@ -20,7 +20,7 @@ def _startPrompt() -> NoReturn | None:
     while True:
         logger.info('Displaying start game prompt...')
         startPrompt: str = input(
-            f'\nStart Game?\n\n> Enter [y] or [n]:\n{globalvars.globalvars._textborder}\n> ')
+            f'\nStart Game?\n\n> Enter [y] or [n]:\n{VBPatcher.globalvars.globalvars._textborder}\n> ')
         match startPrompt.lower():
             case 'y'|'yes':
                 _openValheim()
@@ -67,5 +67,5 @@ def _exitPatcher() -> None | NoReturn:
     :return: Exits application.
     :rtype: None | NoReturn
     """
-    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n{globalvars.globalvars._textborder}\n')
+    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n{VBPatcher.globalvars.globalvars._textborder}\n')
     return ex()
