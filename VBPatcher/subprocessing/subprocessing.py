@@ -3,11 +3,11 @@ from sys import exit as ex
 from time import sleep
 from typing import NoReturn
 
-import VBPatcher.applogger.applogger
+import PyLoadBar
 import VBPatcher.globalvars.globalvars
-from PyLoadBar import load
+from VBPatcher.applogger.applogger import logger
 
-logger = VBPatcher.applogger.applogger._LogGenerator(VBPatcher.globalvars.globalvars._logFile)
+bar = PyLoadBar.PyLoadBar()
 
 def _startPrompt() -> NoReturn | None:
     """Prompt user to decide whether to start Valheim immediately after program exit or not.
@@ -27,7 +27,7 @@ def _startPrompt() -> NoReturn | None:
                 return _exitPatcher()
             case 'n'|'no':
                 logger.info('Patching process successfully completed!\n>> Preparing to exit...\n')
-                load('\nPatching process successfully completed',
+                bar.load('\nPatching process successfully completed',
                      '\nPreparing to exit...', enable_display=False)
                 return _exitPatcher()
             case _:
@@ -51,7 +51,7 @@ def _openValheim() -> int | None:
     """
     try:
         logger.info('Starting Valheim...\n\n')
-        load("\nStarting Game", "Opening Valheim...")
+        bar.load("\nStarting Game", "Opening Valheim...", enable_display=False)
         return call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970", timeout=10)
     except TimeoutExpired as exp:
         logger.error(f'Something went wrong... Having trouble starting game...\n>> {exp}\n')

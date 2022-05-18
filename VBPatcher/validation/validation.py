@@ -1,22 +1,27 @@
 import os
 
-import VBPatcher.applogger.applogger
+import PyLoadBar
 import VBPatcher.downloader.downloader
 import VBPatcher.globalvars.globalvars
-from PyLoadBar import load
+from VBPatcher.applogger.applogger import logger
 from VBPatcher.subprocessing.subprocessing import _exitPatcher
 
-logger = VBPatcher.applogger.applogger._LogGenerator(VBPatcher.globalvars.globalvars._logFile)
 DL = VBPatcher.downloader.downloader._Downloader()
+bar = PyLoadBar.PyLoadBar()
 
 
 class _Validate:
     """Wrapper for validation of required BepInEx patch files.
 
-    Contains the following methods:
-        - `_verify_dev`: verifies presence of BepInEx dev release patch files.
-        - `_verify_stable`: verifies presence of BepInEx stable release patch files.
-        - `_start_checks`: verifies presence of all BepInEx patch-files upon start.
+    - Class methods:
+        - `_verify_stable(self, url) -> bool`
+            - Verify presence of BepInEx stable release patch files.
+
+        - `_verify_dev(self, url) -> bool:`
+            - Verify presence of BepInEx dev build patch files.
+
+        - `_start_checks(self) -> None`
+            - Verify presence of all BepInEx patch files.
     """
 
     def __init__(self):
@@ -67,7 +72,7 @@ class _Validate:
                 logger.info(
                     f'Unable to verify stable patch {VBPatcher.globalvars.globalvars.b_stable} files...\n>> Attempting to download...\n'
                 )
-                DL.dl_stable(url)
+                DL._dl_stable(url)
                 DL._unzip_patch(
                     f'./patch-files/stable/BepInEx_stable_{VBPatcher.globalvars.globalvars.b_stable}.zip',
                     True)
@@ -129,7 +134,7 @@ class _Validate:
                 logger.info(
                     f'Unable to verify development patch {VBPatcher.globalvars.globalvars.b_dev} files...\n>> Attempting to download...\n'
                 )
-                DL.dl_dev(url)
+                DL._dl_dev(url)
                 DL._unzip_patch(
                     f'./patch-files/development/BepInEx_dev_{VBPatcher.globalvars.globalvars.b_dev}.zip',
                     False)
@@ -163,7 +168,7 @@ class _Validate:
         else:
             logger.info(
                 'One or more patch files were not able to be verified...')
-            load('ERROR: One or more patch files were not able to be verified',
+            bar.load('ERROR: One or more patch files were not able to be verified',
                  'Exiting Patcher',
                  enable_display=False)
             return _exitPatcher()

@@ -4,29 +4,32 @@ import os
 import sys
 from zipfile import ZipFile
 
-import VBPatcher.applogger.applogger
-import VBPatcher.globalvars.globalvars
 import requests
 import tqdm
+import VBPatcher.globalvars.globalvars
+from VBPatcher.applogger.applogger import logger
 
-logger = VBPatcher.applogger.applogger._LogGenerator(VBPatcher.globalvars.globalvars._logFile)
+
 class _Downloader:
     """Wrapper containing patch-file update functionality.
 
     - Class Methods:
         - `dl_stable(self, url) -> BufferedWriter`
             - Download latest BepInEx stable release.
+
         - `dl_dev(self, url) -> BufferedWriter`
             - Download latest BepInEx development build.
+
         - `unzip_patch(self, filename, stable) -> None`
             - Unzip downloaded patch files before deleting patch `.zip` archive.
+
         - `_UpdatePatcher(self) -> None`
             - Process to retrieve latest available patch files using class methods.
     """
     def __init__(self) -> None:
         pass
 
-    def dl_stable(self, url):
+    def _dl_stable(self, url):
         """Download zip containing latest BepInEx stable release.
 
         :return: zip archive containing patch files.
@@ -60,7 +63,7 @@ class _Downloader:
                         print('\nCancelled update-check.\n')
                         break
 
-    def dl_dev(self, url):
+    def _dl_dev(self, url):
         """Download zip archive containing latest BepInEx development build.
 
         :return: zip archive containing patch files.
@@ -94,7 +97,7 @@ class _Downloader:
                         break
 
     def _unzip_patch(self, filename, stable: bool) -> None:
-        """Unzip downloaded patch files before deleting patch `.zip` archive.
+        """Unzip downloaded patch files and cleanup leftover files.
 
         ---
 
@@ -108,12 +111,13 @@ class _Downloader:
         logger.info('Unzipping patch files...')
         print('Unzipping patch files...')
         try:
-            if stable:
+            if stable: # Unzip stable release patch files
                 with ZipFile(filename) as archive:
                         archive.extractall(path='./patch-files/stable')
                 os.unlink('./patch-files/stable/doorstop_config.ini')
                 os.unlink(f'./patch-files/stable/BepInEx_stable_{VBPatcher.globalvars.globalvars.b_stable}.zip')
-            else:
+
+            else: # Unzip development build patch files
                 with ZipFile(filename) as archive:
                     archive.extractall(path='./patch-files/development')
                 os.unlink('./patch-files/development/doorstop_config.ini')
@@ -127,19 +131,22 @@ class _Downloader:
             print(f'\nEncountered error while attempting to unzip archive...\n>> Exception: {err}\n')
 
     def _UpdatePatcher(self) -> None:
-        """Process to retrieve latest available patch files using class methods.
+        """Retrieve latest available patch files.
 
         ---
 
-        :return: most recent release/build patch files.
+        :return: download most recent release/build patch files.
         :rtype: None
         """
-        self.dl_stable(VBPatcher.globalvars.globalvars.url_stable)
+        # Retrieve stable release patch files
+        self._dl_stable(VBPatcher.globalvars.globalvars.url_stable)
         self._unzip_patch(f'./patch-files/stable/BepInEx_stable_{VBPatcher.globalvars.globalvars.b_stable}.zip', True)
-        self.dl_dev(VBPatcher.globalvars.globalvars.url_dev)
+
+        # Retrieve development build patch files
+        self._dl_dev(VBPatcher.globalvars.globalvars.url_dev)
         self._unzip_patch(f'./patch-files/development/BepInEx_dev_{VBPatcher.globalvars.globalvars.b_dev}.zip', False)
 
         logger.info('Completed Patcher Update!\n>> Patches ready for deployment!\n')
         print('\nCompleted Patcher Update!\n>> Patches ready for deployment!\n')
         print('Press anything to continue...')
-        m.getch()
+        m.getch() # Wait for user to press any key to continue

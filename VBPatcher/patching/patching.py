@@ -3,58 +3,60 @@ from shutil import copytree
 from time import sleep
 from typing import NoReturn
 
-import VBPatcher.applogger.applogger
+import PyLoadBar
 import VBPatcher.globalvars.globalvars
-from PyLoadBar import load
+from VBPatcher.applogger.applogger import logger
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _startPrompt
 
-logger = VBPatcher.applogger.applogger._LogGenerator(VBPatcher.globalvars.globalvars._logFile)
-
+bar = PyLoadBar.PyLoadBar()
 
 class _Patcher:
     """Wrapper to handle patch functionality.
 
     - Contains the following patching methods:
+        - `_patch(self, patch_src: PathLike | str, patch_dst: PathLike | str, patch_ver: int | str) -> None`
+            - Install patch files (`patch_src`) to target directory (`patch_dst`).
+
         - `_patch_stable(self) -> None | NoReturn`
-            - Install latest BepInEx stable-build release version to local directory.
+            - Install latest BepInEx stable release version to target directory.
+
         - `_patch_dev(self) -> None | NoReturn`
-            - Install latest BepInEx development build version to local directory.
+            - Install latest BepInEx development build version to target directory.
+
         - `_patch_full() -> None | NoReturn`
             - Apply both available BepInEx patches in order of release (Stable -> Development).
-        - `_patch(self, patchDir: PathLike | str, targetDir: PathLike | str, patch_version: int | str) -> None`
-            - Apply patch files (`patchDir`) to target directory (`targetDir`).
     """
 
     def __init__(self):
         pass
 
-    def _patch(self, patchDir: PathLike | str, targetDir: PathLike | str, patch_version: int | str) -> None:
-        """Apply patch files (`patchDir`) to target directory (`targetDir`).
+    def _patch(self, patch_src: PathLike | str, patch_dst: PathLike | str, patch_ver: int | str) -> None:
+        """Apply patch files (`patch_src`) to target directory (`patch_dst`).
 
-        - WILL overwrite existing files.
+        - Overwrites any existing patch files.
 
         ---
 
-        :param patchDir: directory containing patch files.
-        :type patchDir: Any
-        :param targetDir: location of BepInEx install directory to install files.
-        :type targetDir: Any
-        :param patch_version: title of patch to be installed.
-        :type patch_version: Any
-        :return: patch BepInEx with files from desired version build.
+        :param patch_src: source directory containing patch files.
+        :type patch_src: Any
+        :param patch_dst: destination of patch files.
+        :type patch_dst: Any
+        :param patch_ver: version/title/build of patch.
+        :type patch_ver: Any
+        :return: transfer patch files from `patch_src` to `patch_dst`.
         :rtype: None
         """
         try:
-            logger.info(f'Patching BepInEx build {patch_version} to location: {targetDir}...\n')
-            copytree(patchDir, targetDir, dirs_exist_ok=True)
+            logger.info(f'Patching BepInEx build {patch_ver} to location: {patch_dst}...\n')
+            copytree(patch_src, patch_dst, dirs_exist_ok=True)
             unlink(f'{VBPatcher.globalvars.globalvars.p_targetDir}/.gitkeep')
-            load(
-                f'\nPatching BepInEx build {patch_version} to location: {targetDir}',
-                f'Patch build {patch_version} successfully installed!')
-            logger.info(f'Patch build {patch_version} successfully installed!\n')
+            bar.load(
+                f'\nPatching BepInEx build {patch_ver} to location: {patch_dst}',
+                f'Patch build {patch_ver} successfully installed!', label='Patching')
+            logger.info(f'Patch build {patch_ver} successfully installed!\n')
         except Exception as exc:
-            logger.error(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_version} to location: {targetDir}...\n')
-            print(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_version} to location: {targetDir}...')
+            logger.error(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n')
+            print(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...')
 
     def _patch_stable(self) -> None | NoReturn:
         """Install latest BepInEx stable-build release version to local directory.
@@ -75,7 +77,7 @@ class _Patcher:
                     _startPrompt()
                 case 'n'|'no':
                     logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-                    load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
+                    bar.load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                     return _exitPatcher()
                 case _:
                     logger.warning(f'Invalid Input: "{confirmStable}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
@@ -103,7 +105,7 @@ class _Patcher:
                     _startPrompt()
                 case 'n'|'no':
                     logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-                    load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
+                    bar.load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                     return _exitPatcher()
                 case _:
                     logger.warning(f'Invalid Input: "{confirmLatest}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')
@@ -113,7 +115,7 @@ class _Patcher:
 
 
     def _patch_full(self) -> None | bool:
-        """Apply both available BepInEx patches in order of release (Stable -> Development).
+        """Apply both stable and dev BepInEx patches in order of release (Stable -> Development).
 
         ---
 
@@ -132,7 +134,7 @@ class _Patcher:
                     return _startPrompt()
                 case 'n'|'no':
                     logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-                    load('\n>> BepInEx patching process cancelled', '>> Preparing to exit...', enable_display=False)
+                    bar.load('\n>> BepInEx patching process cancelled', '>> Preparing to exit...', enable_display=False)
                     return _exitPatcher()
                 case _:
                     logger.warning(f'Invalid Input: "{confirmFull}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n')

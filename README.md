@@ -6,15 +6,15 @@
 
 ## About
 
-- **V**alheim **B**epInEx **P**atcher is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx) to its latest release (whether LTS or experimental).
+- _**V**alheim **B**epInEx **P**atcher_ is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx) to its latest release (whether LTS or experimental).
 
-- **VBP** was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://) modding tool to mod the game **Valheim**, whilst having **BepInEx** installed.
+- _**VBPatcher**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
 
-  - When opening **Vortex** to begin modding Valheim, the modding tool automatically downloads what it _incorrectly_ perceives to be the "latest" version of **BepInEx** (a necessary requirement for the vast majority of mods available) which is generally incorrect, and often takes a long time to be fixed.
+  - When opening **_Vortex_** to begin modding **_Valheim_**, the modding tool automatically downloads what it _incorrectly_ perceives to be the "latest" version of _**BepInEx**_ (a necessary requirement for the vast majority of mods available) which is generally incorrect, and often takes a long time to be fixed.
 
-  - Unfortunately, this means if you were using an experimental/newer/different build of **BepInEx**, it has been overwritten by whatever build **Vortex** installed.
+  - Unfortunately, this means if you were using an experimental/newer/different build of _**BepInEx**_, it has been overwritten by whatever build _**Vortex**_ installed.
 
-  - This occurs _each and every time_ you open **Vortex**, and became a major annoyance for me, so I decided to create a quick solution to make this problem less annoying.
+  - This occurs _each and every time_ you open _**Vortex**_, and became a major annoyance for me, so I decided to create a quick solution to make this problem less annoying.
 
 ---
 
@@ -22,10 +22,10 @@
 
 ### Using PIP _(Recommended)_
 
-- To install VBPatcher using `pip`, enter the following:
+- To install _**VBPatcher**_ using `pip`, enter the following:
 
   ```python
-  pip install VBPatcher
+    python -m pip install VBPatcher
   ```
 
 ### Manual Installation _(**NOT** Recommended)_
@@ -46,12 +46,12 @@
 
 1. Open the application, which can be run within a terminal using the following command:
 
-    ```psh
-      PS> vbpatcher
-    ```
+   ```psh
+    PS > vbpatcher
+   ```
 
-    - You can also run **VBP** from the main program file:
-      - `~/VBPatcher/main.py`.
+   - You can also run **VBP** from the main program file:
+     - `~/VBPatcher/main.py`.
 
 2. Once the script is run, you will be presented with an option menu, allowing you to choose whether to:
 
@@ -106,7 +106,7 @@
 - Within a terminal, open **VBP** with the following command:
 
   ```psh
-    PS> vbpatcher
+    PS > vbpatcher
   ```
 
 - Or optionally within a python environment:

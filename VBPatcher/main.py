@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 
+import sys
 from os import chdir
 from os.path import dirname
 from time import sleep
 from typing import NoReturn
 
-from PyLoadBar import load
+import PyLoadBar
 
+sys.path.insert(0, dirname(dirname(__file__))) # Ensure main module can be found by Python.
 chdir(dirname(__file__))
 
 import VBPatcher.globalvars.globalvars
-from VBPatcher.applogger.applogger import _LogGenerator
+from VBPatcher.applogger.applogger import logger
 from VBPatcher.downloader.downloader import _Downloader
 from VBPatcher.patching.patching import _Patcher
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _openValheim
@@ -18,10 +20,11 @@ from VBPatcher.validation.validation import _Validate
 
 __version__: str = '0.6.0'
 
-logger = _LogGenerator(VBPatcher.globalvars.globalvars._logFile)
+
 DL = _Downloader()
 Patcher = _Patcher()
 Validations = _Validate()
+bar = PyLoadBar.PyLoadBar()
 
 #$ ====================================================================================================== $#
 
@@ -52,7 +55,7 @@ def main() -> None | NoReturn:
             case '5': _openValheim()
             case '6':
                 logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-                load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
+                bar.load('\nBepInEx patching process cancelled', 'Preparing to exit...', enable_display=False)
                 return _exitPatcher()
             case _:
                 logger.warning(f'Invalid Input:\n>> "{choosePatch}"\n\n>> Must ONLY enter:\n>> [1] for stable release {VBPatcher.globalvars.globalvars.b_stable}\n>> [2] for development build {VBPatcher.globalvars.globalvars.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n')
