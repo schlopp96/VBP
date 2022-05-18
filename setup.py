@@ -17,7 +17,7 @@ setup(
     long_description=readme,
     long_description_content_type='text/markdown',
     packages=find_packages(),
-    entry_points={'console_scripts': ['start_vbp=VBPatcher.main:main']},
+    entry_points={'console_scripts': ['vbpatcher=VBPatcher.main:main']},
     include_package_data=True,
     install_requires=[reqs],
     classifiers=[
@@ -27,9 +27,6 @@ setup(
         "Intended Audience :: End Users/Desktop",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Topic :: Utilities",
