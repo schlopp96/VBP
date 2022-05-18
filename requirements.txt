@@ -1,3 +1,4 @@
-PyLoadBar>=0.0.7.1
+PyLoadBar==0.0.7.1
+requests==2.27.1
 setuptools==58.1.0
 tqdm==4.62.3
