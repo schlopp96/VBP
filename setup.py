@@ -17,7 +17,7 @@ setup(
     long_description=readme,
     long_description_content_type='text/markdown',
     packages=find_packages(),
-    entry_points={'console_scripts': ['start_vbp=VBPatcher.main:main']},
+    entry_points={'console_scripts': ['vbpatcher=VBPatcher.main:main']},
     include_package_data=True,
     install_requires=[reqs],
     classifiers=[

@@ -46,9 +46,12 @@
 
 1. Open the application, which can be run within a terminal using the following command:
 
-   - **`> start_vbp`**
-   - You can also run **VBP** from the main program file:
-     - `~/VBPatcher/main.py`.
+    ```psh
+      PS> vbpatcher
+    ```
+
+    - You can also run **VBP** from the main program file:
+      - `~/VBPatcher/main.py`.
 
 2. Once the script is run, you will be presented with an option menu, allowing you to choose whether to:
 
@@ -102,16 +105,15 @@
 
 - Within a terminal, open **VBP** with the following command:
 
-  ```text
-  > start_vbp
+  ```psh
+    PS> vbpatcher
   ```
 
 - Or optionally within a python environment:
 
   ```python
-  >>> import VBPatcher # Import package
-  >>> VBPatcher.vbp()  # Call method to open program
-
+    >>> import VBPatcher # Import package
+    >>> VBPatcher.vbp()  # Call method to open program
   ```
 
   ```python
@@ -122,48 +124,48 @@
 - Example output from VBPatcher installing the stable version of BepInEx before installing the latest experimental patch build [option 3 in the program]:
 
   ```python
-  Welcome to the Valheim Bepinex Patcher!
-  Please Choose an Option by Entering its Corresponding Number:
+    Welcome to the Valheim Bepinex Patcher!
+    Please Choose an Option by Entering its Corresponding Number:
 
-  =============================================================
-  >> [1] Patch BepInEx to latest stable release: v5.19.00 (2/3/22)
-  >> [2] Patch BepInEx to latest development/expiremental build: 7a97bdd (5/7/22)
-  >> [3] Apply both patches to BepInEx in chronological order of release (v5.19.00 then 7a97bdd)
-  >> [4] Check for updates to newest patch versions
-  >> [5] Open Valheim
-  >> [6] Exit Program
+    =============================================================
+    >> [1] Patch BepInEx to latest stable release: v5.19.00 (2/3/22)
+    >> [2] Patch BepInEx to latest development/expiremental build: 7a97bdd (5/7/22)
+    >> [3] Apply both patches to BepInEx in chronological order of release (v5.19.00 then 7a97bdd)
+    >> [4] Check for updates to newest patch versions
+    >> [5] Open Valheim
+    >> [6] Exit Program
 
-  > 3
+    > 3
 
-  Really apply both latest stable release v5.19.00, and latest development build da48b77?
-  > Enter [y] or [n]:
-  =============================================================
-  > y
+    Really apply both latest stable release v5.19.00, and latest development build da48b77?
+    > Enter [y] or [n]:
+    =============================================================
+    > y
 
-  Patching BepInEx build v5.19.00 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
+    Patching BepInEx build v5.19.00 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
 
-  100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.14it/s]
-
-
-  Patch build v5.19.00 successfully installed!
-
-  Patching BepInEx build da48b77 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
-
-  100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.19it/s]
+    100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.14it/s]
 
 
-  Patch build da48b77 successfully installed!
+    Patch build v5.19.00 successfully installed!
 
-  Start Game?
+    Patching BepInEx build da48b77 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
 
-  > Enter [y] or [n]:
-  =============================================================
-  > n
-
-  Patching process successfully completed.....
+    100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.19it/s]
 
 
-  Preparing to exit...
+    Patch build da48b77 successfully installed!
+
+    Start Game?
+
+    > Enter [y] or [n]:
+    =============================================================
+    > n
+
+    Patching process successfully completed.....
+
+
+    Preparing to exit...
   ```
 
 ---
