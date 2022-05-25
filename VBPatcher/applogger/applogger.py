@@ -1,6 +1,6 @@
 import logging
 
-from VBPatcher.globalvars.globalvars import _logFile
+from VBPatcher.appglobals.appglobals import _logFile
 
 
 class _LogGenerator():

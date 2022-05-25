@@ -4,7 +4,7 @@ from time import sleep
 from typing import NoReturn
 
 import PyLoadBar
-import VBPatcher.globalvars.globalvars
+import VBPatcher.appglobals.appglobals
 from VBPatcher.applogger.applogger import logger
 
 bar = PyLoadBar.PyLoadBar()
@@ -20,7 +20,7 @@ def _startPrompt() -> NoReturn | None:
     while True:
         logger.info('Displaying start game prompt...')
         startPrompt: str = input(
-            f'\nStart Game?\n\n> Enter [y] or [n]:\n{VBPatcher.globalvars.globalvars._textborder}\n> ')
+            f'\nStart Game?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> ')
         match startPrompt.lower():
             case 'y'|'yes':
                 _openValheim()
@@ -67,5 +67,5 @@ def _exitPatcher() -> None | NoReturn:
     :return: Exits application.
     :rtype: None | NoReturn
     """
-    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n{VBPatcher.globalvars.globalvars._textborder}\n')
+    logger.info(f'Exiting patcher...\n\n>> End of log...\n\n{VBPatcher.appglobals.appglobals._textborder}\n')
     return ex()

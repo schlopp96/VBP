@@ -4,7 +4,7 @@ from time import sleep
 from typing import NoReturn
 
 import PyLoadBar
-import VBPatcher.globalvars.globalvars
+import VBPatcher.appglobals.appglobals
 from VBPatcher.applogger.applogger import logger
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _startPrompt
 
@@ -49,7 +49,7 @@ class _Patcher:
         try:
             logger.info(f'Patching BepInEx build {patch_ver} to location: {patch_dst}...\n')
             copytree(patch_src, patch_dst, dirs_exist_ok=True)
-            unlink(f'{VBPatcher.globalvars.globalvars.p_targetDir}/.gitkeep')
+            unlink(f'{VBPatcher.appglobals.appglobals.p_targetDir}/.gitkeep')
             bar.load(
                 f'\nPatching BepInEx build {patch_ver} to location: {patch_dst}',
                 f'Patch build {patch_ver} successfully installed!', label='Patching')
@@ -67,13 +67,13 @@ class _Patcher:
         :rtype: None
         """
         while True:
-            logger.info(f'Prompting user for installation of BepInEx stable release {VBPatcher.globalvars.globalvars.b_dev} patch...')
+            logger.info(f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.appglobals.b_dev} patch...')
             confirmStable: str = input(
-                f'\nReally patch BepInEx to latest stable-release {VBPatcher.globalvars.globalvars.b_stable} in location:\n\n>> "{VBPatcher.globalvars.globalvars.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.globalvars.globalvars._textborder}\n> '
+                f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.appglobals.b_stable} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )
             match confirmStable.lower():
                 case 'yes'|'y':
-                    self._patch(VBPatcher.globalvars.globalvars.p_stable, VBPatcher.globalvars.globalvars.p_targetDir, VBPatcher.globalvars.globalvars.b_stable)
+                    self._patch(VBPatcher.appglobals.appglobals.p_stable, VBPatcher.appglobals.appglobals.p_targetDir, VBPatcher.appglobals.appglobals.b_stable)
                     _startPrompt()
                 case 'n'|'no':
                     logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -95,13 +95,13 @@ class _Patcher:
         :rtype: None
         """
         while True:
-            logger.info(f'Prompting user for installation of BepInEx development build {VBPatcher.globalvars.globalvars.b_dev} patch...')
+            logger.info(f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.appglobals.b_dev} patch...')
             confirmLatest: str = input(
-                f'\nReally patch BepInEx to latest development build {VBPatcher.globalvars.globalvars.b_dev} in location:\n\n>> "{VBPatcher.globalvars.globalvars.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.globalvars.globalvars._textborder}\n> '
+                f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.appglobals.b_dev} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )
             match confirmLatest.lower():
                 case 'yes'|'y':
-                    self._patch(VBPatcher.globalvars.globalvars.p_dev, VBPatcher.globalvars.globalvars.p_targetDir, VBPatcher.globalvars.globalvars.b_dev)
+                    self._patch(VBPatcher.appglobals.appglobals.p_dev, VBPatcher.appglobals.appglobals.p_targetDir, VBPatcher.appglobals.appglobals.b_dev)
                     _startPrompt()
                 case 'n'|'no':
                     logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')
@@ -125,12 +125,12 @@ class _Patcher:
         while True:
             logger.info('Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...')
             confirmFull: str = input(
-                f'\nReally apply both latest stable release {VBPatcher.globalvars.globalvars.b_stable}, and latest development build {VBPatcher.globalvars.globalvars.b_dev}?\n> Enter [y] or [n]:\n{VBPatcher.globalvars.globalvars._textborder}\n> '
+                f'\nReally apply both latest stable release {VBPatcher.appglobals.appglobals.b_stable}, and latest development build {VBPatcher.appglobals.appglobals.b_dev}?\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )
             match confirmFull.lower():
                 case 'yes'|'y':
-                    self._patch(VBPatcher.globalvars.globalvars.p_stable, VBPatcher.globalvars.globalvars.p_targetDir, VBPatcher.globalvars.globalvars.b_stable)
-                    self._patch(VBPatcher.globalvars.globalvars.p_dev, VBPatcher.globalvars.globalvars.p_targetDir, VBPatcher.globalvars.globalvars.b_dev)
+                    self._patch(VBPatcher.appglobals.appglobals.p_stable, VBPatcher.appglobals.appglobals.p_targetDir, VBPatcher.appglobals.appglobals.b_stable)
+                    self._patch(VBPatcher.appglobals.appglobals.p_dev, VBPatcher.appglobals.appglobals.p_targetDir, VBPatcher.appglobals.appglobals.b_dev)
                     return _startPrompt()
                 case 'n'|'no':
                     logger.info('BepInEx patching process cancelled...\n>> Preparing to exit...\n')

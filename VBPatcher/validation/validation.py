@@ -1,8 +1,9 @@
 import os
+from zipfile import is_zipfile
 
 import PyLoadBar
+import VBPatcher.appglobals.appglobals
 import VBPatcher.downloader.downloader
-import VBPatcher.globalvars.globalvars
 from VBPatcher.applogger.applogger import logger
 from VBPatcher.subprocessing.subprocessing import _exitPatcher
 
@@ -11,7 +12,7 @@ bar = PyLoadBar.PyLoadBar()
 
 
 class _Validate:
-    """Wrapper for validation of required BepInEx patch files.
+    """Validate location and deployability of necessary patch files.
 
     - Class methods:
         - `_verify_stable(self, url) -> bool`
@@ -24,10 +25,7 @@ class _Validate:
             - Verify presence of all BepInEx patch files.
     """
 
-    def __init__(self):
-        pass
-
-    def _verify_stable(self, url) -> bool:
+    def _validate_stable(self, url) -> bool:
         """Validate presence of BepInEx stable release patch files.
 
         :param url: url to download BepInEx stable release from if not found.
@@ -36,62 +34,73 @@ class _Validate:
         :rtype: bool
         """
         logger.info(
-            f'Validating stable-build {VBPatcher.globalvars.globalvars.b_stable} patch files...\n'
+            f'Validating BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...\n'
         )
 
-        stable_files: list = [
+        patch_contents: list = [
             ['.gitkeep', 'changelog.txt', 'winhttp.dll'], [],
             [
                 '0Harmony.dll', '0Harmony.xml', '0Harmony20.dll',
-                'BepInEx.dll', 'BepInEx.Harmony.dll', 'BepInEx.Harmony.xml',
-                'BepInEx.Preloader.dll', 'BepInEx.Preloader.xml',
-                'BepInEx.xml', 'HarmonyXInterop.dll', 'Mono.Cecil.dll',
-                'Mono.Cecil.Mdb.dll', 'Mono.Cecil.Pdb.dll',
-                'Mono.Cecil.Rocks.dll', 'MonoMod.RuntimeDetour.dll',
-                'MonoMod.RuntimeDetour.xml', 'MonoMod.Utils.dll',
-                'MonoMod.Utils.xml'
+                'BepInEx.Core.dll', 'BepInEx.Core.xml', 'BepInEx.dll',
+                'BepInEx.Harmony.dll', 'BepInEx.Harmony.xml',
+                'BepInEx.Preloader.Core.dll', 'BepInEx.Preloader.Core.xml',
+                'BepInEx.Preloader.dll', 'BepInEx.Preloader.Unity.dll',
+                'BepInEx.Preloader.Unity.xml', 'BepInEx.Preloader.xml',
+                'BepInEx.Unity.dll', 'BepInEx.Unity.xml', 'BepInEx.xml',
+                'HarmonyXInterop.dll', 'Mono.Cecil.dll', 'Mono.Cecil.Mdb.dll',
+                'Mono.Cecil.Pdb.dll', 'Mono.Cecil.Rocks.dll',
+                'MonoMod.RuntimeDetour.dll', 'MonoMod.RuntimeDetour.xml',
+                'MonoMod.Utils.dll', 'MonoMod.Utils.xml',
+                'SemanticVersioning.dll'
             ]
         ]
 
         stable_match: bool = False
 
-        found: list = []
+        verified: list = []
 
         try:
-            found.extend(
+            verified.extend(
                 file
                 for (root, dirs,
                      file) in os.walk('./patch-files/stable', topdown=True))
-            if found == stable_files:
+
+            if verified == patch_contents:
                 stable_match = True
                 logger.info(
-                    f'Stable-build {VBPatcher.globalvars.globalvars.b_stable} patch files verified successfully!\n'
+                    f'BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
                 )
-
             else:
                 logger.info(
-                    f'Unable to verify stable patch {VBPatcher.globalvars.globalvars.b_stable} files...\n>> Attempting to download...\n'
+                    f'Unable to locate BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...\n>> Attempting to download...'
                 )
                 DL._dl_stable(url)
-                DL._unzip_patch(
-                    f'./patch-files/stable/BepInEx_stable_{VBPatcher.globalvars.globalvars.b_stable}.zip',
-                    True)
-                stable_match = True
-                logger.info(
-                    f'Successfully downloaded stable-build {VBPatcher.globalvars.globalvars.b_stable} patch files!\n'
-                )
+                if is_zipfile(
+                        f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip'
+                ):
+                    DL._unzip_patch(
+                        f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip',
+                        True)
+                    stable_match = True
+                    logger.info(
+                        f'Download successful!\nBepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
+                    )
+                else:
+                    stable_match = False
+                    logger.error(
+                        'Download failed!\nBepInEx dev-build patch unable to be deployed!\n'
+                    )
             return stable_match
 
         except Exception as err:
             stable_match = False
             logger.error(
-                f'Encountered error during application start checks...\n>> Exception: {err}\n'
+                f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch validation...\n>> Exception: {err}\n'
             )
-
         finally:
             return stable_match
 
-    def _verify_dev(self, url) -> bool:
+    def _validate_dev(self, url) -> bool:
         """Validate presence of BepInEx development build patch files.
 
         :param url: url to download BepInEx development build from if not found.
@@ -100,10 +109,10 @@ class _Validate:
         :rtype: bool
         """
         logger.info(
-            f'Validating development patch {VBPatcher.globalvars.globalvars.b_dev} files...\n'
+            f'Validating BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...\n'
         )
 
-        dev_files: list = [
+        patch_contents: list = [
             ['.gitkeep', 'changelog.txt', 'winhttp.dll'], [],
             [
                 '0Harmony.dll', 'BepInEx.Core.dll', 'BepInEx.Core.xml',
@@ -118,57 +127,70 @@ class _Validate:
 
         dev_match: bool = False
 
-        found: list = []
+        verified: list = []
 
         try:
-            found.extend(file for (
+            verified.extend(file for (
                 root, dirs,
                 file) in os.walk('./patch-files/development/', topdown=True))
-            if found == dev_files:
+
+            if verified == patch_contents:
                 dev_match = True
                 logger.info(
-                    f'Development patch {VBPatcher.globalvars.globalvars.b_dev} files verified successfully!\n'
+                    f'BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
                 )
-
             else:
                 logger.info(
-                    f'Unable to verify development patch {VBPatcher.globalvars.globalvars.b_dev} files...\n>> Attempting to download...\n'
+                    f'Unable to locate BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...\n>> Attempting to download...'
                 )
                 DL._dl_dev(url)
-                DL._unzip_patch(
-                    f'./patch-files/development/BepInEx_dev_{VBPatcher.globalvars.globalvars.b_dev}.zip',
-                    False)
-                dev_match = True
-                logger.info(
-                    f'Successfully downloaded development patch {VBPatcher.globalvars.globalvars.b_dev} files!\n'
-                )
+                if is_zipfile(
+                        f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip'
+                ):
+                    DL._unzip_patch(
+                        f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip',
+                        False)
+                    dev_match = True
+                    logger.info(
+                        f'Download successful!\nBepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
+                    )
+                else:
+                    dev_match = False
+                    logger.error(
+                        'Download failed!\nBepInEx dev-build patch unable to be deployed!\n'
+                    )
             return dev_match
 
         except Exception as err:
             dev_match = False
             logger.error(
-                f'Encountered error during application start checks...\n>> Exception: {err}\n'
+                f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch validation...\n>> Exception: {err}\n'
             )
-
         finally:
             return dev_match
 
     def _start_checks(self) -> None:
-        """Verify application has latest BepInEx patches upon start.
+        """Verify necessary patcher components upon start.
+
+        - If any patch files are missing, attempt to download them.
 
         :return: continue to application if verification is successful, otherwise exits program.
         :rtype: None
         """
-        logger.info('Checking for application BepInEx patch files...\n')
+        logger.info('Initializing VBPatcher start checks...\n')
+        print('Initializing VBPatcher start checks...\n')
 
-        if self._verify_stable(
-                VBPatcher.globalvars.globalvars.url_stable) and self._verify_dev(
-                    VBPatcher.globalvars.globalvars.url_dev):
-            logger.info('Successfully verified BepInEx patch files!\n')
+        if self._validate_stable(VBPatcher.appglobals.appglobals.url_stable
+                                 ) and self._validate_dev(
+                                     VBPatcher.appglobals.appglobals.url_dev):
+            logger.info('VBPatcher start checks completed successfully!\n')
+            print('VBPatcher start checks completed successfully!\n')
         else:
-            logger.info(
-                'One or more patch files were not able to be verified...')
-            bar.load('ERROR: One or more patch files were not able to be verified',
-                 'Exiting Patcher',
-                 enable_display=False)
+            logger.error(
+                'VBPatcher start checks failed!\n One or more patch files were not able to be verified...'
+            )
+            bar.load(
+                'ERROR: One or more patch files were not able to be verified and cannot be deployed...\nCheck log for more details',
+                'Exiting Patcher',
+                enable_display=False)
             return _exitPatcher()
