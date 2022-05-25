@@ -27,9 +27,6 @@ class _Patcher:
             - Apply both available BepInEx patches in order of release (Stable -> Development).
     """
 
-    def __init__(self):
-        pass
-
     def _patch(self, patch_src: PathLike | str, patch_dst: PathLike | str, patch_ver: int | str) -> None:
         """Apply patch files (`patch_src`) to target directory (`patch_dst`).
 
@@ -47,7 +44,7 @@ class _Patcher:
         :rtype: None
         """
         try:
-            logger.info(f'Patching BepInEx build {patch_ver} to location: {patch_dst}...\n')
+            logger.info(f'Patching BepInEx build {patch_ver} to location: {patch_dst}...')
             copytree(patch_src, patch_dst, dirs_exist_ok=True)
             unlink(f'{VBPatcher.appglobals.appglobals.p_targetDir}/.gitkeep')
             bar.load(
@@ -55,7 +52,7 @@ class _Patcher:
                 f'Patch build {patch_ver} successfully installed!', label='Patching')
             logger.info(f'Patch build {patch_ver} successfully installed!\n')
         except Exception as exc:
-            logger.error(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n')
+            logger.error(f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n>> Exception:\n{exc}\n')
             print(f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...')
 
     def _patch_stable(self) -> None | NoReturn:
@@ -67,7 +64,7 @@ class _Patcher:
         :rtype: None
         """
         while True:
-            logger.info(f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.appglobals.b_dev} patch...')
+            logger.info(f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.appglobals.b_dev} patch...\n')
             confirmStable: str = input(
                 f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.appglobals.b_stable} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )
@@ -95,7 +92,7 @@ class _Patcher:
         :rtype: None
         """
         while True:
-            logger.info(f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.appglobals.b_dev} patch...')
+            logger.info(f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.appglobals.b_dev} patch...\n')
             confirmLatest: str = input(
                 f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.appglobals.b_dev} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )
@@ -123,7 +120,7 @@ class _Patcher:
         :rtype: None
         """
         while True:
-            logger.info('Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...')
+            logger.info('Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...\n')
             confirmFull: str = input(
                 f'\nReally apply both latest stable release {VBPatcher.appglobals.appglobals.b_stable}, and latest development build {VBPatcher.appglobals.appglobals.b_dev}?\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )

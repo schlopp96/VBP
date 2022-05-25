@@ -26,9 +26,6 @@ class _Downloader:
             - Process to retrieve latest available patch files using class methods.
     """
 
-    def __init__(self) -> None:
-        pass
-
     def _dl_stable(self, url):
         """Download zip containing latest BepInEx stable release.
 
@@ -63,10 +60,10 @@ class _Downloader:
 
             except Exception as err:
                 logger.error(
-                    f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n'
+                    f'Encountered error while downloading latest stable release zip archive...\n>> Exception:\n{err}\n'
                 )
                 print(
-                    f'Encountered error while downloading latest stable release zip archive...\n>> Exception: {err}\n'
+                    f'Encountered error while downloading latest stable release zip archive...\n>> Exception:\n{err}\n'
                 )
                 break
 
@@ -103,10 +100,10 @@ class _Downloader:
 
             except Exception as err:
                 logger.error(
-                    f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}\n'
+                    f'Encountered error while downloading latest development-build zip archive...\n>> Exception:\n{err}\n'
                 )
                 print(
-                    f'Encountered error while downloading latest development-build zip archive...\n>> Exception: {err}'
+                    f'Encountered error while downloading latest development-build zip archive...\n>> Exception:\n{err}'
                 )
                 break
 
@@ -125,7 +122,7 @@ class _Downloader:
         logger.info('Unzipping patch files...')
         print('Unzipping patch files...')
         try:
-            if stable: # Unzip stable release patch files
+            if stable:  # Unzip stable release patch files
                 with ZipFile(filename) as archive:
                     archive.extractall(path='./patch-files/stable')
                 os.unlink('./patch-files/stable/doorstop_config.ini')
@@ -133,7 +130,7 @@ class _Downloader:
                     f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip'
                 )
 
-            else: # Unzip development build patch files
+            else:  # Unzip development build patch files
                 with ZipFile(filename) as archive:
                     archive.extractall(path='./patch-files/development')
                 os.unlink('./patch-files/development/doorstop_config.ini')

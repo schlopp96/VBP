@@ -34,7 +34,7 @@ class _Validate:
         :rtype: bool
         """
         logger.info(
-            f'Validating BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...\n'
+            f'Validating BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...'
         )
 
         patch_contents: list = [
@@ -83,19 +83,19 @@ class _Validate:
                         True)
                     stable_match = True
                     logger.info(
-                        f'Download successful!\nBepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
+                        f'Download successful!\n>> BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
                     )
                 else:
                     stable_match = False
                     logger.error(
-                        'Download failed!\nBepInEx dev-build patch unable to be deployed!\n'
+                        'Download failed!\n>> BepInEx dev-build patch unable to be deployed!\n'
                     )
             return stable_match
 
         except Exception as err:
             stable_match = False
             logger.error(
-                f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch validation...\n>> Exception: {err}\n'
+                f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch validation...\n>> Exception:\n{err}\n'
             )
         finally:
             return stable_match
@@ -109,7 +109,7 @@ class _Validate:
         :rtype: bool
         """
         logger.info(
-            f'Validating BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...\n'
+            f'Validating BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...'
         )
 
         patch_contents: list = [
@@ -152,19 +152,19 @@ class _Validate:
                         False)
                     dev_match = True
                     logger.info(
-                        f'Download successful!\nBepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
+                        f'Download successful!\n>> BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
                     )
                 else:
                     dev_match = False
                     logger.error(
-                        'Download failed!\nBepInEx dev-build patch unable to be deployed!\n'
+                        'Download failed!\n>> BepInEx dev-build patch unable to be deployed!\n'
                     )
             return dev_match
 
         except Exception as err:
             dev_match = False
             logger.error(
-                f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch validation...\n>> Exception: {err}\n'
+                f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch validation...\n>> Exception:\n{err}\n'
             )
         finally:
             return dev_match
@@ -187,7 +187,7 @@ class _Validate:
             print('VBPatcher start checks completed successfully!\n')
         else:
             logger.error(
-                'VBPatcher start checks failed!\n One or more patch files were not able to be verified...'
+                'VBPatcher start checks failed!\n>> One or more patch files were not able to be verified...\n'
             )
             bar.load(
                 'ERROR: One or more patch files were not able to be verified and cannot be deployed...\nCheck log for more details',

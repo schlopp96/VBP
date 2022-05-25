@@ -54,8 +54,8 @@ def _openValheim() -> int | None:
         bar.load("\nStarting Game", "Opening Valheim...", enable_display=False)
         return call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970", timeout=10)
     except TimeoutExpired as exp:
-        logger.error(f'Something went wrong... Having trouble starting game...\n>> {exp}\n')
-        print(f'Something went wrong... Having trouble starting game...\n>> {exp}\n')
+        logger.error(f'Something went wrong while starting Valheim...\n>> Exception:\n{exp}\n')
+        print(f'Something went wrong while starting Valheim...\n>> Exception:\n{exp}\n')
         return _exitPatcher()
 
 
