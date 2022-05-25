@@ -41,17 +41,13 @@ class _Validate:
             ['.gitkeep', 'changelog.txt', 'winhttp.dll'], [],
             [
                 '0Harmony.dll', '0Harmony.xml', '0Harmony20.dll',
-                'BepInEx.Core.dll', 'BepInEx.Core.xml', 'BepInEx.dll',
-                'BepInEx.Harmony.dll', 'BepInEx.Harmony.xml',
-                'BepInEx.Preloader.Core.dll', 'BepInEx.Preloader.Core.xml',
-                'BepInEx.Preloader.dll', 'BepInEx.Preloader.Unity.dll',
-                'BepInEx.Preloader.Unity.xml', 'BepInEx.Preloader.xml',
-                'BepInEx.Unity.dll', 'BepInEx.Unity.xml', 'BepInEx.xml',
-                'HarmonyXInterop.dll', 'Mono.Cecil.dll', 'Mono.Cecil.Mdb.dll',
-                'Mono.Cecil.Pdb.dll', 'Mono.Cecil.Rocks.dll',
-                'MonoMod.RuntimeDetour.dll', 'MonoMod.RuntimeDetour.xml',
-                'MonoMod.Utils.dll', 'MonoMod.Utils.xml',
-                'SemanticVersioning.dll'
+                'BepInEx.dll', 'BepInEx.Harmony.dll', 'BepInEx.Harmony.xml',
+                'BepInEx.Preloader.dll', 'BepInEx.Preloader.xml',
+                'BepInEx.xml', 'HarmonyXInterop.dll', 'Mono.Cecil.dll',
+                'Mono.Cecil.Mdb.dll', 'Mono.Cecil.Pdb.dll',
+                'Mono.Cecil.Rocks.dll', 'MonoMod.RuntimeDetour.dll',
+                'MonoMod.RuntimeDetour.xml', 'MonoMod.Utils.dll',
+                'MonoMod.Utils.xml'
             ]
         ]
 
