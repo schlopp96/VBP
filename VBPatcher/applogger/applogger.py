@@ -55,15 +55,15 @@ class _LogGenerator():
         ---
 
         :param name: Name of logger.
-        :type name: str
+        :type name: :class:`str`
         :param log_file: file to create log entries.
-        :type log_file: str
+        :type log_file: :class:`str`
         :param log_fmt: Initialize the formatter either with the specified format string, or a default as described above, defaults to '[%(asctime)s - %(levelname)s] : %(message)s'
-        :type log_fmt: str, optional
+        :type log_fmt: :class:`str`, optional
         :param date_fmt: set date formatting, defaults to "%Y-%m-%d %H:%M:%S"
-        :type date_fmt: str, optional
+        :type date_fmt: :class:`str`, optional
         :param level: Set the logging level of this logger. Level must be an int or a str, defaults to `INFO`.
-        :type level: int, optional
+        :type level: :class:`int`, optional
         """
 
         self.name = name
@@ -81,8 +81,10 @@ class _LogGenerator():
     def debug(self, msg) -> None:
         """Logs a message with level `DEBUG`.
 
+        ---
+
         :param msg: message to be logged.
-        :type msg: str
+        :type msg: :class:`str`
         :return: creates log entry.
         :rtype: None
         """
@@ -91,8 +93,10 @@ class _LogGenerator():
     def info(self, msg):
         """Logs a message with level `INFO`.
 
+        ---
+
         :param msg: message to be logged.
-        :type msg: str
+        :type msg: :class:`str`
         :return: creates log entry.
         :rtype: None
         """
@@ -101,8 +105,10 @@ class _LogGenerator():
     def warning(self, msg):
         """Logs a message with level `WARNING`.
 
+        ---
+
         :param msg: message to be logged.
-        :type msg: str
+        :type msg: :class:`str`
         :return: creates log entry.
         :rtype: None
         """
@@ -111,8 +117,10 @@ class _LogGenerator():
     def error(self, msg):
         """Logs a message with level `ERROR`.
 
+        ---
+
         :param msg: message to be logged.
-        :type msg: str
+        :type msg: :class:`str`
         :return: creates log entry.
         :rtype: None
         """
@@ -121,8 +129,10 @@ class _LogGenerator():
     def critical(self, msg):
         """Logs a message with level `CRITICAL`.
 
+        ---
+
         :param msg: message to be logged.
-        :type msg: str
+        :type msg: :class:`str`
         :return: creates log entry.
         :rtype: None
         """

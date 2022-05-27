@@ -28,10 +28,12 @@ class _Validate:
     def _validate_stable(self, url) -> bool:
         """Validate presence of BepInEx stable release patch files.
 
+        ---
+
         :param url: url to download BepInEx stable release from if not found.
-        :type url: Any
+        :type url: :class:`Any`
         :return: validation of patch files.
-        :rtype: bool
+        :rtype: :class:`bool`
         """
         logger.info(
             f'Validating BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...'
@@ -70,13 +72,13 @@ class _Validate:
                 logger.info(
                     f'Unable to locate BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...\n>> Attempting to download...'
                 )
-                DL._dl_stable(url)
-                if is_zipfile(
+                DL._dl_stable(url)  # Download *.zip archive from url
+                if is_zipfile(  # Check if downloaded archive is a zip file
                         f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip'
                 ):
-                    DL._unzip_patch(
+                    DL._unzip_patch(  # Unzip archive
                         f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip',
-                        True)
+                        1)
                     stable_match = True
                     logger.info(
                         f'Download successful!\n>> BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
@@ -86,7 +88,6 @@ class _Validate:
                     logger.error(
                         'Download failed!\n>> BepInEx dev-build patch unable to be deployed!\n'
                     )
-            return stable_match
 
         except Exception as err:
             stable_match = False
@@ -99,10 +100,12 @@ class _Validate:
     def _validate_dev(self, url) -> bool:
         """Validate presence of BepInEx development build patch files.
 
+        ---
+
         :param url: url to download BepInEx development build from if not found.
-        :type url: PathLike | str
+        :type url: :class:`PathLike` | :class:`str`
         :return: validation of patch files.
-        :rtype: bool
+        :rtype: :class:`bool`
         """
         logger.info(
             f'Validating BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...'
@@ -135,27 +138,29 @@ class _Validate:
                 logger.info(
                     f'BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
                 )
+
             else:
                 logger.info(
                     f'Unable to locate BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...\n>> Attempting to download...'
                 )
-                DL._dl_dev(url)
-                if is_zipfile(
+                DL._dl_dev(url)  # Download *.zip file from url
+                if is_zipfile(  # Check if downloaded archive is a zip file
                         f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip'
                 ):
-                    DL._unzip_patch(
+                    DL._unzip_patch(  # Unzip archive
                         f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip',
-                        False)
+                        2)
+
                     dev_match = True
                     logger.info(
                         f'Download successful!\n>> BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
                     )
+
                 else:
                     dev_match = False
                     logger.error(
                         'Download failed!\n>> BepInEx dev-build patch unable to be deployed!\n'
                     )
-            return dev_match
 
         except Exception as err:
             dev_match = False
@@ -169,6 +174,8 @@ class _Validate:
         """Verify necessary patcher components upon start.
 
         - If any patch files are missing, attempt to download them.
+
+        ---
 
         :return: continue to application if verification is successful, otherwise exits program.
         :rtype: None

@@ -6,9 +6,9 @@
 
 ## About
 
-- _**V**alheim **B**epInEx **P**atcher_ is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx) to its latest release (whether LTS or experimental).
+- _**V**alheim **B**epInEx **P**atcher_ (_**VBP**_) is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx) to its latest release (whether LTS or experimental).
 
-- _**VBPatcher**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://www.nexusmods.com/site/mods/1) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
+- _**VBP**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://www.nexusmods.com/site/mods/1) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
 
   - When opening **_Vortex_** to begin modding **_Valheim_**, the modding tool automatically downloads what it _incorrectly_ perceives to be the "latest" version of _**BepInEx**_ (a necessary requirement for the vast majority of mods available) which is generally incorrect, and often takes a long time to be fixed.
 
@@ -20,21 +20,33 @@
 
 ## Installation
 
-### Using PIP _(Recommended)_
+### **Using PIP** _(Recommended)_
 
-- To install _**VBPatcher**_ using `pip`, enter the following:
+- To install _**VBP**_ using `pip`, enter the following:
 
-  ```python
-    python -m pip install VBPatcher
-  ```
+  - ```shell
+      python -m pip install VBPatcher
+    ```
 
-### Manual Installation _(**NOT** Recommended)_
+- Done!
 
-1. Download the project's latest release **.zip archive** from the ["releases"](https://github.com/schlopp96/VBPatcher/releases) tab and extract to location of choice.
+### **Manual Installation** _(**NOT** Recommended)_
+
+1. Download the project's latest release **.zip archive** from the ["releases"](https://github.com/schlopp96/VBPatcher/releases) tab and extract to location of choice, or clone repository with the git client of your preference with:
+
+   - ```shell
+      gh repo clone schlopp96/PyLoadBar
+     ```
 
 2. Open terminal and navigate to the extracted directory `"~/VBPatcher"`.
 
-3. Enter `pip install -r requirements.txt` to install necessary dependencies.
+3. Enter the following to install necessary dependencies:
+
+   - ```shell
+      pip install -r requirements.txt
+     ```
+
+- Done!
 
 ---
 
@@ -46,26 +58,26 @@
 
 1. Open the application, which can be run within a terminal using the following command:
 
-   ```psh
-    PS > vbpatcher
-   ```
+   - ```shell
+     vbpatcher
+     ```
 
-   - You can also run **VBP** from the main program file:
+   - You can also run **VBPatcher** from the main program file:
      - `~/VBPatcher/main.py`.
 
 2. Once the script is run, you will be presented with an option menu, allowing you to choose whether to:
 
-   - Patch **BepInEx** to the latest developmental/experimental "bleeding-edge" build
-   - Patch **BepInEx** to the latest stable release
-   - Patch **BepInEx** first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation
-   - Check to ensure required patch-files are present and ready to be deployed (is also done at start of program, but I decided to leave this option in for now)
-   - Check for and download new releases/builds of **BepInEx** _**(COMING SOON!)**_
+   - Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
+   - Patch BepInEx to the latest stable release.
+   - Patch BepInEx first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation.
+   - Check to ensure required patch-files are present and ready to be deployed (_is also done at start of program, but I decided to leave this option in for now_).
+   - Check for and download new releases/builds of BepInEx _**(COMING SOON)**_.
 
 3. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
 
    - For example, once the option to apply a patch is confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
 
-4. Upon successful patching, the script will ask the user if they'd like to start **Valheim**, or simply exit the patcher.
+4. Upon successful patching, the script will ask the user if they'd like to start _Valheim_, or simply exit the patcher.
 
 5. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
 
@@ -73,7 +85,7 @@
 
 - **_NOTE:_**
 
-  - As of now, BepInEx will _still_ list its current version as the last stable build number, even if a "Development Build" patch is installed. It will still work all the same.
+  - BepInEx will list its current version as the last stable build number, even if a bleeding-edge build is installed. It will still work all the same.
 
   - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
 
@@ -83,7 +95,7 @@
 
 ### How It Works
 
-- **VBP** functions by simply copying the relevant patch files & places/overwrites core files responsible for the BepInEx version downgrade.
+- **VBPatcher** functions by simply copying the relevant patch files & places/overwrites core files responsible for the BepInEx version downgrade.
 
 - The patch files will all be placed in either one of two potential locations within Valheim's install directory
 
@@ -101,12 +113,12 @@
 
 ---
 
-### Opening VBPatcher
+### Opening **VBPatcher**
 
 - Within a terminal, open **VBP** with the following command:
 
-  ```psh
-    PS > vbpatcher
+  ```shell
+    vbpatcher
   ```
 
 - Or optionally within a python environment:
@@ -121,57 +133,69 @@
     >>> vbp() # Call method to open program
   ```
 
-- Example output from VBPatcher installing the stable version of BepInEx before installing the latest experimental patch build [option 3 in the program]:
+- From here, follow the on-screen prompts to operate the program.
+- Choose an operation to run by entering the corresponding number (1-6) and pressing enter.
 
-  ```python
-    Welcome to the Valheim Bepinex Patcher!
-    Please Choose an Option by Entering its Corresponding Number:
+---
 
-    =============================================================
-    >> [1] Patch BepInEx to latest stable release: v5.19.00 (2/3/22)
-    >> [2] Patch BepInEx to latest development/expiremental build: 7a97bdd (5/7/22)
-    >> [3] Apply both patches to BepInEx in chronological order of release (v5.19.00 then 7a97bdd)
-    >> [4] Check for updates to newest patch versions
-    >> [5] Open Valheim
-    >> [6] Exit Program
+## Usage Example
+
+- The following depicts the output from using **VBPatcher** from a command line to first install the latest base/stable-release of BepInEx, then the newest dev-build/bleeding-edge patch [option 3 in the program]:
+
+  ```shell
+  $ vbpatcher
+
+  Initializing VBPatcher start checks...
+
+  VBPatcher start checks completed successfully!
+
+  Welcome to the Valheim Bepinex Patcher!
+
+  Please Choose an Option by Entering its Corresponding Number:
+
+  ==============================================================================
+  >> [1] Patch BepInEx to latest stable release: 5.4.19.0 (2/3/22)
+  >> [2] Patch BepInEx to latest development/experimental build: 7a97bdd (5/7/22)
+  >> [3] Apply both patches to BepInEx in chronological order of release (5.4.19.0 then 7a97bdd)
+  >> [4] Check for/update to newest patch versions
+  >> [5] Open Valheim
+  >> [6] Exit Program
 
     > 3
 
-    Really apply both latest stable release v5.19.00, and latest development build da48b77?
-    > Enter [y] or [n]:
-    =============================================================
-    > y
+  Really apply both latest stable release 5.4.19.0, and latest development build 7a97bdd?
+  > Enter [y] or [n]:
+  ==============================================================================
+  > y
 
-    Patching BepInEx build v5.19.00 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
+  Patching BepInEx build 5.4.19.0 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
 
-    100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.14it/s]
+  Patching: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.06it/s]
 
+  Patch build 5.4.19.0 successfully installed!
 
-    Patch build v5.19.00 successfully installed!
+  Patching BepInEx build 7a97bdd to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
 
-    Patching BepInEx build da48b77 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
+  Patching: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.22it/s]
 
-    100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.19it/s]
+  Patch build 7a97bdd successfully installed!
 
+  Start Game?
 
-    Patch build da48b77 successfully installed!
+  > Enter [y] or [n]:
+  ==============================================================================
+  > n
 
-    Start Game?
-
-    > Enter [y] or [n]:
-    =============================================================
-    > n
-
-    Patching process successfully completed.....
+  Patching process successfully completed.....
 
 
-    Preparing to exit...
+  Preparing to exit...
   ```
 
 ---
 
-## Contact the Author
+## Contact
 
-- If you have any questions, comments, issues, complaints, etc, feel free to contact me through my:
-  - Email at: `schloppdaddy@gmail.com`.
-  - Submit an issue on the project's [GitHub repository](https://github.com/schlopp96/VBPatcher)
+- If you have any questions, comments, issues, complaints, etc, feel free to:
+  - contact me through my email at: `schloppdaddy@gmail.com`.
+  - Submit an issue to the project's [GitHub repository](https://github.com/schlopp96/VBPatcher)
