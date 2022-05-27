@@ -39,5 +39,5 @@ setup(
     keywords=[
         'python,'
         'Valheim', 'BepInEx', 'patcher', 'mods', 'nexus', 'vbp', 'stable',
-        'bleeding', ' edge', 'VBPatcher', 'vortex'
+        'bleeding', 'edge', 'VBPatcher', 'vortex'
     ])

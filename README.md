@@ -6,7 +6,7 @@
 
 ## About
 
-- _**V**alheim **B**epInEx **P**atcher_ (_**VBP**_) is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx) to its latest release (whether LTS or experimental).
+- _**V**alheim **B**epInEx **P**atcher_ (_**VBP**_) is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx), to its latest release (whether LTS or experimental).
 
 - _**VBP**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://www.nexusmods.com/site/mods/1) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
 
@@ -32,10 +32,10 @@
 
 ### **Manual Installation** _(**NOT** Recommended)_
 
-1. Download the project's latest release **.zip archive** from the ["releases"](https://github.com/schlopp96/VBPatcher/releases) tab and extract to location of choice, or clone repository with the git client of your preference with:
+1. Download the project's latest release **\*.zip archive** from the ["releases"](https://github.com/schlopp96/VBPatcher/releases) tab and extract to location of choice, or clone repository with the git client of your preference with:
 
    - ```shell
-      gh repo clone schlopp96/PyLoadBar
+      gh repo clone schlopp96/VBPatcher
      ```
 
 2. Open terminal and navigate to the extracted directory `"~/VBPatcher"`.
