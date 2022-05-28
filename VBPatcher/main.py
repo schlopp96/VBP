@@ -46,7 +46,7 @@ def main() -> None | NoReturn:
     while True:
         logger.info('Display user menu...\n')
         choosePatch: str = input(
-            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{VBPatcher.appglobals.appglobals._textborder}\n>> [1] Patch BepInEx to latest stable release: {VBPatcher.appglobals.appglobals.b_stable} (2/3/22)\n>> [2] Patch BepInEx to latest development/expiremental build: {VBPatcher.appglobals.appglobals.b_dev} (5/7/22)\n>> [3] Apply both patches to BepInEx in chronological order of release ({VBPatcher.appglobals.appglobals.b_stable} then {VBPatcher.appglobals.appglobals.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
+            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{VBPatcher.appglobals.appglobals._textborder}\n>> [1] Patch BepInEx to latest stable release: {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] Patch BepInEx to latest development/bleeding-edge build: {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] Apply both patches to BepInEx in chronological order of release ({VBPatcher.appglobals.appglobals.b_stable} then {VBPatcher.appglobals.appglobals.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
         )
         if choosePatch == '1':
             logger.info(

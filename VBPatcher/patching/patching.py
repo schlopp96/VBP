@@ -85,7 +85,7 @@ class _Patcher:
                             VBPatcher.appglobals.appglobals.b_stable)
                 _startPrompt()
             elif confirmStable.lower() in {'n', 'no'}:
-                return self.cancel('\nBepInEx patching process cancelled',
+                return self._cancel('\nBepInEx patching process cancelled',
                                    'Preparing to exit...')
 
             else:
@@ -119,7 +119,7 @@ class _Patcher:
                             VBPatcher.appglobals.appglobals.b_dev)
                 _startPrompt()
             elif confirmLatest.lower() in {'n', 'no'}:
-                return self.cancel('\nBepInEx patching process cancelled',
+                return self._cancel('\nBepInEx patching process cancelled',
                                    'Preparing to exit...')
 
             else:
@@ -156,7 +156,7 @@ class _Patcher:
                             VBPatcher.appglobals.appglobals.b_dev)
                 return _startPrompt()
             elif confirmFull.lower() in {'n', 'no'}:
-                return self.cancel('\n>> BepInEx patching process cancelled',
+                return self._cancel('\n>> BepInEx patching process cancelled',
                                    '>> Preparing to exit...')
 
             else:
@@ -169,7 +169,7 @@ class _Patcher:
                 sleep(1.250)
                 continue
 
-    def cancel(self, arg0, arg1) -> None | NoReturn:
+    def _cancel(self, arg0, arg1) -> None | NoReturn:
         """Cancel patching process.
 
         :param arg0: text to pass to :class:`PyLoadBar.load(msg_loading: str)`.

@@ -54,7 +54,7 @@
 
 - Make sure you **do not** have **Vortex**, **Thunderstore**, or any other modding tools running, and that you are done with any modding processes.
 
-- Each time your modding tool is opened to edit Valheim, your files will be downgraded again, so **I highly recommend running this script every time before playing!**
+- Each time Vortex is opened to mod Valheim, your BepInEx version will be downgraded again, so **I highly recommend running this script every time before playing!**
 
 1. Open the application, which can be run within a terminal using the following command:
 
@@ -65,13 +65,14 @@
    - You can also run **VBPatcher** from the main program file:
      - `~/VBPatcher/main.py`.
 
-2. Once the script is run, you will be presented with an option menu, allowing you to choose whether to:
+2. Once the script is run, you will be presented with an option menu, allowing you to choose from the following commands:
 
-   - Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
    - Patch BepInEx to the latest stable release.
+   - Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
    - Patch BepInEx first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation.
-   - Check to ensure required patch-files are present and ready to be deployed (_is also done at start of program, but I decided to leave this option in for now_).
-   - Check for and download new releases/builds of BepInEx _**(COMING SOON)**_.
+   - Check for and download new releases/builds of BepInEx.
+   - Start Valheim.
+   - Exit the application.
 
 3. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
 
@@ -154,8 +155,8 @@
   Please Choose an Option by Entering its Corresponding Number:
 
   ==============================================================================
-  >> [1] Patch BepInEx to latest stable release: 5.4.19.0 (2/3/22)
-  >> [2] Patch BepInEx to latest development/experimental build: 7a97bdd (5/7/22)
+  >> [1] Patch BepInEx to latest stable release: 5.4.19.0
+  >> [2] Patch BepInEx to latest development/experimental build: 7a97bdd
   >> [3] Apply both patches to BepInEx in chronological order of release (5.4.19.0 then 7a97bdd)
   >> [4] Check for/update to newest patch versions
   >> [5] Open Valheim
