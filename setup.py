@@ -25,7 +25,7 @@ setup(
         "Environment :: Console",
         "Intended Audience :: End Users/Desktop",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
-        "Natural Language :: English"
+        "Natural Language :: English",
         "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
@@ -33,7 +33,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
-        "Topic :: Games/Entertainment"
+        "Topic :: Games/Entertainment",
         "Topic :: Utilities",
     ],
     keywords=[
