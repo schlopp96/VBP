@@ -16,16 +16,16 @@ class _Downloader:
     """Wrapper containing patch-file update functionality.
 
 	- Class Methods:
-		- `dl_stable(self, url) -> BufferedWriter`
+		- :func:`dl_stable(self, url) -> BufferedWriter`
 			- Download latest BepInEx stable release.
 
-		- `dl_dev(self, url) -> BufferedWriter`
+		- :func:`dl_dev(self, url) -> BufferedWriter`
 			- Download latest BepInEx development build.
 
-		- `unzip_patch(self, filename, stable) -> None`
+		- :func:`unzip_patch(self, filename, stable) -> None`
 			- Unzip downloaded patch files before deleting patch `.zip` archive.
 
-		- `UpdatePatcher(self) -> None`
+		- :func:`UpdatePatcher(self) -> None`
 			- Process to retrieve latest available patch files using class methods.
 	"""
 

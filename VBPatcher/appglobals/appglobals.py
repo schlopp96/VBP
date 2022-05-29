@@ -5,10 +5,10 @@ from requests import Response
 
 
 def get_stable_assets(url: str, mode: int):
-    """Send GET request to retrieve specified BepInEx stable release assets depending on value passed to :param:`mode`.
+    """Send GET request to retrieve BepInEx stable release assets, depending on value passed to :param:`mode`.
 
     - If :param:`mode` set to 1, get patch archive download link.
-    - If :param:`mode` set to 2, get release version.
+    - If :param:`mode` set to 2, get patch release version.
 
     ---
 
@@ -32,10 +32,10 @@ def get_stable_assets(url: str, mode: int):
 
 
 def get_dev_assets(url: str, mode: int):
-    """Send GET request to retrieve specified BepInEx dev/bleeding-edge release assets depending on value passed to :param:`mode`.
+    """Send GET request to retrieve BepInEx dev/bleeding-edge release assets, depending on value passed to :param:`mode`.
 
     - If :param:`mode` set to 1, get patch archive download link.
-    - If :param:`mode` set to 2, get build version.
+    - If :param:`mode` set to 2, get patch version.
 
     ---
 
@@ -85,6 +85,9 @@ p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'  # t
 
 _logFile: str = r'.\logs\patchLog.log'  # Log file location
 
-_datefmt: str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+_datefmt: str = datetime.now().strftime(
+    "%Y-%m-%d %H:%M:%S"
+)  # Date and time format to display when starting program.
 
-_textborder: str = "=".ljust((78), "=")
+_textborder: str = "=".ljust((78),
+                             "=")  # Text border for log file organization.

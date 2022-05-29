@@ -26,7 +26,7 @@ def _exitPatcher() -> None | NoReturn:
 
 def _openValheim() -> int | None:
     """Calls command to open "Valheim" within Steam client.
-    - Will raise `TimeoutExpired` exception if executable doesn't start within 10 seconds.
+    - Will raise :class:`TimeoutExpired` exception if executable doesn't start within 10 seconds.
         - Prevents program from freezing due to any errors encountered during launch process.
 
     - Steam must be running to properly initialize launch process.

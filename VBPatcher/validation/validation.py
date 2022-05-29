@@ -15,13 +15,13 @@ class _Validate:
     """Validate location and deployability of necessary patch files.
 
     - Class methods:
-        - `_verify_stable(self, url) -> bool`
+        - :func:`_verify_stable(self, url) -> bool`
             - Verify presence of BepInEx stable release patch files.
 
-        - `_verify_dev(self, url) -> bool:`
+        - :func:`_verify_dev(self, url) -> bool:`
             - Verify presence of BepInEx dev build patch files.
 
-        - `_start_checks(self) -> None`
+        - :func:`_start_checks(self) -> None`
             - Verify presence of all BepInEx patch files.
     """
 

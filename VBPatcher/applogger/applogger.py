@@ -9,19 +9,19 @@ class _LogGenerator():
     - Uses built-in Python `logging` module.
 
     - Class methods:
-        - `debug(self, msg) -> None`
+        - :func:`debug(self, msg) -> None`
             - Logs a message with level `DEBUG`.
 
-        - `info(self, msg) -> None`
+        - :func:`info(self, msg) -> None`
             - Logs a message with level `INFO`.
 
-        - `warning(self, msg) -> None`
+        - :func:`warning(self, msg) -> None`
             - Logs a message with level `WARNING`.
 
-        - `error(self, msg) -> None`
+        - :func:`error(self, msg) -> None`
             - Logs a message with level `ERROR`.
 
-        - `critical(self, msg) -> None`
+        - :func:`critical(self, msg) -> None`
             - Logs a message with level `CRITICAL`.
     """
 
@@ -37,12 +37,12 @@ class _LogGenerator():
     def __init__(self,
                  name: str,
                  log_file: str,
-                 log_fmt: str = '[%(asctime)s - %(levelname)s] : %(message)s',
+                 log_fmt: str = '[%(levelname)s - %(asctime)s] : %(message)s',
                  date_fmt: str = "%Y-%m-%d %H:%M:%S",
                  level=INFO):
         """Initialize logger instance.
 
-        - For the `log_lvl` parameter, the level of logging can be any of the following:
+        - For the :param:`log_lvl` parameter, the level of logging can be any of the following:
             - CRITICAL = 50
             - FATAL = CRITICAL
             - ERROR = 40

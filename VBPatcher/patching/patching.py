@@ -15,16 +15,16 @@ class _Patcher:
     """Wrapper to handle patch functionality.
 
     - Contains the following patching methods:
-        - `_patch(self, patch_src: PathLike | str, patch_dst: PathLike | str, patch_ver: int | str) -> None`
+        - :func:`_patch(self, patch_src: PathLike | str, patch_dst: PathLike | str, patch_ver: int | str) -> None`
             - Install patch files (`patch_src`) to target directory (`patch_dst`).
 
-        - `_patch_stable(self) -> None | NoReturn`
+        - :func:`_patch_stable(self) -> None | NoReturn`
             - Install latest BepInEx stable release version to target directory.
 
-        - `_patch_dev(self) -> None | NoReturn`
+        - :func:`_patch_dev(self) -> None | NoReturn`
             - Install latest BepInEx development build version to target directory.
 
-        - `_patch_full() -> None | NoReturn`
+        - :func:`_patch_full(self) -> None | NoReturn`
             - Apply both available BepInEx patches in order of release (Stable -> Development).
     """
 
@@ -42,7 +42,7 @@ class _Patcher:
         :type patch_dst: :class:`Any`
         :param patch_ver: version/title/build of patch.
         :type patch_ver: :class:`Any`
-        :return: transfer patch files from `patch_src` to `patch_dst`.
+        :return: transfer patch files from :param:`patch_src` to :param:`patch_dst`.
         :rtype: None
         """
         try:
@@ -86,7 +86,7 @@ class _Patcher:
                 _startPrompt()
             elif confirmStable.lower() in {'n', 'no'}:
                 return self._cancel('\nBepInEx patching process cancelled',
-                                   'Preparing to exit...')
+                                    'Preparing to exit...')
 
             else:
                 logger.warning(
@@ -120,7 +120,7 @@ class _Patcher:
                 _startPrompt()
             elif confirmLatest.lower() in {'n', 'no'}:
                 return self._cancel('\nBepInEx patching process cancelled',
-                                   'Preparing to exit...')
+                                    'Preparing to exit...')
 
             else:
                 logger.warning(
@@ -157,7 +157,7 @@ class _Patcher:
                 return _startPrompt()
             elif confirmFull.lower() in {'n', 'no'}:
                 return self._cancel('\n>> BepInEx patching process cancelled',
-                                   '>> Preparing to exit...')
+                                    '>> Preparing to exit...')
 
             else:
                 logger.warning(
