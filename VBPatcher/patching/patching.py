@@ -1,4 +1,5 @@
-from os import PathLike, unlink
+from distutils import filelist
+from os import PathLike, scandir, unlink
 from shutil import copytree
 from time import sleep
 from typing import NoReturn
@@ -28,7 +29,7 @@ class _Patcher:
             - Apply both available BepInEx patches in order of release (Stable -> Development).
     """
 
-    def _patch(self, patch_src: PathLike | str, patch_dst: PathLike | str,
+    def _patch(self, patch_src: str, patch_dst: str,
                patch_ver: int | str) -> None:
         """Apply patch files (`patch_src`) to target directory (`patch_dst`).
 
@@ -54,7 +55,8 @@ class _Patcher:
             bar.load(
                 f'\nPatching BepInEx build {patch_ver} to location: {patch_dst}',
                 f'Patch build {patch_ver} successfully installed!',
-                label='Patching')
+                label='Patching',
+                time=len(filelist.findall(patch_src)))
             logger.info(f'Patch build {patch_ver} successfully installed!\n')
         except Exception as exc:
             logger.error(
