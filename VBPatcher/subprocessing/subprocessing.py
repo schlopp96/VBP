@@ -1,11 +1,12 @@
 from subprocess import TimeoutExpired, call
 from sys import exit as ex
+import sys
 from time import sleep
 from typing import NoReturn
 
 from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
-from VBPatcher.applogger.applogger import logger
+from VBPatcher.applogger.applogger import logger, logger_stream
 
 start_seq = PyLoadBar(False)
 
@@ -43,14 +44,13 @@ def _openValheim() -> int | None:
         start_seq.start("Starting Game", "Opening Valheim...\n")
         return call(
             r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970",
-            timeout=10)
+            timeout=15,
+            stdout=sys.stdout,
+            stderr=sys.stderr)
 
     except TimeoutExpired as exp:
-        logger.error(
+        logger_stream.error(
             f'Something went wrong while starting Valheim...\n\n>> Exception:\n{exp}\n>> Make sure Steam is running!\n'
-        )
-        print(
-            f'Something went wrong while starting Valheim...\n\n>> Exception:\n{exp}\n\n>> Make sure Steam is running!\n'
         )
         return _exitPatcher()
 
@@ -81,11 +81,8 @@ def _startPrompt() -> NoReturn | None:
             return _exitPatcher()
 
         else:
-            logger.warning(
+            logger_stream.warning(
                 f'Invalid Input: "{startPrompt}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
-            )
-            print(
-                f'\nERROR: Invalid Input\n\n>> Your Entry: "{startPrompt}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n'
             )
             sleep(1.250)
             continue

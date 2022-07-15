@@ -34,12 +34,15 @@ class _LogGenerator():
     DEBUG = 10
     NOTSET = 0
 
-    def __init__(self,
-                 name: str,
-                 log_file: str,
-                 log_fmt: str = '[%(levelname)s - %(asctime)s] : %(message)s',
-                 date_fmt: str = "%Y-%m-%d %H:%M:%S",
-                 level=INFO):
+    def __init__(
+            self,
+            name: str,
+            log_file: str,
+            log_format:
+        str = '[ %(levelname)s - %(asctime)s - %(name)s ] : %(message)s',
+            datefmt: str = "%Y-%m-%d %H:%M:%S",
+            level=INFO,
+            stream: bool = False):
         """Initialize logger instance.
 
         - For the :param:`log_lvl` parameter, the level of logging can be any of the following:
@@ -64,19 +67,27 @@ class _LogGenerator():
         :type date_fmt: :class:`str`, optional
         :param level: Set the logging level of this logger. Level must be an int or a str, defaults to `INFO`.
         :type level: :class:`int`, optional
+        :param stream: If True, toggle streaming to stdout.
+        :type stream: :class:`bool`, optional
+        :return: new logging class instance
+        :rtype: None
         """
 
         self.name = name
         self.logger = logging.getLogger(name)
-        self.log_format = log_fmt
-        self.datefmt = date_fmt
-        self.log_lvl = level
-        self.formatter = logging.Formatter(log_fmt, datefmt=date_fmt)
+        self.log_format = log_format
+        self.datefmt = datefmt
+        self.level = level
+        self.formatter = logging.Formatter(log_format, datefmt=datefmt)
         self.log_file = log_file
         self.fhandler = logging.FileHandler(log_file)
         self.logger.addHandler(self.fhandler)
         self.fhandler.setFormatter(self.formatter)
         self.logger.setLevel(level)
+        self.stream = stream
+
+        if stream:  # if stream is True, then toggle logging to stdout
+            self.logger.addHandler(logging.StreamHandler())
 
     def debug(self, msg) -> None:
         """Logs a message with level `DEBUG`.
@@ -139,4 +150,5 @@ class _LogGenerator():
         return self.logger.critical(msg)
 
 
-logger = _LogGenerator(__name__, _logFile)
+logger = _LogGenerator('MAIN', _logFile)
+logger_stream = _LogGenerator('OUTPUT', _logFile, stream=True)

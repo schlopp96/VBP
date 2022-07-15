@@ -12,10 +12,10 @@ from PyLoadBar import PyLoadBar
 
 sys.path.insert(0, dirname(
     dirname(__file__)))  # Ensure main module can be found by Python.
-chdir(dirname(__file__))
+chdir(dirname(__file__)) # Change to main module directory.
 
 import VBPatcher.appglobals.appglobals
-from VBPatcher.applogger.applogger import logger
+from VBPatcher.applogger.applogger import logger, logger_stream
 from VBPatcher.downloader.downloader import _Downloader
 from VBPatcher.patching.patching import _Patcher
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _openValheim
@@ -88,11 +88,8 @@ def main() -> None | NoReturn:
             return _exitPatcher()
 
         else:
-            logger.warning(
-                f'Invalid Input:\n>> "{choosePatch}"\n\n>> Must ONLY enter:\n>> [1] for stable release {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] for development build {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n'
-            )
-            print(
-                f'\nERROR: Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] for development build {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n'
+            logger_stream.warning(
+                f'Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] for development build {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n'
             )
             sleep(1.5)
             continue

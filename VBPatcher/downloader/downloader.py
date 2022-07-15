@@ -9,7 +9,7 @@ import requests
 import tqdm
 import VBPatcher.appglobals.appglobals
 from requests import Response
-from VBPatcher.applogger.applogger import logger
+from VBPatcher.applogger.applogger import logger, logger_stream
 
 
 class _Downloader:
@@ -62,19 +62,13 @@ class _Downloader:
                                        file=sys.stdout):
                     patch_stable.write(chunk)
 
-            logger.info(
+            logger_stream.info(
                 f'Completed BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n'
-            )
-            print(
-                f'\nCompleted BepInEx latest stable-release download!\n>> Downloaded from url:\n>> {url}\n'
             )
             return patch_stable
 
         except [Exception, HTTPError] as err:
-            logger.error(
-                f'Encountered error while downloading latest stable release zip archive...\n>> Exception:\n{err}\n'
-            )
-            print(
+            logger_stream.error(
                 f'Encountered error while downloading latest stable release zip archive...\n>> Exception:\n{err}\n'
             )
 
@@ -111,20 +105,14 @@ class _Downloader:
                                        file=sys.stdout):
                     patch_dev.write(chunk)
 
-                logger.info(
+                logger_stream.info(
                     f'Completed BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n'
-                )
-                print(
-                    f'\nCompleted BepInEx latest development-build download!\n>> Downloaded from url:\n>> {url}\n'
                 )
             return patch_dev
 
         except [Exception, HTTPError] as err:
-            logger.error(
+            logger_stream.error(
                 f'Encountered error while downloading latest development-build zip archive...\n>> Exception:\n{err}\n'
-            )
-            print(
-                f'Encountered error while downloading latest development-build zip archive...\n>> Exception:\n{err}'
             )
 
     def _unzip_patch(self, filename: PathLike | str, mode: int) -> None:
@@ -140,8 +128,7 @@ class _Downloader:
 		:rtype: None
 		"""
 
-        logger.info('Unzipping patch files...')
-        print('Unzipping patch files...')
+        logger_stream.info('Unzipping patch files...')
 
         try:
             if mode == 1:  # Unzip stable-release patch files
@@ -162,19 +149,13 @@ class _Downloader:
                     f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip'
                 )
 
-            logger.info(
+            logger_stream.info(
                 'Successfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n'
-            )
-            print(
-                '\nSuccessfully unzipped archive!\n>> Deleted extra files...\n>> Patch ready for deployment!\n'
             )
 
         except Exception as err:
-            logger.error(
+            logger_stream.error(
                 f'Encountered error while attempting to unzip archive...\n>> Exception: {err}\n'
-            )
-            print(
-                f'\nEncountered error while attempting to unzip archive...\n>> Exception: {err}\n'
             )
 
     def UpdatePatcher(self) -> None:
@@ -198,5 +179,5 @@ class _Downloader:
                 f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip',
                 2)
 
-        print('\n>> Press anything to continue...\n')
+        logger_stream.info('\n>> Press anything to continue...\n')
         m.getch()  # Wait for user to press any key to continue

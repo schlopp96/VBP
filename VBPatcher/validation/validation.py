@@ -4,7 +4,7 @@ from zipfile import is_zipfile
 from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
 import VBPatcher.downloader.downloader
-from VBPatcher.applogger.applogger import logger
+from VBPatcher.applogger.applogger import logger, logger_stream
 from VBPatcher.subprocessing.subprocessing import _exitPatcher
 
 DL = VBPatcher.downloader.downloader._Downloader()
@@ -189,14 +189,13 @@ class _Validate:
         :rtype: None
         """
 
-        logger.info('Initializing VBPatcher start checks...\n')
-        print('Initializing VBPatcher start checks...\n')
+        logger_stream.info('Initializing VBPatcher start checks...\n')
 
         if self._validate_stable(VBPatcher.appglobals.appglobals.url_stable
                                  ) and self._validate_dev(
                                      VBPatcher.appglobals.appglobals.url_dev):
-            logger.info('VBPatcher start checks completed successfully!\n')
-            print('VBPatcher start checks completed successfully!\n')
+            logger_stream.info(
+                'VBPatcher start checks completed successfully!\n')
 
         else:
             logger.error(

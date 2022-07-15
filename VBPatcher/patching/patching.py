@@ -6,7 +6,7 @@ from typing import NoReturn
 
 from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
-from VBPatcher.applogger.applogger import logger
+from VBPatcher.applogger.applogger import logger, logger_stream
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _startPrompt
 
 patch_bar = PyLoadBar()
@@ -17,7 +17,7 @@ class _Patcher:
     """Wrapper to handle patch functionality.
 
     - Contains the following patching methods:
-        - :func:`_patch(self, patch_src: PathLike | str, patch_dst: PathLike | str, patch_ver: int | str) -> None`
+        - :func:`_patch(self, patch_src: str, patch_dst: str, patch_ver: int | str) -> None`
             - Install patch files (`patch_src`) to target directory (`patch_dst`).
 
         - :func:`_patch_stable(self) -> None | NoReturn`
@@ -32,18 +32,18 @@ class _Patcher:
 
     def _patch(self, patch_src: str, patch_dst: str,
                patch_ver: int | str) -> None:
-        """Apply patch files (`patch_src`) to target directory (`patch_dst`).
+        """Apply patch files (:param:`patch_src`) to target directory (:param:`patch_dst`).
 
         - Overwrites any existing patch files.
 
         ---
 
         :param patch_src: source directory containing patch files.
-        :type patch_src: :class:`Any`
+        :type patch_src: :class:`str`
         :param patch_dst: destination of patch files.
-        :type patch_dst: :class:`Any`
+        :type patch_dst: :class:`str`
         :param patch_ver: version/title/build of patch.
-        :type patch_ver: :class:`Any`
+        :type patch_ver: :class:`int` | :class:`str`
         :return: transfer patch files from :param:`patch_src` to :param:`patch_dst`.
         :rtype: None
         """
@@ -58,16 +58,14 @@ class _Patcher:
                 f'Patching BepInEx build {patch_ver} to location: {patch_dst}',
                 f'Patch build {patch_ver} successfully installed!',
                 label='Patching',
-                iter_total=len(filelist.findall(patch_src)))
+                iter_total=len(filelist.findall(patch_src)),
+                max_iter=0.2)
 
             logger.info(f'Patch build {patch_ver} successfully installed!\n')
 
         except Exception as exc:
-            logger.error(
+            logger_stream.error(
                 f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n>> Exception:\n{exc}\n'
-            )
-            print(
-                f'Something went wrong...\n>> {exc}\n>> Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...'
             )
 
     def _patch_stable(self) -> None | NoReturn:
@@ -98,11 +96,8 @@ class _Patcher:
                                     'Preparing to exit...')
 
             else:
-                logger.warning(
+                logger_stream.warning(
                     f'Invalid Input: "{confirmStable}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
-                )
-                print(
-                    f'\nERROR: Invalid Input\n\n>> Your Entry: "{confirmStable}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n'
                 )
                 sleep(1.250)
                 continue
@@ -134,11 +129,8 @@ class _Patcher:
                                     'Preparing to exit...')
 
             else:
-                logger.warning(
+                logger_stream.warning(
                     f'Invalid Input: "{confirmLatest}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
-                )
-                print(
-                    f'\nERROR: Invalid Input\n\n>> Your Entry: "{confirmLatest}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n'
                 )
                 sleep(1.250)
                 continue
@@ -173,11 +165,8 @@ class _Patcher:
                                     '>> Preparing to exit...')
 
             else:
-                logger.warning(
+                logger_stream.warning(
                     f'Invalid Input: "{confirmFull}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
-                )
-                print(
-                    f'\nERROR: Invalid Input\n\n>> Your Entry: "{confirmFull}".\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n\n'
                 )
                 sleep(1.250)
                 continue
