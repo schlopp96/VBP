@@ -1,11 +1,11 @@
-from os import unlink
 from distutils import filelist
+from os import unlink
 from shutil import copytree
 from time import sleep
 from typing import NoReturn
 
-from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
+from PyLoadBar import PyLoadBar
 from VBPatcher.applogger.applogger import logger, logger_stream
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _startPrompt
 
@@ -184,5 +184,5 @@ class _Patcher:
 
         logger.info(
             'BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-        exit_seq.start(arg0, arg1)
+        exit_seq.start(arg0, arg1, iter_total=10, txt_seq_speed=0.25)
         return _exitPatcher()

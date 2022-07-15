@@ -1,11 +1,11 @@
+import sys
 from subprocess import TimeoutExpired, call
 from sys import exit as ex
-import sys
 from time import sleep
 from typing import NoReturn
 
-from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
+from PyLoadBar import PyLoadBar
 from VBPatcher.applogger.applogger import logger, logger_stream
 
 start_seq = PyLoadBar(False)
@@ -77,7 +77,9 @@ def _startPrompt() -> NoReturn | None:
                 'Patching process successfully completed!\n>> Preparing to exit...\n'
             )
             start_seq.start('Patching process successfully completed',
-                            'Preparing to exit...')
+                            'Preparing to exit...',
+                            iter_total=10,
+                            txt_seq_speed=0.25)
             return _exitPatcher()
 
         else:

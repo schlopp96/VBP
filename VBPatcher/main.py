@@ -12,7 +12,7 @@ from PyLoadBar import PyLoadBar
 
 sys.path.insert(0, dirname(
     dirname(__file__)))  # Ensure main module can be found by Python.
-chdir(dirname(__file__)) # Change to main module directory.
+chdir(dirname(__file__))  # Change to main module directory.
 
 import VBPatcher.appglobals.appglobals
 from VBPatcher.applogger.applogger import logger, logger_stream

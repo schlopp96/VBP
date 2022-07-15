@@ -1,9 +1,9 @@
 import os
 from zipfile import is_zipfile
 
-from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
 import VBPatcher.downloader.downloader
+from PyLoadBar import PyLoadBar
 from VBPatcher.applogger.applogger import logger, logger_stream
 from VBPatcher.subprocessing.subprocessing import _exitPatcher
 
@@ -203,5 +203,7 @@ class _Validate:
             )
             bar.start(
                 'ERROR: One or more patch files were not able to be verified and cannot be deployed',
-                'Exiting Patcher')
+                'Exiting Patcher',
+                iter_total=10,
+                txt_seq_speed=0.25)
             return _exitPatcher()
