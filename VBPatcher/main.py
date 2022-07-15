@@ -70,6 +70,7 @@ def main() -> None | NoReturn:
         elif choosePatch == '4':
             logger.info('Chose option [4] to check for new patch updates...')
             DL.UpdatePatcher()
+            continue
 
         elif choosePatch == '5':
             logger.info('Chose option [5] to start Valheim...')
