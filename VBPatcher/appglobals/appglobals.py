@@ -19,16 +19,18 @@ def get_stable_assets(url: str, mode: int):
     :return: response content from GET request.
     :rtype: :class:`str` | None
     """
-    r: Response = req.get(url, 'html.parser')
-    r.raise_for_status()
 
-    dl_link: str = r.json()['assets'][1]['browser_download_url']
-    patch_ver: str = r.json()['assets'][1]['name'][12:20]
+    r: Response = req.get(url, 'html.parser')  # Send GET request.
+    r.raise_for_status()  # Raise exception if response is not 200.
+
+    dl_link: str = r.json()['assets'][1][
+        'browser_download_url']  # Get download link.
+    patch_ver: str = r.json()['assets'][1]['name'][12:20]  # Get patch version.
 
     if mode == 1:
-        return dl_link
+        return dl_link  # Return download link.
     if mode == 2:
-        return patch_ver
+        return patch_ver  # Return patch version.
 
 
 def get_dev_assets(url: str, mode: int):
@@ -46,44 +48,51 @@ def get_dev_assets(url: str, mode: int):
     :return: response content from GET request.
     :rtype: :class:`str` | None
     """
+
     retrieved = 0
 
-    r: Response = req.get(url)
-    r.raise_for_status()
+    r: Response = req.get(url)  # Send GET request.
+    r.raise_for_status()  # Raise exception if response is not 200.
 
-    soup = bs4.BeautifulSoup(r.content, 'html.parser')
-    results = soup.find_all('div', class_="artifacts-list")
+    soup = bs4.BeautifulSoup(r.content, 'html.parser')  # Parse response HTML.
+    results = soup.find_all(
+        'div', class_="artifacts-list"
+    )  # Get all <div> tags with class="artifacts-list".
 
     for result in results:
-        if retrieved < 1:
-            link = result.find_all('a')[0]['href']
+        if retrieved < 1:  # Only get first <div> tag.
+            link = result.find_all('a')[0]['href']  # Get download link.
             retrieved += 1
 
-    dl_link = (f'{url[:26]}{link}')
+    dl_link = (f'{url[:26]}{link}')  # Combine URL and download link.
 
     if mode == 1:
-        return dl_link
+        return dl_link  # Return download link.
     elif mode == 2:
-        return dl_link[73:80]
+        return dl_link[73:80]  # Return patch version.
 
 
 p_stable: str = r'.\patch-files\stable'  # Stable patch file location
+
 url_stable = get_stable_assets(
     'http://api.github.com/repos/BepInEx/BepInEx/releases/latest',
     1)  # stable release download link
+
 b_stable = get_stable_assets(
     'http://api.github.com/repos/BepInEx/BepInEx/releases/latest',
     2)  # stable release version
 
 p_dev: str = r'.\patch-files\development'  # Development patch file location
+
 url_dev = get_dev_assets('https://builds.bepinex.dev/projects/bepinex_be',
                          1)  # dev/bleeding-edge build download link
+
 b_dev: str = get_dev_assets('https://builds.bepinex.dev/projects/bepinex_be',
                             2)  # dev/bleeding-edge build number
 
 p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'  # target directory to patch
 
-_logFile: str = r'.\logs\patchLog.log'  # Log file location
+_logFile: str = r'.\logs\VBPatcherLog.log'  # Log file path
 
 _datefmt: str = datetime.now().strftime(
     "%Y-%m-%d %H:%M:%S"

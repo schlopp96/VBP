@@ -1,14 +1,14 @@
 import os
 from zipfile import is_zipfile
 
-import PyLoadBar
+from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
 import VBPatcher.downloader.downloader
 from VBPatcher.applogger.applogger import logger
 from VBPatcher.subprocessing.subprocessing import _exitPatcher
 
 DL = VBPatcher.downloader.downloader._Downloader()
-bar = PyLoadBar.PyLoadBar()
+bar = PyLoadBar(False)
 
 
 class _Validate:
@@ -35,6 +35,7 @@ class _Validate:
         :return: validation of patch files.
         :rtype: :class:`bool`
         """
+
         logger.info(
             f'Validating BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...'
         )
@@ -68,11 +69,13 @@ class _Validate:
                 logger.info(
                     f'BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
                 )
+
             else:
                 logger.info(
                     f'Unable to locate BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch...\n>> Attempting to download...'
                 )
                 DL._dl_stable(url)  # Download *.zip archive from url
+
                 if is_zipfile(  # Check if downloaded archive is a zip file
                         f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip'
                 ):
@@ -83,6 +86,7 @@ class _Validate:
                     logger.info(
                         f'Download successful!\n>> BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
                     )
+
                 else:
                     stable_match = False
                     logger.error(
@@ -94,6 +98,7 @@ class _Validate:
             logger.error(
                 f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch validation...\n>> Exception:\n{err}\n'
             )
+
         finally:
             return stable_match
 
@@ -107,6 +112,7 @@ class _Validate:
         :return: validation of patch files.
         :rtype: :class:`bool`
         """
+
         logger.info(
             f'Validating BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...'
         )
@@ -144,6 +150,7 @@ class _Validate:
                     f'Unable to locate BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch...\n>> Attempting to download...'
                 )
                 DL._dl_dev(url)  # Download *.zip file from url
+
                 if is_zipfile(  # Check if downloaded archive is a zip file
                         f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip'
                 ):
@@ -167,6 +174,7 @@ class _Validate:
             logger.error(
                 f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch validation...\n>> Exception:\n{err}\n'
             )
+
         finally:
             return dev_match
 
@@ -180,6 +188,7 @@ class _Validate:
         :return: continue to application if verification is successful, otherwise exits program.
         :rtype: None
         """
+
         logger.info('Initializing VBPatcher start checks...\n')
         print('Initializing VBPatcher start checks...\n')
 
@@ -188,12 +197,12 @@ class _Validate:
                                      VBPatcher.appglobals.appglobals.url_dev):
             logger.info('VBPatcher start checks completed successfully!\n')
             print('VBPatcher start checks completed successfully!\n')
+
         else:
             logger.error(
                 'VBPatcher start checks failed!\n>> One or more patch files were not able to be verified...\n'
             )
-            bar.load(
-                'ERROR: One or more patch files were not able to be verified and cannot be deployed...\nCheck log for more details',
-                'Exiting Patcher',
-                enable_display=False)
+            bar.start(
+                'ERROR: One or more patch files were not able to be verified and cannot be deployed',
+                'Exiting Patcher')
             return _exitPatcher()

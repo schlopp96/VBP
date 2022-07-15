@@ -7,7 +7,7 @@ with open('requirements.txt', 'r') as fh2:
 
 setup(
     name='VBPatcher',
-    version="0.6.0",
+    version="0.7.0",
     description=
     'The Valheim BepInEx Patcher (VBPatcher) is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.',
     url='https://github.com/schlopp96/VBPatcher',

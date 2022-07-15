@@ -1,15 +1,16 @@
+from os import unlink
 from distutils import filelist
-from os import PathLike, scandir, unlink
 from shutil import copytree
 from time import sleep
 from typing import NoReturn
 
-import PyLoadBar
+from PyLoadBar import PyLoadBar
 import VBPatcher.appglobals.appglobals
 from VBPatcher.applogger.applogger import logger
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _startPrompt
 
-bar = PyLoadBar.PyLoadBar()
+patch_bar = PyLoadBar()
+exit_seq = PyLoadBar(False)
 
 
 class _Patcher:
@@ -46,18 +47,21 @@ class _Patcher:
         :return: transfer patch files from :param:`patch_src` to :param:`patch_dst`.
         :rtype: None
         """
+
         try:
             logger.info(
                 f'Patching BepInEx build {patch_ver} to location: {patch_dst}...'
             )
             copytree(patch_src, patch_dst, dirs_exist_ok=True)
             unlink(f'{VBPatcher.appglobals.appglobals.p_targetDir}/.gitkeep')
-            bar.load(
-                f'\nPatching BepInEx build {patch_ver} to location: {patch_dst}',
+            patch_bar.start(
+                f'Patching BepInEx build {patch_ver} to location: {patch_dst}',
                 f'Patch build {patch_ver} successfully installed!',
                 label='Patching',
-                time=len(filelist.findall(patch_src)))
+                iter_total=len(filelist.findall(patch_src)))
+
             logger.info(f'Patch build {patch_ver} successfully installed!\n')
+
         except Exception as exc:
             logger.error(
                 f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n>> Exception:\n{exc}\n'
@@ -74,6 +78,7 @@ class _Patcher:
         :return: patched BepInEx installation.
         :rtype: None
         """
+
         while True:
             logger.info(
                 f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.appglobals.b_dev} patch...\n'
@@ -81,13 +86,15 @@ class _Patcher:
             confirmStable: str = input(
                 f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.appglobals.b_stable} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )
+
             if confirmStable.lower() in {'yes', 'y'}:
                 self._patch(VBPatcher.appglobals.appglobals.p_stable,
                             VBPatcher.appglobals.appglobals.p_targetDir,
                             VBPatcher.appglobals.appglobals.b_stable)
                 _startPrompt()
+
             elif confirmStable.lower() in {'n', 'no'}:
-                return self._cancel('\nBepInEx patching process cancelled',
+                return self._cancel('BepInEx patching process cancelled',
                                     'Preparing to exit...')
 
             else:
@@ -108,6 +115,7 @@ class _Patcher:
         :return: patched BepInEx installation.
         :rtype: None
         """
+
         while True:
             logger.info(
                 f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.appglobals.b_dev} patch...\n'
@@ -115,13 +123,14 @@ class _Patcher:
             confirmLatest: str = input(
                 f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.appglobals.b_dev} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
             )
+
             if confirmLatest.lower() in {'yes', 'y'}:
                 self._patch(VBPatcher.appglobals.appglobals.p_dev,
                             VBPatcher.appglobals.appglobals.p_targetDir,
                             VBPatcher.appglobals.appglobals.b_dev)
                 _startPrompt()
             elif confirmLatest.lower() in {'n', 'no'}:
-                return self._cancel('\nBepInEx patching process cancelled',
+                return self._cancel('BepInEx patching process cancelled',
                                     'Preparing to exit...')
 
             else:
@@ -142,6 +151,7 @@ class _Patcher:
         :return: patched BepInEx installation.
         :rtype: None
         """
+
         while True:
             logger.info(
                 'Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...\n'
@@ -157,8 +167,9 @@ class _Patcher:
                             VBPatcher.appglobals.appglobals.p_targetDir,
                             VBPatcher.appglobals.appglobals.b_dev)
                 return _startPrompt()
+
             elif confirmFull.lower() in {'n', 'no'}:
-                return self._cancel('\n>> BepInEx patching process cancelled',
+                return self._cancel('>> BepInEx patching process cancelled',
                                     '>> Preparing to exit...')
 
             else:
@@ -181,7 +192,8 @@ class _Patcher:
         :return: cancelled patching process.
         :rtype: None | :class:`NoReturn`
         """
+
         logger.info(
             'BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-        bar.load(arg0, arg1, enable_display=False)
+        exit_seq.start(arg0, arg1)
         return _exitPatcher()
