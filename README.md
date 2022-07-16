@@ -141,57 +141,9 @@
 
 ## Usage Example
 
-- The following depicts the output from using **VBPatcher** from a command line to first install the latest base/stable-release of BepInEx, then the newest dev-build/bleeding-edge patch [option 3 in the program]:
+- The following depicts the output from using **VBPatcher** from a command line to first check for any new updates before installing the latest base/stable-release of BepInEx, then the newest dev-build/bleeding-edge patch [option 3 in the program]:
 
-  ```shell
-  $ vbpatcher
-
-  Initializing VBPatcher start checks...
-
-  VBPatcher start checks completed successfully!
-
-  Welcome to the Valheim Bepinex Patcher!
-
-  Please Choose an Option by Entering its Corresponding Number:
-
-  ==============================================================================
-  >> [1] Patch BepInEx to latest stable release: 5.4.19.0
-  >> [2] Patch BepInEx to latest development/experimental build: 7a97bdd
-  >> [3] Apply both patches to BepInEx in chronological order of release (5.4.19.0 then 7a97bdd)
-  >> [4] Check for/update to newest patch versions
-  >> [5] Open Valheim
-  >> [6] Exit Program
-
-    > 3
-
-  Really apply both latest stable release 5.4.19.0, and latest development build 7a97bdd?
-  > Enter [y] or [n]:
-  ==============================================================================
-  > y
-
-  Patching BepInEx build 5.4.19.0 to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
-
-  Patching: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.06it/s]
-
-  Patch build 5.4.19.0 successfully installed!
-
-  Patching BepInEx build 7a97bdd to location: C:\Program Files (x86)\Steam\steamapps\common\Valheim...
-
-  Patching: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [00:00<00:00,  9.22it/s]
-
-  Patch build 7a97bdd successfully installed!
-
-  Start Game?
-
-  > Enter [y] or [n]:
-  ==============================================================================
-  > n
-
-  Patching process successfully completed.....
-
-
-  Preparing to exit...
-  ```
+![alt](./media/README-GIF.gif)
 
 ---
 
