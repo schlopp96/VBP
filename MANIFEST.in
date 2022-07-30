@@ -2,4 +2,4 @@ include *.in
 include *.txt
 recursive-include VBPatcher *.gitkeep
 recursive-include VBPatcher *.py
-recursive-include media *.gif
+recursive-include assets *.gif
