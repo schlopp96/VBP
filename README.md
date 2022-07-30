@@ -143,7 +143,7 @@
 
 - The following depicts the output from using **VBPatcher** from a command line to first check for any new updates before installing the latest base/stable-release of BepInEx, then the newest dev-build/bleeding-edge patch [option 3 in the program]:
 
-![alt](./media/README-GIF.gif)
+![alt](./assets/README-GIF.gif)
 
 ---
 

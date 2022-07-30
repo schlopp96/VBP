@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-__version__: str = '0.7.0'
+__version__: str = '0.8.0'
 
 import sys
 from os import chdir
