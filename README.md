@@ -38,7 +38,7 @@
       gh repo clone schlopp96/VBPatcher
      ```
 
-2. Open terminal and navigate to the extracted directory `"~/VBPatcher"`.
+2. Open terminal and navigate to the extracted directory `"~./VBPatcher"`.
 
 3. Enter the following to install necessary dependencies:
 
@@ -63,7 +63,7 @@
      ```
 
    - You can also run **VBPatcher** from the main program file:
-     - `~/VBPatcher/main.py`.
+     - `~./VBPatcher/main.py`.
 
 2. Once the script is run, you will be presented with an option menu, allowing you to choose from the following commands:
 
@@ -78,11 +78,11 @@
 
    - For example, once the option to apply a patch is confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
 
-4. Upon successful patching, the script will ask the user if they'd like to start _Valheim_, or simply exit the patcher.
+4. Upon successful patching, the script will ask the user if they'd like to start _Valheim_.
 
 5. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
 
-6. If you choose to **NOT** run the game, the patcher simply closes itself.
+6. If you choose to **NOT** run the game, the patcher will return to the main menu.
 
 - **_NOTE:_**
 
@@ -107,10 +107,10 @@
     - `C:\Program Files (x86)\Steam\steamapps\common\Valheim`
 
   - For _MacOS_, the default install path for Valheim is:
-    - `~/Library/Application Support/Steam/steamapps/common/Valheim`
+    - `~./Library/Application Support/Steam/steamapps/common/Valheim`
 
 - Patches will be applied to the BepInEx folder, itself found within the game's installation folder:
-  - `~/Steam/steamapps/common/Valheim/BepInEx`.
+  - `~./Steam/steamapps/common/Valheim/BepInEx`.
 
 ---
 
