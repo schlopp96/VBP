@@ -8,7 +8,10 @@ class _LogGenerator():
 
     - Uses built-in Python `logging` module.
 
-    - Class methods:
+    ---
+
+    - Contains the following logging methods:
+
         - :func:`debug(self, msg) -> None`
             - Logs a message with level `DEBUG`.
 
@@ -150,5 +153,7 @@ class _LogGenerator():
         return self.logger.critical(msg)
 
 
-logger = _LogGenerator('MAIN', _logFile)
-logger_stream = _LogGenerator('OUTPUT', _logFile, stream=True)
+logger = _LogGenerator('MAIN', _logFile)  # Main logging instance
+
+logger_stream = _LogGenerator('OUTPUT', _logFile,
+                              stream=True)  # Stdout streaming logging instance

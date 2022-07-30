@@ -7,7 +7,7 @@ from typing import NoReturn
 import VBPatcher.appglobals.appglobals
 from PyLoadBar import PyLoadBar
 from VBPatcher.applogger.applogger import logger, logger_stream
-from VBPatcher.subprocessing.subprocessing import _exitPatcher, _startPrompt
+from VBPatcher.subprocessing.subprocessing import _startPrompt
 
 patch_bar = PyLoadBar()
 exit_seq = PyLoadBar(False)
@@ -16,9 +16,13 @@ exit_seq = PyLoadBar(False)
 class _Patcher:
     """Wrapper to handle patch functionality.
 
+    ---
+
     - Contains the following patching methods:
-        - :func:`_patch(self, patch_src: str, patch_dst: str, patch_ver: int | str) -> None`
+
+        - :func:`_patch(patch_src: str, patch_dst: str, patch_ver: int | str) -> None`
             - Install patch files (`patch_src`) to target directory (`patch_dst`).
+            - Static method.
 
         - :func:`_patch_stable(self) -> None | NoReturn`
             - Install latest BepInEx stable release version to target directory.
@@ -28,10 +32,14 @@ class _Patcher:
 
         - :func:`_patch_full(self) -> None | NoReturn`
             - Apply both available BepInEx patches in order of release (Stable -> Development).
+
+        - :func:`_cancel(arg0, arg1) -> None | NoReturn`
+            - Cancel patching process and return to menu.
+            - Static method.
     """
 
-    def _patch(self, patch_src: str, patch_dst: str,
-               patch_ver: int | str) -> None:
+    @staticmethod
+    def _patch(patch_src: str, patch_dst: str, patch_ver: int | str) -> None:
         """Apply patch files (:param:`patch_src`) to target directory (:param:`patch_dst`).
 
         - Overwrites any existing patch files.
@@ -52,14 +60,20 @@ class _Patcher:
             logger.info(
                 f'Patching BepInEx build {patch_ver} to location: {patch_dst}...'
             )
-            copytree(patch_src, patch_dst, dirs_exist_ok=True)
-            unlink(f'{VBPatcher.appglobals.appglobals.p_targetDir}/.gitkeep')
+
+            copytree(
+                patch_src, patch_dst,
+                dirs_exist_ok=True)  # Copy patch files to target directory.
+
+            unlink(f'{VBPatcher.appglobals.appglobals.p_targetDir}/.gitkeep'
+                   )  # Remove .gitkeep file.
+
             patch_bar.start(
                 f'Patching BepInEx build {patch_ver} to location: {patch_dst}',
                 f'Patch build {patch_ver} successfully installed!',
                 label='Patching',
                 iter_total=len(filelist.findall(patch_src)),
-                max_iter=0.2)
+                max_iter=0.2)  # Progress bar.
 
             logger.info(f'Patch build {patch_ver} successfully installed!\n')
 
@@ -89,11 +103,11 @@ class _Patcher:
                 self._patch(VBPatcher.appglobals.appglobals.p_stable,
                             VBPatcher.appglobals.appglobals.p_targetDir,
                             VBPatcher.appglobals.appglobals.b_stable)
-                _startPrompt()
+                return _startPrompt()  # Prompt user to start Valheim
 
             elif confirmStable.lower() in {'n', 'no'}:
-                return self._cancel('BepInEx patching process cancelled',
-                                    'Preparing to exit...')
+                return self._cancel('>> BepInEx patching process cancelled',
+                                    '>> Returning to menu...')
 
             else:
                 logger_stream.warning(
@@ -123,10 +137,11 @@ class _Patcher:
                 self._patch(VBPatcher.appglobals.appglobals.p_dev,
                             VBPatcher.appglobals.appglobals.p_targetDir,
                             VBPatcher.appglobals.appglobals.b_dev)
-                _startPrompt()
+                return _startPrompt()  # Prompt user to start Valheim
+
             elif confirmLatest.lower() in {'n', 'no'}:
-                return self._cancel('BepInEx patching process cancelled',
-                                    'Preparing to exit...')
+                return self._cancel('>> BepInEx patching process cancelled',
+                                    '>> Returning to menu...')
 
             else:
                 logger_stream.warning(
@@ -158,11 +173,11 @@ class _Patcher:
                 self._patch(VBPatcher.appglobals.appglobals.p_dev,
                             VBPatcher.appglobals.appglobals.p_targetDir,
                             VBPatcher.appglobals.appglobals.b_dev)
-                return _startPrompt()
+                return _startPrompt()  # Prompt user to start Valheim
 
             elif confirmFull.lower() in {'n', 'no'}:
                 return self._cancel('>> BepInEx patching process cancelled',
-                                    '>> Preparing to exit...')
+                                    '>> Returning to menu...')
 
             else:
                 logger_stream.warning(
@@ -171,18 +186,20 @@ class _Patcher:
                 sleep(1.250)
                 continue
 
-    def _cancel(self, arg0, arg1) -> None | NoReturn:
-        """Cancel patching process.
+    @staticmethod
+    def _cancel(arg0, arg1) -> None | NoReturn:
+        """Cancel patching process and return to menu.
 
-        :param arg0: text to pass to :class:`PyLoadBar.load(msg_loading: str)`.
+        ---
+
+        :param arg0: text to pass to :func:`PyLoadBar.start(msg_loading: str)`.
         :type arg0: :class:`str`
-        :param arg1: text to pass to :class:`PyLoadBar.load(msg_complete: str)`.
+        :param arg1: text to pass to :func:`PyLoadBar.start(msg_complete: str)`.
         :type arg1: :class:`str`
         :return: cancelled patching process.
         :rtype: None | :class:`NoReturn`
         """
 
         logger.info(
-            'BepInEx patching process cancelled...\n>> Preparing to exit...\n')
-        exit_seq.start(arg0, arg1, iter_total=10, txt_seq_speed=0.25)
-        return _exitPatcher()
+            'BepInEx patching process cancelled...\n>> Returning to menu...\n')
+        return exit_seq.start(arg0, arg1, iter_total=3, txt_seq_speed=0.25)

@@ -55,17 +55,20 @@ def main() -> None | NoReturn:
                 'Chose option [1] to patch BepInEx to latest stable release...'
             )
             Patcher._patch_stable()
+            continue
 
         elif choosePatch == '2':
             logger.info(
                 'Chose option [2] to patch BepInEx to latest dev-build...')
             Patcher._patch_dev()
+            continue
 
         elif choosePatch == '3':
             logger.info(
                 'Chose option [3] to install both stable and development patch builds in order of release...'
             )
             Patcher._patch_full()
+            continue
 
         elif choosePatch == '4':
             logger.info('Chose option [4] to check for new patch updates...')
@@ -79,11 +82,11 @@ def main() -> None | NoReturn:
         elif choosePatch == '6':
             logger.info('Chose option [6] to close patcher...')
             logger.info(
-                'BepInEx patching process cancelled...\n>> Preparing to exit...\n'
+                'Completed VBPatcher processes...\n>> Preparing to exit...\n'
             )
-            cancel.start('Canceling BepInEx patching process',
+            cancel.start('Completed VBPatcher processes',
                          'Exiting...',
-                         iter_total=10,
+                         iter_total=5,
                          txt_seq_speed=0.25)
             return _exitPatcher()
 

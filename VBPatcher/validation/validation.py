@@ -14,18 +14,24 @@ bar = PyLoadBar(False)
 class _Validate:
     """Validate location and deployability of necessary patch files.
 
-    - Class methods:
-        - :func:`_verify_stable(self, url) -> bool`
-            - Verify presence of BepInEx stable release patch files.
+    ---
 
-        - :func:`_verify_dev(self, url) -> bool:`
-            - Verify presence of BepInEx dev build patch files.
+    - Contains the following validation methods:
+
+        - :func:`_validate_stable(url) -> bool`
+            - Validate presence of BepInEx stable release patch files.
+            - Static method.
+
+        - :func:`_validate_dev(url) -> bool:`
+            - Validate presence of BepInEx dev build patch files.
+            - Static method.
 
         - :func:`_start_checks(self) -> None`
-            - Verify presence of all BepInEx patch files.
+            - Start patch file validation checks.
     """
 
-    def _validate_stable(self, url) -> bool:
+    @staticmethod
+    def _validate_stable(url) -> bool:
         """Validate presence of BepInEx stable release patch files.
 
         ---
@@ -52,17 +58,18 @@ class _Validate:
                 'MonoMod.RuntimeDetour.xml', 'MonoMod.Utils.dll',
                 'MonoMod.Utils.xml'
             ]
-        ]
+        ]  # List of files to verify
 
-        stable_match: bool = False
+        stable_match: bool = False  # Initialize match flag
 
-        verified: list = []
+        verified: list = []  # Initialize verified file list
 
         try:
             verified.extend(
                 file
                 for (root, dirs,
-                     file) in os.walk('./patch-files/stable', topdown=True))
+                     file) in os.walk('./patch-files/stable', topdown=True
+                                      ))  # Get list of files in patch folder
 
             if verified == patch_contents:
                 stable_match = True
@@ -76,19 +83,19 @@ class _Validate:
                 )
                 DL._dl_stable(url)  # Download *.zip archive from url
 
-                if is_zipfile(  # Check if downloaded archive is a zip file
+                if is_zipfile(
                         f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip'
-                ):
+                ):  # Check if downloaded archive is a zip file
                     DL._unzip_patch(  # Unzip archive
                         f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.appglobals.b_stable}.zip',
                         1)
-                    stable_match = True
+                    stable_match = True  # Update match flag
                     logger.info(
                         f'Download successful!\n>> BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch ready for deployment!\n'
                     )
 
                 else:
-                    stable_match = False
+                    stable_match = False  # Update match flag
                     logger.error(
                         'Download failed!\n>> BepInEx dev-build patch unable to be deployed!\n'
                     )
@@ -100,9 +107,10 @@ class _Validate:
             )
 
         finally:
-            return stable_match
+            return stable_match  # Return result of validation
 
-    def _validate_dev(self, url) -> bool:
+    @staticmethod
+    def _validate_dev(url) -> bool:
         """Validate presence of BepInEx development build patch files.
 
         ---
@@ -128,19 +136,20 @@ class _Validate:
                 'Mono.Cecil.Rocks.dll', 'MonoMod.RuntimeDetour.dll',
                 'MonoMod.Utils.dll', 'SemanticVersioning.dll'
             ]
-        ]
+        ]  # List of files to verify
 
-        dev_match: bool = False
+        dev_match: bool = False  # Initialize match flag
 
-        verified: list = []
+        verified: list = []  # Initialize verified file list
 
         try:
             verified.extend(file for (
                 root, dirs,
-                file) in os.walk('./patch-files/development/', topdown=True))
+                file) in os.walk('./patch-files/development/', topdown=True)
+                            )  # Get list of files in patch folder
 
             if verified == patch_contents:
-                dev_match = True
+                dev_match = True  # Update match flag
                 logger.info(
                     f'BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
                 )
@@ -158,13 +167,13 @@ class _Validate:
                         f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.appglobals.b_dev}.zip',
                         2)
 
-                    dev_match = True
+                    dev_match = True  # Update match flag
                     logger.info(
                         f'Download successful!\n>> BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch ready for deployment!\n'
                     )
 
                 else:
-                    dev_match = False
+                    dev_match = False  # Update match flag
                     logger.error(
                         'Download failed!\n>> BepInEx dev-build patch unable to be deployed!\n'
                     )
@@ -176,7 +185,7 @@ class _Validate:
             )
 
         finally:
-            return dev_match
+            return dev_match  # Return result of validation
 
     def _start_checks(self) -> None:
         """Verify necessary patcher components upon start.
@@ -193,7 +202,8 @@ class _Validate:
 
         if self._validate_stable(VBPatcher.appglobals.appglobals.url_stable
                                  ) and self._validate_dev(
-                                     VBPatcher.appglobals.appglobals.url_dev):
+                                     VBPatcher.appglobals.appglobals.url_dev
+                                 ):  # Validate presence of patch files
             logger_stream.info(
                 'VBPatcher start checks completed successfully!\n')
 
@@ -204,6 +214,6 @@ class _Validate:
             bar.start(
                 'ERROR: One or more patch files were not able to be verified and cannot be deployed',
                 'Exiting Patcher',
-                iter_total=10,
+                iter_total=3,
                 txt_seq_speed=0.25)
-            return _exitPatcher()
+            return _exitPatcher()  # Exit program

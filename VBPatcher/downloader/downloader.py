@@ -15,21 +15,28 @@ from VBPatcher.applogger.applogger import logger, logger_stream
 class _Downloader:
     """Wrapper containing patch-file update functionality.
 
-	- Class Methods:
+    ---
+
+	- Contains the following download methods:
+
 		- :func:`dl_stable(self, url) -> BufferedWriter`
 			- Download latest BepInEx stable release.
+            - Static method.
 
 		- :func:`dl_dev(self, url) -> BufferedWriter`
 			- Download latest BepInEx development build.
+            - Static method.
 
 		- :func:`unzip_patch(self, filename, stable) -> None`
 			- Unzip downloaded patch files before deleting patch `.zip` archive.
+            - Static method.
 
 		- :func:`UpdatePatcher(self) -> None`
 			- Process to retrieve latest available patch files using class methods.
 	"""
 
-    def _dl_stable(self, url):
+    @staticmethod
+    def _dl_stable(url):
         """Download zip containing latest BepInEx stable release.
 
 		---
@@ -72,7 +79,8 @@ class _Downloader:
                 f'Encountered error while downloading latest stable release zip archive...\n>> Exception:\n{err}\n'
             )
 
-    def _dl_dev(self, url):
+    @staticmethod
+    def _dl_dev(url):
         """Download zip archive containing latest BepInEx development build.
 
 		---
@@ -115,7 +123,8 @@ class _Downloader:
                 f'Encountered error while downloading latest development-build zip archive...\n>> Exception:\n{err}\n'
             )
 
-    def _unzip_patch(self, filename: PathLike | str, mode: int) -> None:
+    @staticmethod
+    def _unzip_patch(filename: PathLike | str, mode: int) -> None:
         """Unzip downloaded patch files and cleanup leftover files.
 
 		---
