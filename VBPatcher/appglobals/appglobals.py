@@ -72,6 +72,8 @@ def get_dev_assets(url: str, mode: int):
         return dl_link[73:80]  # Return patch version.
 
 
+__version__: str = '0.8.0'
+
 p_stable: str = r'.\patch-files\stable'  # Stable patch file location
 
 url_stable = get_stable_assets(

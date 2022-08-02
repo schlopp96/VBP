@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-__version__: str = '0.8.0'
-
 import sys
 from os import chdir
 from os.path import dirname
@@ -39,7 +37,7 @@ def main() -> None | NoReturn:
     """
 
     logger.info(
-        f'Welcome to the Valheim Bepinex Patcher v{__version__}!\n>> Session Start: {VBPatcher.appglobals.appglobals._datefmt}\n\n'
+        f'Welcome to the Valheim Bepinex Patcher v{VBPatcher.appglobals.appglobals.__version__}!\n>> Session Start: {VBPatcher.appglobals.appglobals._datefmt}\n\n'
     )
 
     Validations._start_checks()  # Ensure presence of patch files.
@@ -47,7 +45,7 @@ def main() -> None | NoReturn:
     while True:
         logger.info('Display user menu...\n')
         choosePatch: str = input(
-            f"Welcome to the Valheim Bepinex Patcher!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{VBPatcher.appglobals.appglobals._textborder}\n>> [1] Patch BepInEx to latest stable release: {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] Patch BepInEx to latest development/bleeding-edge build: {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] Apply both patches to BepInEx in chronological order of release ({VBPatcher.appglobals.appglobals.b_stable} then {VBPatcher.appglobals.appglobals.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
+            f"Welcome to the Valheim Bepinex Patcher v{VBPatcher.appglobals.appglobals.__version__}!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{VBPatcher.appglobals.appglobals._textborder}\n>> [1] Patch BepInEx to latest stable release: {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] Patch BepInEx to latest development/bleeding-edge build: {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] Apply both patches to BepInEx in chronological order of release ({VBPatcher.appglobals.appglobals.b_stable} then {VBPatcher.appglobals.appglobals.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
         )
 
         if choosePatch == '1':  # Patch BepInEx to latest stable release.
@@ -74,7 +72,6 @@ def main() -> None | NoReturn:
         elif choosePatch == '5':  # Open Valheim.
             logger.info('Chose option [5] to start Valheim...')
             _openValheim()
-            break
 
         elif choosePatch == '6':  # Exit Program.
             logger.info('Chose option [6] to close patcher...')

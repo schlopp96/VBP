@@ -89,7 +89,7 @@ class _LogGenerator():
         self.logger.setLevel(level)
         self.stream = stream
 
-        if stream:  # if stream is True, then toggle logging to stdout
+        if stream:  # if stream is True, then toggle logging stream to stdout
             self.logger.addHandler(logging.StreamHandler())
 
     def debug(self, msg) -> None:

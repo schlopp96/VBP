@@ -26,8 +26,9 @@ def _exitPatcher() -> None | NoReturn:
     return ex()
 
 
-def _openValheim() -> int | None:
+def _openValheim() -> None:
     """Calls command to open "Valheim" within Steam client.
+
     - Will raise exception :class:`TimeoutExpired` if executable doesn't start within 10 seconds.
         - Prevents program from freezing due to any errors encountered during launch process.
 
@@ -35,8 +36,8 @@ def _openValheim() -> int | None:
 
     ---
 
-    :return: Start game client.
-    :rtype: :class:`int` | None
+    :return: Start Valheim game client.
+    :rtype: `None`
     """
 
     try:
@@ -45,16 +46,17 @@ def _openValheim() -> int | None:
                         ">> Opening Valheim...\n",
                         iter_total=3,
                         txt_seq_speed=0.25)
-        return call(
-            r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970",
-            timeout=15,
-            stdout=sys.stdout,
-            stderr=sys.stderr)  # Start Valheim
+        call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970",
+             timeout=15,
+             stdout=sys.stdout,
+             stderr=sys.stderr)  # Start Valheim
 
     except TimeoutExpired as exp:
         logger_stream.error(
             f'Something went wrong while starting Valheim...\n\n>> Exception:\n{exp}\n>> Make sure Steam is running!\n'
         )
+
+    finally:
         return _exitPatcher()
 
 
@@ -77,7 +79,7 @@ def _startPrompt() -> NoReturn | None:
 
         elif startPrompt.lower() in {'n', 'no'}:
             logger.info(
-                'Patching process successfully completed!\n>> Preparing to exit...\n'
+                'Patching process successfully completed!\n>> Returning to menu...\n'
             )
             return start_seq.start(
                 '>> Patching process successfully completed',
