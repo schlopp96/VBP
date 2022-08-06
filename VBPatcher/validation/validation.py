@@ -215,5 +215,5 @@ class _Validate:
                 'ERROR: One or more patch files were not able to be verified and cannot be deployed',
                 'Exiting Patcher',
                 iter_total=3,
-                txt_seq_speed=0.25)
+                txt_iter_speed=0.25)
             return _exitPatcher()  # Exit program

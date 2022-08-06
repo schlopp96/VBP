@@ -202,4 +202,4 @@ class _Patcher:
 
         logger.info(
             'BepInEx patching process cancelled...\n>> Returning to menu...\n')
-        return exit_seq.start(arg0, arg1, iter_total=3, txt_seq_speed=0.25)
+        return exit_seq.start(arg0, arg1, iter_total=3, txt_iter_speed=0.25)

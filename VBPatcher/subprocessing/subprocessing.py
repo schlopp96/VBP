@@ -45,7 +45,7 @@ def _openValheim() -> None:
         start_seq.start(">> Starting Game",
                         ">> Opening Valheim...\n",
                         iter_total=3,
-                        txt_seq_speed=0.25)
+                        txt_iter_speed=0.25)
         call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970",
              timeout=15,
              stdout=sys.stdout,
@@ -85,7 +85,7 @@ def _startPrompt() -> NoReturn | None:
                 '>> Patching process successfully completed',
                 '>> Returning to menu...',
                 iter_total=3,
-                txt_seq_speed=0.25)
+                txt_iter_speed=0.25)
 
         else:
             logger_stream.warning(

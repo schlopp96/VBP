@@ -80,7 +80,7 @@ def main() -> None | NoReturn:
             cancel.start('Completed VBPatcher processes',
                          'Exiting...',
                          iter_total=5,
-                         txt_seq_speed=0.25)
+                         txt_iter_speed=0.25)
             return _exitPatcher()
 
         else:  # Invalid input.
@@ -88,8 +88,6 @@ def main() -> None | NoReturn:
                 f'Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] for development build {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n'
             )
             sleep(1.5)
-
-    return _exitPatcher()
 
 
 if __name__ == '__main__':
