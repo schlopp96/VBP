@@ -53,7 +53,7 @@ class _Patcher:
         :param patch_ver: version/title/build of patch.
         :type patch_ver: :class:`int` | :class:`str`
         :return: transfer patch files from :param:`patch_src` to :param:`patch_dst`.
-        :rtype: None
+        :rtype: `None`
         """
 
         try:
@@ -82,13 +82,13 @@ class _Patcher:
                 f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n>> Exception:\n{exc}\n'
             )
 
-    def _patch_stable(self) -> None | NoReturn:
+    def _patch_stable(self) -> None:
         """Install latest BepInEx stable-build release version to local directory.
 
         ---
 
         :return: patched BepInEx installation.
-        :rtype: None
+        :rtype: `None`
         """
 
         while True:
@@ -111,18 +111,18 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'Invalid Input: "{confirmStable}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'\nInvalid Input: "{confirmStable}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue
 
-    def _patch_dev(self) -> None | NoReturn:
+    def _patch_dev(self) -> None:
         """Install latest BepInEx development patch version to local directory.
 
         ---
 
         :return: patched BepInEx installation.
-        :rtype: None
+        :rtype: `None`
         """
 
         while True:
@@ -145,18 +145,18 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'Invalid Input: "{confirmLatest}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'\nInvalid Input: "{confirmLatest}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue
 
-    def _patch_full(self) -> None | bool:
+    def _patch_full(self) -> None:
         """Apply both stable and dev BepInEx patches in order of release (Stable -> Development).
 
         ---
 
         :return: patched BepInEx installation.
-        :rtype: None
+        :rtype: `None`
         """
 
         while True:
@@ -181,7 +181,7 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'Invalid Input: "{confirmFull}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'\nInvalid Input: "{confirmFull}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue
@@ -192,12 +192,12 @@ class _Patcher:
 
         ---
 
-        :param arg0: text to pass to :func:`PyLoadBar.start(msg_loading: str)`.
+        :param arg0: text to pass to :func:`self.start(msg_loading: str)`.
         :type arg0: :class:`str`
-        :param arg1: text to pass to :func:`PyLoadBar.start(msg_complete: str)`.
+        :param arg1: text to pass to :func:`self.start(msg_complete: str)`.
         :type arg1: :class:`str`
         :return: cancelled patching process.
-        :rtype: None | :class:`NoReturn`
+        :rtype: `None` | :class:`NoReturn`
         """
 
         logger.info(

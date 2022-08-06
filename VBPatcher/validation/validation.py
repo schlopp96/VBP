@@ -1,3 +1,4 @@
+import msvcrt as m
 import os
 from zipfile import is_zipfile
 
@@ -103,7 +104,7 @@ class _Validate:
         except Exception as err:
             stable_match = False
             logger.error(
-                f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch validation...\n>> Exception:\n{err}\n'
+                f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.appglobals.b_stable} patch validation...\n'
             )
 
         finally:
@@ -181,7 +182,7 @@ class _Validate:
         except Exception as err:
             dev_match = False
             logger.error(
-                f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch validation...\n>> Exception:\n{err}\n'
+                f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.appglobals.b_dev} patch validation...\n'
             )
 
         finally:
@@ -211,9 +212,15 @@ class _Validate:
             logger.error(
                 'VBPatcher start checks failed!\n>> One or more patch files were not able to be verified...\n'
             )
-            bar.start(
-                'ERROR: One or more patch files were not able to be verified and cannot be deployed',
-                'Exiting Patcher',
-                iter_total=3,
-                txt_iter_speed=0.25)
+            logger_stream.info(
+                'ERROR: One or more patch files unable to be verified and cannot be deployed.\n\nPress anything to exit...\n'
+            )
+
+            m.getch()  # Wait for user input
+
+            bar.start('Exiting VBPatcher',
+                      'VBPatcher has exited successfully!',
+                      iter_total=3,
+                      txt_iter_speed=0.25)
+
             return _exitPatcher()  # Exit program

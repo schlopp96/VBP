@@ -73,7 +73,7 @@ class _LogGenerator():
         :param stream: If True, toggle streaming to stdout.
         :type stream: :class:`bool`, optional
         :return: new logging class instance
-        :rtype: None
+        :rtype: `None`
         """
 
         self.name = name
@@ -100,7 +100,7 @@ class _LogGenerator():
         :param msg: message to be logged.
         :type msg: :class:`str`
         :return: creates log entry.
-        :rtype: None
+        :rtype: `None`
         """
         return self.logger.debug(msg)
 
@@ -112,7 +112,7 @@ class _LogGenerator():
         :param msg: message to be logged.
         :type msg: :class:`str`
         :return: creates log entry.
-        :rtype: None
+        :rtype: `None`
         """
         return self.logger.info(msg)
 
@@ -124,7 +124,7 @@ class _LogGenerator():
         :param msg: message to be logged.
         :type msg: :class:`str`
         :return: creates log entry.
-        :rtype: None
+        :rtype: `None`
         """
         return self.logger.warning(msg)
 
@@ -136,7 +136,7 @@ class _LogGenerator():
         :param msg: message to be logged.
         :type msg: :class:`str`
         :return: creates log entry.
-        :rtype: None
+        :rtype: `None`
         """
         return self.logger.error(msg)
 
@@ -148,7 +148,7 @@ class _LogGenerator():
         :param msg: message to be logged.
         :type msg: :class:`str`
         :return: creates log entry.
-        :rtype: None
+        :rtype: `None`
         """
         return self.logger.critical(msg)
 

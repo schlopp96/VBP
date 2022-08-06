@@ -1,4 +1,5 @@
 from datetime import datetime
+
 import bs4
 import requests as req
 from requests import Response
@@ -7,8 +8,8 @@ from requests import Response
 def get_stable_assets(url: str, mode: int):
     """Send GET request to retrieve BepInEx stable release assets, depending on value passed to :param:`mode`.
 
-    - If :param:`mode` set to 1, get patch archive download link.
-    - If :param:`mode` set to 2, get patch release version.
+    - If :param:`mode` set to `1`, get patch archive download link.
+    - If :param:`mode` set to `2`, get patch release version.
 
     ---
 
@@ -17,7 +18,7 @@ def get_stable_assets(url: str, mode: int):
     :param mode: specifies values to retrieve from response.
     :type mode: :class:`int`
     :return: response content from GET request.
-    :rtype: :class:`str` | None
+    :rtype: :class:`str` | `None`
     """
 
     r: Response = req.get(url, 'html.parser')  # Send GET request.
@@ -36,8 +37,8 @@ def get_stable_assets(url: str, mode: int):
 def get_dev_assets(url: str, mode: int):
     """Send GET request to retrieve BepInEx dev/bleeding-edge release assets, depending on value passed to :param:`mode`.
 
-    - If :param:`mode` set to 1, get patch archive download link.
-    - If :param:`mode` set to 2, get patch version.
+    - If :param:`mode` set to `1`, get patch archive download link.
+    - If :param:`mode` set to `2`, get patch version.
 
     ---
 
@@ -46,7 +47,7 @@ def get_dev_assets(url: str, mode: int):
     :param mode: specifies values to retrieve from response.
     :type mode: :class:`int`
     :return: response content from GET request.
-    :rtype: :class:`str` | None
+    :rtype: :class:`str` | `None`
     """
 
     retrieved = 0

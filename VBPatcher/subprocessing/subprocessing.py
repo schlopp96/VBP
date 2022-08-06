@@ -17,7 +17,7 @@ def _exitPatcher() -> None | NoReturn:
     ---
 
     :return: Exits application.
-    :rtype: None | :class:`NoReturn`
+    :rtype: `None` | :class:`NoReturn`
     """
 
     logger.info(
@@ -53,20 +53,20 @@ def _openValheim() -> None:
 
     except TimeoutExpired as exp:
         logger_stream.error(
-            f'Something went wrong while starting Valheim...\n\n>> Exception:\n{exp}\n>> Make sure Steam is running!\n'
+            f'Something went wrong while starting Valheim...\n>> Make sure Steam is running!\n\n>> Exception:\n{exp}\n'
         )
 
     finally:
         return _exitPatcher()
 
 
-def _startPrompt() -> NoReturn | None:
+def _startPrompt() -> None:
     """Prompt user to decide whether to start Valheim immediately after program exit or not.
 
     ---
 
     :return: display user prompt.
-    :rtype: :class:`NoReturn` | None
+    :rtype: :class:`NoReturn` | `None`
     """
 
     while True:
@@ -89,7 +89,6 @@ def _startPrompt() -> NoReturn | None:
 
         else:
             logger_stream.warning(
-                f'Invalid Input: "{startPrompt}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                f'\nInvalid Input: "{startPrompt}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
             )
             sleep(1.250)
-            continue

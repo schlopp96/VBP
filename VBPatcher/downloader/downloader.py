@@ -134,7 +134,7 @@ class _Downloader:
 		:param mode: set to 1 to unzip stable release archive, or 2 to unzip dev-build archive.
 		:type stable: :class:`bool`
 		:return: downloaded/extracted patch files.
-		:rtype: None
+		:rtype: `None`
 		"""
 
         logger_stream.info('Unzipping patch files...')
@@ -173,7 +173,7 @@ class _Downloader:
 		---
 
 		:return: download most recent release/build patch files.
-		:rtype: None
+		:rtype: `None`
 		"""
 
         # Retrieve latest stable release patch files from http://api.github.com/repos/BepInEx/BepInEx/releases/latest

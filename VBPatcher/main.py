@@ -4,7 +4,6 @@ import sys
 from os import chdir
 from os.path import dirname
 from time import sleep
-from typing import NoReturn
 
 from PyLoadBar import PyLoadBar
 
@@ -27,13 +26,13 @@ cancel = PyLoadBar(False)  # Initialize text-based loading sequence.
 #$ ====================================================================================================== $#
 
 
-def main() -> None | NoReturn:
+def main() -> None:
     """Program entry point.
 
     ---
 
     :return: start VBPatcher.
-    :rtype: None | :class:`NoReturn`
+    :rtype: `None` | :class:`NoReturn`
     """
 
     logger.info(
@@ -41,6 +40,18 @@ def main() -> None | NoReturn:
     )
 
     Validations._start_checks()  # Ensure presence of patch files.
+
+    return display_menu()
+
+
+def display_menu() -> None:
+    """Display patcher menu.
+
+    ---
+
+    :return: chosen patcher process.
+    :rtype: `None`
+    """
 
     while True:
         logger.info('Display user menu...\n')
@@ -77,10 +88,12 @@ def main() -> None | NoReturn:
             logger.info('Chose option [6] to close patcher...')
             logger.info(
                 'Completed VBPatcher processes...\n>> Preparing to exit...\n')
+
             cancel.start('Completed VBPatcher processes',
                          'Exiting...',
                          iter_total=5,
                          txt_iter_speed=0.25)
+
             return _exitPatcher()
 
         else:  # Invalid input.
