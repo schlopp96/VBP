@@ -1,5 +1,4 @@
 from setuptools import find_packages, setup
-from VBPatcher.appglobals.appglobals import __version__
 
 with open('README.md', 'r') as fh:
     readme = fh.read()
@@ -8,7 +7,7 @@ with open('requirements.txt', 'r') as fh2:
 
 setup(
     name='VBPatcher',
-    version=__version__,
+    version='0.9.0',
     description=
     'The Valheim BepInEx Patcher (VBPatcher) is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.',
     url='https://github.com/schlopp96/VBPatcher',
