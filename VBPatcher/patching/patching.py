@@ -4,9 +4,9 @@ from shutil import copytree
 from time import sleep
 from typing import NoReturn
 
-import VBPatcher.appglobals.appglobals
+import VBPatcher.appglobals.globals
 from PyLoadBar import PyLoadBar
-from VBPatcher.applogger.applogger import logger, logger_stream
+from VBPatcher.apploggers.loggers import logger, logger_stream
 from VBPatcher.subprocessing.subprocessing import _startPrompt
 
 patch_bar = PyLoadBar()
@@ -24,13 +24,13 @@ class _Patcher:
             - Install patch files (`patch_src`) to target directory (`patch_dst`).
             - Static method.
 
-        - :func:`_patch_stable(self) -> None | NoReturn`
+        - :func:`_patch_stable(self) -> None`
             - Install latest BepInEx stable release version to target directory.
 
-        - :func:`_patch_dev(self) -> None | NoReturn`
+        - :func:`_patch_dev(self) -> None`
             - Install latest BepInEx development build version to target directory.
 
-        - :func:`_patch_full(self) -> None | NoReturn`
+        - :func:`_patch_full(self) -> None`
             - Apply both available BepInEx patches in order of release (Stable -> Development).
 
         - :func:`_cancel(arg0, arg1) -> None | NoReturn`
@@ -65,7 +65,7 @@ class _Patcher:
                 patch_src, patch_dst,
                 dirs_exist_ok=True)  # Copy patch files to target directory.
 
-            unlink(f'{VBPatcher.appglobals.appglobals.p_targetDir}/.gitkeep'
+            unlink(f'{VBPatcher.appglobals.globals.p_targetDir}/.gitkeep'
                    )  # Remove .gitkeep file.
 
             patch_bar.start(
@@ -73,13 +73,14 @@ class _Patcher:
                 f'Patch build {patch_ver} successfully installed!',
                 label='Patching',
                 iter_total=len(filelist.findall(patch_src)),
-                max_iter=0.2)  # Progress bar.
+                max_iter=0.2,
+                min_iter=0.005)  # Progress bar.
 
             logger.info(f'Patch build {patch_ver} successfully installed!\n')
 
         except Exception as exc:
             logger_stream.error(
-                f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n>> Exception:\n{exc}\n'
+                f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n\n>> Exception:\n{exc}\n'
             )
 
     def _patch_stable(self) -> None:
@@ -93,16 +94,16 @@ class _Patcher:
 
         while True:
             logger.info(
-                f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.appglobals.b_dev} patch...\n'
+                f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.globals.b_dev} patch...\n'
             )
             confirmStable: str = input(
-                f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.appglobals.b_stable} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
+                f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.globals.b_stable} in location:\n\n>> "{VBPatcher.appglobals.globals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
 
             if confirmStable.lower() in {'yes', 'y'}:
-                self._patch(VBPatcher.appglobals.appglobals.p_stable,
-                            VBPatcher.appglobals.appglobals.p_targetDir,
-                            VBPatcher.appglobals.appglobals.b_stable)
+                self._patch(VBPatcher.appglobals.globals.p_stable,
+                            VBPatcher.appglobals.globals.p_targetDir,
+                            VBPatcher.appglobals.globals.b_stable)
                 return _startPrompt()  # Prompt user to start Valheim
 
             elif confirmStable.lower() in {'n', 'no'}:
@@ -111,7 +112,7 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'\nInvalid Input: "{confirmStable}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'\nInvalid Input: "{confirmStable}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue
@@ -127,16 +128,16 @@ class _Patcher:
 
         while True:
             logger.info(
-                f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.appglobals.b_dev} patch...\n'
+                f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.globals.b_dev} patch...\n'
             )
             confirmLatest: str = input(
-                f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.appglobals.b_dev} in location:\n\n>> "{VBPatcher.appglobals.appglobals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
+                f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.globals.b_dev} in location:\n\n>> "{VBPatcher.appglobals.globals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
 
             if confirmLatest.lower() in {'yes', 'y'}:
-                self._patch(VBPatcher.appglobals.appglobals.p_dev,
-                            VBPatcher.appglobals.appglobals.p_targetDir,
-                            VBPatcher.appglobals.appglobals.b_dev)
+                self._patch(VBPatcher.appglobals.globals.p_dev,
+                            VBPatcher.appglobals.globals.p_targetDir,
+                            VBPatcher.appglobals.globals.b_dev)
                 return _startPrompt()  # Prompt user to start Valheim
 
             elif confirmLatest.lower() in {'n', 'no'}:
@@ -145,7 +146,7 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'\nInvalid Input: "{confirmLatest}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'\nInvalid Input: "{confirmLatest}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue
@@ -164,15 +165,18 @@ class _Patcher:
                 'Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...\n'
             )
             confirmFull: str = input(
-                f'\nReally apply both latest stable release {VBPatcher.appglobals.appglobals.b_stable}, and latest development build {VBPatcher.appglobals.appglobals.b_dev}?\n> Enter [y] or [n]:\n{VBPatcher.appglobals.appglobals._textborder}\n> '
+                f'\nReally apply both latest stable release {VBPatcher.appglobals.globals.b_stable}, and latest development build {VBPatcher.appglobals.globals.b_dev}?\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
+
             if confirmFull.lower() in {'yes', 'y'}:
-                self._patch(VBPatcher.appglobals.appglobals.p_stable,
-                            VBPatcher.appglobals.appglobals.p_targetDir,
-                            VBPatcher.appglobals.appglobals.b_stable)
-                self._patch(VBPatcher.appglobals.appglobals.p_dev,
-                            VBPatcher.appglobals.appglobals.p_targetDir,
-                            VBPatcher.appglobals.appglobals.b_dev)
+                self._patch(VBPatcher.appglobals.globals.p_stable,
+                            VBPatcher.appglobals.globals.p_targetDir,
+                            VBPatcher.appglobals.globals.b_stable)
+
+                self._patch(VBPatcher.appglobals.globals.p_dev,
+                            VBPatcher.appglobals.globals.p_targetDir,
+                            VBPatcher.appglobals.globals.b_dev)
+
                 return _startPrompt()  # Prompt user to start Valheim
 
             elif confirmFull.lower() in {'n', 'no'}:
@@ -181,7 +185,7 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'\nInvalid Input: "{confirmFull}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'\nInvalid Input: "{confirmFull}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue

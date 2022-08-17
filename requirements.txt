@@ -1,5 +1,4 @@
-PyLoadBar==0.2.0
-requests>=2.27.1
-setuptools>=58.1.0
-tqdm>=4.62.3
 beautifulsoup4==4.11.1
+PyLoadBar==0.2.0
+setuptools>=58.1.0
+tqdm==4.64.0

@@ -141,3 +141,4 @@ cython_debug/
 BepInEx/
 changelog.txt
 winhttp.dll
+.doorstop_version

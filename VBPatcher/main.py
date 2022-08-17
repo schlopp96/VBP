@@ -11,8 +11,8 @@ sys.path.insert(0, dirname(
     dirname(__file__)))  # Ensure main module can be found by Python.
 chdir(dirname(__file__))  # Change cwd to main module directory.
 
-import VBPatcher.appglobals.appglobals
-from VBPatcher.applogger.applogger import logger, logger_stream
+import VBPatcher.appglobals.globals
+from VBPatcher.apploggers.loggers import logger, logger_stream
 from VBPatcher.downloader.downloader import _Downloader
 from VBPatcher.patching.patching import _Patcher
 from VBPatcher.subprocessing.subprocessing import _exitPatcher, _openValheim
@@ -32,11 +32,11 @@ def main() -> None:
     ---
 
     :return: start VBPatcher.
-    :rtype: `None` | :class:`NoReturn`
+    :rtype: `None`
     """
 
     logger.info(
-        f'Welcome to the Valheim Bepinex Patcher v{VBPatcher.appglobals.appglobals.__version__}!\n>> Session Start: {VBPatcher.appglobals.appglobals._datefmt}\n\n'
+        f'Welcome to the Valheim Bepinex Patcher v{VBPatcher.appglobals.globals.__version__}!\n>> Session Start: {VBPatcher.appglobals.globals.datefmt}\n\n'
     )
 
     Validations._start_checks()  # Ensure presence of patch files.
@@ -56,7 +56,7 @@ def display_menu() -> None:
     while True:
         logger.info('Display user menu...\n')
         choosePatch: str = input(
-            f"Welcome to the Valheim Bepinex Patcher v{VBPatcher.appglobals.appglobals.__version__}!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{VBPatcher.appglobals.appglobals._textborder}\n>> [1] Patch BepInEx to latest stable release: {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] Patch BepInEx to latest development/bleeding-edge build: {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] Apply both patches to BepInEx in chronological order of release ({VBPatcher.appglobals.appglobals.b_stable} then {VBPatcher.appglobals.appglobals.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
+            f"Welcome to the Valheim Bepinex Patcher v{VBPatcher.appglobals.globals.__version__}!\n\nPlease Choose an Option by Entering its Corresponding Number:\n\n{VBPatcher.appglobals.globals.textborder}\n>> [1] Patch BepInEx to latest stable release: {VBPatcher.appglobals.globals.b_stable}\n>> [2] Patch BepInEx to latest development/bleeding-edge build: {VBPatcher.appglobals.globals.b_dev}\n>> [3] Apply both patches to BepInEx in chronological order of release ({VBPatcher.appglobals.globals.b_stable} then {VBPatcher.appglobals.globals.b_dev})\n>> [4] Check for/update to newest patch versions\n>> [5] Open Valheim\n>> [6] Exit Program\n\n> "
         )
 
         if choosePatch == '1':  # Patch BepInEx to latest stable release.
@@ -98,7 +98,7 @@ def display_menu() -> None:
 
         else:  # Invalid input.
             logger_stream.warning(
-                f'Invalid Input -\n\n>> Your Entry:  "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {VBPatcher.appglobals.appglobals.b_stable}\n>> [2] for development build {VBPatcher.appglobals.appglobals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n'
+                f'ERROR - Invalid Input\n\n>> Your Entry: "{choosePatch}".\n\n>> Must ONLY enter:\n>> [1] for stable release {VBPatcher.appglobals.globals.b_stable}\n>> [2] for development build {VBPatcher.appglobals.globals.b_dev}\n>> [3] for FULL upgrade (apply both patches in order of release)\n>> [4] to update available patch versions/builds\n>> [5] to open Valheim\n>> [6] to exit program\n\n'
             )
             sleep(1.5)
 

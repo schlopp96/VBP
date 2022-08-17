@@ -1,6 +1,6 @@
 import logging
 
-from VBPatcher.appglobals.appglobals import _logFile
+from VBPatcher.appglobals.globals import logFile
 
 
 class _LogGenerator():
@@ -44,7 +44,7 @@ class _LogGenerator():
             log_format:
         str = '[ %(levelname)s - %(asctime)s - %(name)s ] : %(message)s',
             datefmt: str = "%Y-%m-%d %H:%M:%S",
-            level=INFO,
+            level: int = INFO,
             stream: bool = False):
         """Initialize logger instance.
 
@@ -104,7 +104,7 @@ class _LogGenerator():
         """
         return self.logger.debug(msg)
 
-    def info(self, msg):
+    def info(self, msg) -> None:
         """Logs a message with level `INFO`.
 
         ---
@@ -116,7 +116,7 @@ class _LogGenerator():
         """
         return self.logger.info(msg)
 
-    def warning(self, msg):
+    def warning(self, msg) -> None:
         """Logs a message with level `WARNING`.
 
         ---
@@ -128,7 +128,7 @@ class _LogGenerator():
         """
         return self.logger.warning(msg)
 
-    def error(self, msg):
+    def error(self, msg) -> None:
         """Logs a message with level `ERROR`.
 
         ---
@@ -140,7 +140,7 @@ class _LogGenerator():
         """
         return self.logger.error(msg)
 
-    def critical(self, msg):
+    def critical(self, msg) -> None:
         """Logs a message with level `CRITICAL`.
 
         ---
@@ -153,7 +153,7 @@ class _LogGenerator():
         return self.logger.critical(msg)
 
 
-logger = _LogGenerator('MAIN', _logFile)  # Main logging instance
+logger: _LogGenerator = _LogGenerator('MAIN', logFile)  # Main logging instance
 
-logger_stream = _LogGenerator('OUTPUT', _logFile,
-                              stream=True)  # Stdout streaming logging instance
+logger_stream: _LogGenerator = _LogGenerator(
+    'STDOUT', logFile, stream=True)  # Stdout streaming logging instance
