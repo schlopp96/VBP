@@ -1,4 +1,3 @@
-import msvcrt as m
 import os
 from zipfile import is_zipfile
 
@@ -212,14 +211,12 @@ class _Validate:
                 'VBPatcher start checks completed successfully!\n')
 
         else:
-            logger.error(
-                'VBPatcher start checks failed!\n>> One or more patch files were not able to be verified...\n'
-            )
-            logger_stream.info(
-                'ERROR:\n>> One or more patch files unable to be verified and cannot be deployed.\n\n'
-            )
 
-            m.getch()  # Wait for user input
+            logger_stream.error(
+                'VBPatcher start checks failed!\n>> One or more patch files were unable to be verified and are unable to be deployed...\n\nPress anything to continue...\n'
+            )
+            VBPatcher.appglobals.globals.getch(
+            )  # Wait for user input to continue
 
             bar.start('Exiting VBPatcher',
                       'VBPatcher has exited successfully!',

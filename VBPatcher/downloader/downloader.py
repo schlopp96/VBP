@@ -1,4 +1,3 @@
-import msvcrt as m
 import os
 import sys
 from os import PathLike
@@ -187,5 +186,6 @@ class _Downloader:
                 f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.b_dev}.zip',
                 2)
 
-        logger_stream.info('\n>> Press anything to continue...\n')
-        m.getch()  # Wait for user to press any key to continue
+            logger_stream.info('\n>> Press anything to continue...\n')
+            VBPatcher.appglobals.globals.getch(
+            )  # Wait for user input to continue

@@ -35,7 +35,7 @@ def _get_dev_assets(url: str, mode: int) -> str:
     """Send GET request to retrieve BepInEx dev/bleeding-edge release assets, depending on value passed to :param:`mode`.
 
     - If :param:`mode` == `1`, get patch archive download link.
-    - If :param:`mode` != `2`, get patch version number as string.
+    - If :param:`mode` != `1`, get patch version number as string.
 
     ---
 
@@ -50,7 +50,7 @@ def _get_dev_assets(url: str, mode: int) -> str:
     retrieved: int = 0
 
     r: Response = req.get(url)  # Send GET request.
-    r.raise_for_status()  # Raise exception if response is not 200.
+    r.raise_for_status()  # Raise exception if error code is returned.
 
     soup = bs4.BeautifulSoup(r.content, 'html.parser')  # Parse response HTML.
     results = soup.find_all(
@@ -66,6 +66,56 @@ def _get_dev_assets(url: str, mode: int) -> str:
 
     return dl_link if mode == 1 else dl_link[93:100]
 
+
+class _Getch:
+    """Gets a single character from standard input.  Does not echo to the screen."""
+
+    def __init__(self):
+        try:
+            self.impl = _GetchWindows()
+        except ImportError:
+            self.impl = _GetchUnix()
+
+    def __call__(self):
+        char = self.impl()
+        if char == '\x03':
+            raise KeyboardInterrupt
+        elif char == '\x04':
+            raise EOFError
+        return char
+
+
+class _GetchUnix:
+
+    def __init__(self):
+        import sys
+        import tty
+
+    def __call__(self):
+        import sys
+        import termios
+        import tty
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        return ch
+
+
+class _GetchWindows:
+
+    def __init__(self):
+        import msvcrt
+
+    def __call__(self):
+        import msvcrt
+        return msvcrt.getch()
+
+
+getch = _Getch()
 
 __version__: str = '0.9.0'
 
@@ -85,9 +135,8 @@ url_dev: str = _get_dev_assets(
     'https://builds.bepinex.dev/projects/bepinex_be',
     1)  # dev/bleeding-edge build download link
 
-b_dev: str = _get_dev_assets(
-    'https://builds.bepinex.dev/projects/bepinex_be',
-    2)  # dev/bleeding-edge build number
+b_dev: str = _get_dev_assets('https://builds.bepinex.dev/projects/bepinex_be',
+                             2)  # dev/bleeding-edge build number
 
 p_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'  # target directory to patch
 

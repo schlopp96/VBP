@@ -41,10 +41,10 @@ def main() -> None:
 
     Validations._start_checks()  # Ensure presence of patch files.
 
-    return display_menu()
+    return menu()
 
 
-def display_menu() -> None:
+def menu() -> None:
     """Display patcher menu.
 
     ---
