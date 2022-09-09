@@ -86,6 +86,7 @@ class _Getch:
 
 
 class _GetchUnix:
+    """UNIX-compatible `getch` method for reading single character from standard input. Does not echo to screen."""
 
     def __init__(self):
         import sys
@@ -106,6 +107,7 @@ class _GetchUnix:
 
 
 class _GetchWindows:
+    """Windows-compatible `getch` method for reading single character from standard input.  Does not echo to screen."""
 
     def __init__(self):
         import msvcrt
