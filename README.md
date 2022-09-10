@@ -67,12 +67,12 @@
 
 2. Once the script is run, you will be presented with an option menu, allowing you to choose from the following commands:
 
-   - Patch BepInEx to the latest stable release.
-   - Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
-   - Patch BepInEx first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation.
-   - Check for and download new releases/builds of BepInEx.
-   - Start Valheim.
-   - Exit the application.
+   - **[1].** Patch BepInEx to the latest stable release.
+   - **[2].** Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
+   - **[3].** Patch BepInEx first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation.
+   - **[4].** Check for and download new releases/builds of BepInEx.
+   - **[5].** Start Valheim.
+   - **[6].** Exit the application.
 
 3. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
 
@@ -84,13 +84,7 @@
 
 6. If you choose to **NOT** run the game, the patcher will return to the main menu.
 
-- **_NOTE:_**
-
-  - BepInEx will list its current version as the last stable build number, even if a bleeding-edge build is installed. It will still work all the same.
-
-  - If you wish to verify, you can either compare the files contained in the patch to the ones you have on your machine using a diff tool, or simply side-to-side by eye.
-
-  - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
+- **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
 ---
 

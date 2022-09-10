@@ -30,7 +30,7 @@ class _Downloader:
 			- Unzip downloaded patch files before deleting patch `.zip` archive.
             - Static method.
 
-		- :func:`UpdatePatcher(self) -> None`
+		- :func:`update_check(self) -> None`
 			- Process to retrieve latest available patch files using class methods.
 	"""
 
@@ -46,7 +46,9 @@ class _Downloader:
 		:rtype: :class:`BufferedWriter`
 		"""
 
-        logger.info('Downloading latest BepInEx stable release...')
+        logger.info(
+            f'Downloading latest BepInEx stable build {VBPatcher.appglobals.globals.ver_stable}...'
+        )
 
         try:
             rq: Response = requests.get(url, allow_redirects=True,
@@ -58,7 +60,7 @@ class _Downloader:
             prog_max: int = file_size // chunk_size  # Calculate progress bar max
 
             with open(
-                    f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.b_stable}.zip',
+                    f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip',
                     'wb') as patch_stable:
                 for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size),
                                        total=prog_max,
@@ -68,13 +70,13 @@ class _Downloader:
                     patch_stable.write(chunk)
 
             logger_stream.info(
-                f'>> Completed BepInEx latest stable-release download!\n\n>> Downloaded from url:\n>> {url}\n'
+                f'Completed BepInEx latest stable-release download!\n\n>> Downloaded from url:\n>> {url}\n'
             )
             return patch_stable
 
-        except [Exception, HTTPError] as err:
+        except [Exception, HTTPError]:
             logger_stream.error(
-                f'Encountered error while downloading latest stable release zip archive...\n\n>> Exception:\n{err}\n'
+                f'Encountered error while downloading latest stable release zip archive...\n'
             )
 
     @staticmethod
@@ -89,7 +91,9 @@ class _Downloader:
 		:rtype: :class:`BufferedWriter`
 		"""
 
-        logger.info('Downloading latest BepInEx development-build...')
+        logger.info(
+            f'Downloading latest BepInEx development-build {VBPatcher.appglobals.globals.ver_dev}.'
+        )
 
         try:
             rq: Response = requests.get(url, allow_redirects=True,
@@ -101,7 +105,7 @@ class _Downloader:
             prog_max: int = file_size // chunk_size  # Calculate progress bar max
 
             with open(
-                    f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.b_dev}.zip',
+                    f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip',
                     'wb') as patch_dev:
                 for chunk in tqdm.tqdm(rq.iter_content(chunk_size=chunk_size),
                                        total=prog_max,
@@ -111,13 +115,13 @@ class _Downloader:
                     patch_dev.write(chunk)
 
                 logger_stream.info(
-                    f'>> Completed BepInEx latest development-build download!\n\n>> Downloaded from url:\n>> {url}\n'
+                    f'Completed BepInEx latest development-build download!\n\n>> Downloaded from url:\n>> {url}\n'
                 )
             return patch_dev
 
-        except [Exception, HTTPError] as err:
+        except [Exception, HTTPError]:
             logger_stream.error(
-                f'Encountered error while downloading latest development-build zip archive...\n\n>> Exception:\n{err}\n'
+                f'Encountered error while downloading latest development-build zip archive...\n'
             )
 
     @staticmethod
@@ -134,7 +138,7 @@ class _Downloader:
 		:rtype: `None`
 		"""
 
-        logger_stream.info('>> Unzipping patch files...')
+        logger_stream.info('Unzipping patch files...')
 
         try:
             if mode == 1:  # Unzip stable-release patch files
@@ -144,7 +148,7 @@ class _Downloader:
                 # Remove unnecessary files
                 os.unlink('./patch-files/stable/doorstop_config.ini')
                 os.unlink(
-                    f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.b_stable}.zip'
+                    f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip'
                 )
 
             elif mode == 2:  # Unzip dev-build patch files
@@ -153,19 +157,18 @@ class _Downloader:
                 # Remove unnecessary files
                 os.unlink('./patch-files/development/doorstop_config.ini')
                 os.unlink(
-                    f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.b_dev}.zip'
+                    f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip'
                 )
 
             logger_stream.info(
-                '>> Successfully unzipped archive!\n\n>> Deleted extra files...\n>> Patch ready for deployment!\n'
+                'Successfully unzipped archive!\n\n>> Deleted extra files...\n>> Patch ready for deployment!\n'
             )
 
-        except Exception as err:
+        except Exception:
             logger_stream.error(
-                f'Encountered error while attempting to unzip archive...\n\n>> Exception: {err}\n'
-            )
+                f'Encountered error while attempting to unzip archive...\n')
 
-    def UpdatePatcher(self) -> None:
+    def update_check(self) -> None:
         """Retrieve latest available patch files.
 
 		---
@@ -174,16 +177,16 @@ class _Downloader:
 		:rtype: `None`
 		"""
 
-        # Retrieve latest stable release patch files from http://api.github.com/repos/BepInEx/BepInEx/releases/latest
+        # Retrieve latest stable build patch files from http://api.github.com/repos/BepInEx/BepInEx/releases/latest
         if self._dl_stable(VBPatcher.appglobals.globals.url_stable):
             self._unzip_patch(
-                f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.b_stable}.zip',
+                f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip',
                 1)
 
-        # Retrieve development build patch files from https://builds.bepinex.dev/projects/bepinex_be
+        # Retrieve latest development build patch files from https://builds.bepinex.dev/projects/bepinex_be
         if self._dl_dev(VBPatcher.appglobals.globals.url_dev):
             self._unzip_patch(
-                f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.b_dev}.zip',
+                f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip',
                 2)
 
             logger_stream.info('\n>> Press anything to continue...\n')

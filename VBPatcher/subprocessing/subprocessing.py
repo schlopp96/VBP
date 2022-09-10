@@ -42,18 +42,20 @@ def _openValheim() -> None:
 
     try:
         logger.info('Starting Valheim...\n\n')
+
         start_seq.start(">> Starting Game",
                         ">> Opening Valheim...\n",
                         iter_total=3,
                         txt_iter_speed=0.25)
+
         call(r"C:\Program Files (x86)\Steam\Steam.exe -applaunch 892970",
              timeout=15,
              stdout=sys.stdout,
              stderr=sys.stderr)  # Start Valheim
 
-    except TimeoutExpired as exp:
+    except TimeoutExpired:
         logger_stream.error(
-            f'Something went wrong while starting Valheim...\n>> Make sure Steam is running!\n\n>> Exception:\n{exp}\n'
+            f'Something went wrong while starting Valheim...\n>> Make sure Steam is running!\n'
         )
 
     finally:

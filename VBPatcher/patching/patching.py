@@ -20,8 +20,9 @@ class _Patcher:
 
     - Contains the following patching methods:
 
-        - :func:`_patch(patch_src: str, patch_dst: str, patch_ver: int | str) -> None`
-            - Install patch files (`patch_src`) to target directory (`patch_dst`).
+        - :func:`_patch(patch_src, patch_dst, patch_ver) -> None`
+            - Install patch files (:param:`patch_src`) to target directory (:param:`patch_dst`).
+            - Overwrites any existing patch files.
             - Static method.
 
         - :func:`_patch_stable(self) -> None`
@@ -65,26 +66,26 @@ class _Patcher:
                 patch_src, patch_dst,
                 dirs_exist_ok=True)  # Copy patch files to target directory.
 
-            unlink(f'{VBPatcher.appglobals.globals.p_targetDir}/.gitkeep'
+            unlink(f'{VBPatcher.appglobals.globals.patch_targetDir}/.gitkeep'
                    )  # Remove .gitkeep file.
 
             patch_bar.start(
-                f'Patching BepInEx build {patch_ver} to location: {patch_dst}',
-                f'Patch build {patch_ver} successfully installed!',
-                label='Patching',
+                f'>> Patching BepInEx build {patch_ver} to location: {patch_dst}',
+                f'>> Patch build {patch_ver} successfully installed!',
+                label='Deploying',
                 iter_total=len(filelist.findall(patch_src)),
                 max_iter=0.2,
                 min_iter=0.005)  # Progress bar.
 
             logger.info(f'Patch build {patch_ver} successfully installed!\n')
 
-        except Exception as exc:
+        except Exception:
             logger_stream.error(
-                f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n\n>> Exception:\n{exc}\n'
+                f'Failed to successfully copy BepInEx build {patch_ver} to location: {patch_dst}...\n'
             )
 
     def _patch_stable(self) -> None:
-        """Install latest BepInEx stable-build release version to local directory.
+        """Install latest BepInEx stable-build patch to local directory.
 
         ---
 
@@ -94,16 +95,16 @@ class _Patcher:
 
         while True:
             logger.info(
-                f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.globals.b_dev} patch...\n'
+                f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.globals.ver_dev} patch...\n'
             )
             confirmStable: str = input(
-                f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.globals.b_stable} in location:\n\n>> "{VBPatcher.appglobals.globals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
+                f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.globals.ver_stable} in location:\n\n>> "{VBPatcher.appglobals.globals.patch_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
 
             if confirmStable.lower() in {'yes', 'y'}:
-                self._patch(VBPatcher.appglobals.globals.p_stable,
-                            VBPatcher.appglobals.globals.p_targetDir,
-                            VBPatcher.appglobals.globals.b_stable)
+                self._patch(VBPatcher.appglobals.globals.patch_stable,
+                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.ver_stable)
                 return _startPrompt()  # Prompt user to start Valheim
 
             elif confirmStable.lower() in {'n', 'no'}:
@@ -118,7 +119,7 @@ class _Patcher:
                 continue
 
     def _patch_dev(self) -> None:
-        """Install latest BepInEx development patch version to local directory.
+        """Install latest BepInEx development-build patch to local directory.
 
         ---
 
@@ -128,16 +129,16 @@ class _Patcher:
 
         while True:
             logger.info(
-                f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.globals.b_dev} patch...\n'
+                f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.globals.ver_dev} patch...\n'
             )
             confirmLatest: str = input(
-                f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.globals.b_dev} in location:\n\n>> "{VBPatcher.appglobals.globals.p_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
+                f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.globals.ver_dev} in location:\n\n>> "{VBPatcher.appglobals.globals.patch_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
 
             if confirmLatest.lower() in {'yes', 'y'}:
-                self._patch(VBPatcher.appglobals.globals.p_dev,
-                            VBPatcher.appglobals.globals.p_targetDir,
-                            VBPatcher.appglobals.globals.b_dev)
+                self._patch(VBPatcher.appglobals.globals.patch_dev,
+                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.ver_dev)
                 return _startPrompt()  # Prompt user to start Valheim
 
             elif confirmLatest.lower() in {'n', 'no'}:
@@ -165,17 +166,17 @@ class _Patcher:
                 'Displaying confirmation prompt to install full-upgrade patch (install both stable and development builds in order of release)...\n'
             )
             confirmFull: str = input(
-                f'\nReally apply both latest stable release {VBPatcher.appglobals.globals.b_stable}, and latest development build {VBPatcher.appglobals.globals.b_dev}?\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
+                f'\nReally apply both latest stable build {VBPatcher.appglobals.globals.ver_stable}, and latest development build {VBPatcher.appglobals.globals.ver_dev}?\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
 
             if confirmFull.lower() in {'yes', 'y'}:
-                self._patch(VBPatcher.appglobals.globals.p_stable,
-                            VBPatcher.appglobals.globals.p_targetDir,
-                            VBPatcher.appglobals.globals.b_stable)
+                self._patch(VBPatcher.appglobals.globals.patch_stable,
+                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.ver_stable)
 
-                self._patch(VBPatcher.appglobals.globals.p_dev,
-                            VBPatcher.appglobals.globals.p_targetDir,
-                            VBPatcher.appglobals.globals.b_dev)
+                self._patch(VBPatcher.appglobals.globals.patch_dev,
+                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.ver_dev)
 
                 return _startPrompt()  # Prompt user to start Valheim
 

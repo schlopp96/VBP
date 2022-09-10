@@ -19,7 +19,7 @@ class _Validate:
     - Contains the following validation methods:
 
         - :func:`_validate_stable(url) -> bool`
-            - Validate presence of BepInEx stable release patch files.
+            - Validate presence of BepInEx stable build patch files.
             - Static method.
 
         - :func:`_validate_dev(url) -> bool:`
@@ -32,18 +32,18 @@ class _Validate:
 
     @staticmethod
     def _validate_stable(url) -> bool:
-        """Validate presence of BepInEx stable release patch files.
+        """Validate presence of BepInEx stable build patch files.
 
         ---
 
-        :param url: url to download BepInEx stable release from if not found.
+        :param url: url to download BepInEx stable build from if not found.
         :type url: :class:`Any`
         :return: validation of patch files.
         :rtype: :class:`bool`
         """
 
         logger.info(
-            f'Validating BepInEx stable-build {VBPatcher.appglobals.globals.b_stable} patch...'
+            f'Validating BepInEx stable-build {VBPatcher.appglobals.globals.ver_stable} patch...'
         )
 
         patch_contents: list = [
@@ -74,24 +74,24 @@ class _Validate:
             if verified == patch_contents:
                 stable_match = True
                 logger.info(
-                    f'BepInEx stable-build {VBPatcher.appglobals.globals.b_stable} patch ready for deployment!\n'
+                    f'BepInEx stable-build {VBPatcher.appglobals.globals.ver_stable} patch ready for deployment!\n'
                 )
 
             else:
                 logger.info(
-                    f'Unable to locate BepInEx stable-build {VBPatcher.appglobals.globals.b_stable} patch...\n>> Attempting to download...'
+                    f'Unable to locate BepInEx stable-build {VBPatcher.appglobals.globals.ver_stable} patch...\n>> Attempting to download...'
                 )
                 DL._dl_stable(url)  # Download *.zip archive from url
 
                 if is_zipfile(
-                        f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.b_stable}.zip'
+                        f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip'
                 ):  # Check if downloaded archive is a zip file
                     DL._unzip_patch(  # Unzip archive
-                        f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.b_stable}.zip',
+                        f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip',
                         1)
                     stable_match = True  # Update match flag
                     logger.info(
-                        f'Download successful!\n>> BepInEx stable-build {VBPatcher.appglobals.globals.b_stable} patch ready for deployment!\n'
+                        f'Download successful!\n>> BepInEx stable-build {VBPatcher.appglobals.globals.ver_stable} patch ready for deployment!\n'
                     )
 
                 else:
@@ -103,7 +103,7 @@ class _Validate:
         except Exception:
             stable_match = False
             logger.error(
-                f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.globals.b_stable} patch validation...\n'
+                f'Encountered error during BepInEx stable-build {VBPatcher.appglobals.globals.ver_stable} patch validation...\n'
             )
 
         finally:
@@ -122,7 +122,7 @@ class _Validate:
         """
 
         logger.info(
-            f'Validating BepInEx dev-build {VBPatcher.appglobals.globals.b_dev} patch...'
+            f'Validating BepInEx dev-build {VBPatcher.appglobals.globals.ver_dev} patch...'
         )
 
         patch_contents: list = [
@@ -154,25 +154,25 @@ class _Validate:
             if verified == patch_contents:
                 dev_match = True  # Update match flag
                 logger.info(
-                    f'BepInEx dev-build {VBPatcher.appglobals.globals.b_dev} patch ready for deployment!\n'
+                    f'BepInEx dev-build {VBPatcher.appglobals.globals.ver_dev} patch ready for deployment!\n'
                 )
 
             else:
                 logger.info(
-                    f'Unable to locate BepInEx dev-build {VBPatcher.appglobals.globals.b_dev} patch...\n>> Attempting to download...'
+                    f'Unable to locate BepInEx dev-build {VBPatcher.appglobals.globals.ver_dev} patch...\n>> Attempting to download...'
                 )
                 DL._dl_dev(url)  # Download *.zip file from url
 
                 if is_zipfile(  # Check if downloaded archive is a zip file
-                        f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.b_dev}.zip'
+                        f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip'
                 ):
                     DL._unzip_patch(  # Unzip archive
-                        f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.b_dev}.zip',
+                        f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip',
                         2)
 
                     dev_match = True  # Update match flag
                     logger.info(
-                        f'Download successful!\n>> BepInEx dev-build {VBPatcher.appglobals.globals.b_dev} patch ready for deployment!\n'
+                        f'Download successful!\n>> BepInEx dev-build {VBPatcher.appglobals.globals.ver_dev} patch ready for deployment!\n'
                     )
 
                 else:  # If download failed
@@ -184,7 +184,7 @@ class _Validate:
         except Exception:
             dev_match = False
             logger.error(
-                f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.globals.b_dev} patch validation...\n'
+                f'Encountered error during BepInEx dev-build {VBPatcher.appglobals.globals.ver_dev} patch validation...\n'
             )
 
         finally:
@@ -213,13 +213,13 @@ class _Validate:
         else:
 
             logger_stream.error(
-                'VBPatcher start checks failed!\n>> One or more patch files were unable to be verified and are unable to be deployed...\n\nPress anything to continue...\n'
+                'VBPatcher start checks failed!\n>> One or more patch files were unable to be verified and are unable to be deployed...\n\n>> Press anything to continue...\n'
             )
             VBPatcher.appglobals.globals.getch(
             )  # Wait for user input to continue
 
-            bar.start('Exiting VBPatcher',
-                      'VBPatcher has exited successfully!',
+            bar.start('>> Exiting VBPatcher',
+                      '>> VBPatcher has exited successfully!',
                       iter_total=3,
                       txt_iter_speed=0.25)
 
