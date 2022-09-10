@@ -9,7 +9,7 @@ setup(
     name='VBPatcher',
     version='0.9.0',
     description=
-    'The Valheim BepInEx Patcher (VBPatcher) is a personal script created to solve the weird automatic version downgrading of the BepInEx modding tool.',
+    'The Valheim BepInEx Patcher (VBPatcher) is a CLI application for patching the Unity modding plugin, BepInEx, to its latest release (whether stable or bleeding-edge).',
     url='https://github.com/schlopp96/VBPatcher',
     author='schlopp96',
     author_email='schloppdaddy@gmail.com',
@@ -33,11 +33,13 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Games/Entertainment",
         "Topic :: Utilities",
     ],
     keywords=[
         'python,'
         'Valheim', 'BepInEx', 'patcher', 'mods', 'nexus', 'vbp', 'stable',
-        'bleeding', 'edge', 'VBPatcher', 'vortex'
+        'bleeding', 'edge', 'VBPatcher', 'vortex', 'patching', 'patch-install',
+        'CLI', 'console'
     ])

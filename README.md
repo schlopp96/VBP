@@ -112,21 +112,25 @@
 
 - Within a terminal, open **VBP** with the following command:
 
-  ```shell
-    vbpatcher
-  ```
+  - ```shell
+      vbpatcher
+    ```
+
+  - ![alt](./assets/open_example.gif)
 
 - Or optionally within a python environment:
 
-  ```python
-    >>> import VBPatcher # Import package
-    >>> VBPatcher.vbp()  # Call method to open program
-  ```
+  - ```python
+      >>> import VBPatcher # Import package
+      >>> VBPatcher.vbp()  # Call method to open program
+    ```
 
-  ```python
-    >>> from VBPatcher import vbp # Import package
-    >>> vbp() # Call method to open program
-  ```
+  - ```python
+      >>> from VBPatcher import vbp # Import package
+      >>> vbp() # Call method to open program
+    ```
+
+  - ![alt](./assets/open_in_python_example.gif)
 
 - From here, follow the on-screen prompts to operate the program.
 - Choose an operation to run by entering the corresponding number (1-6) and pressing enter.
@@ -135,9 +139,9 @@
 
 ## Usage Example
 
-- The following depicts the output from using **VBPatcher** from a command line to first check for any new updates before installing the latest base/stable-release of BepInEx, then the newest dev-build/bleeding-edge patch [option 3 in the program]:
+- The following depicts using **VBPatcher** from a command line to first check for any new updates before installing the latest base/stable-release of BepInEx, then the newest dev-build/bleeding-edge patch builds:
 
-![alt](./assets/README-GIF.gif)
+- ![alt](./assets/usage_example.gif)
 
 ---
 
