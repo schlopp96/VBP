@@ -88,7 +88,7 @@
      vbpatcher
      ```
 
-    - ![alt](./assets/open_example.gif)
+   - ![alt](./assets/open_example.gif)
 
    - Otherwise, you may also run _**`VBP`**_ from its main program file:
 
@@ -108,7 +108,7 @@
 
    - ![alt](./assets/open_in_python_example.gif)
 
-1. Once the application is run and all dependencies are validated, an option menu is displayed, listing the following commands to choose from:
+2. Once the application is run and all dependencies are validated, an option menu is displayed, listing the following commands to choose from:
 
    - **[1].** Patch BepInEx to the latest stable release.
    - **[2].** Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
@@ -117,19 +117,19 @@
    - **[5].** Start Valheim.
    - **[6].** Exit the application.
 
-2. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
+3. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
 
    - For example, once the option to apply a patch is confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
 
-3. Upon successful patching, the script will ask the user if they'd like to start _Valheim_.
+4. Upon successful patching, the script will ask the user if they'd like to start _Valheim_.
 
-4. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
+5. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
 
-5. If you choose to **NOT** run the game, the patcher will return to the main menu.
+6. If you choose to **NOT** run the game, the patcher will return to the main menu.
 
 - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
-- ![alt](./assets/usage_example.gif)
+![alt](./assets/usage_example.gif)
 
 ---
 
