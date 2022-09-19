@@ -88,7 +88,7 @@
      vbpatcher
      ```
 
-    ![alt](./assets/open_example.gif)
+    - ![alt](./assets/open_example.gif)
 
    - Otherwise, you may also run _**`VBP`**_ from its main program file:
 
@@ -106,7 +106,7 @@
          >>> vbp() # Call method to open program
        ```
 
-    ![alt](./assets/open_in_python_example.gif)
+   - ![alt](./assets/open_in_python_example.gif)
 
 1. Once the application is run and all dependencies are validated, an option menu is displayed, listing the following commands to choose from:
 
@@ -129,7 +129,7 @@
 
 - **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
-![alt](./assets/usage_example.gif)
+- ![alt](./assets/usage_example.gif)
 
 ---
 
