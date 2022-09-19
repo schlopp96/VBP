@@ -211,13 +211,11 @@ class _Validate:
                 'VBPatcher start checks completed successfully!\n')
 
         else:
-
             logger_stream.error(
                 'VBPatcher start checks failed!\n>> One or more patch files were unable to be verified and are unable to be deployed...\n\n>> Press anything to continue...\n'
             )
-            VBPatcher.appglobals.globals.getch(
-            )  # Wait for user input to continue
 
+            VBPatcher.appglobals.globals.getch()
             bar.start('>> Exiting VBPatcher',
                       '>> VBPatcher has exited successfully!',
                       iter_total=3,

@@ -133,7 +133,7 @@ class _GetchWindows:
         return msvcrt.getch()
 
 
-__version__: str = '0.9.0'  # Current program version number
+__version__: str = '0.9.1'  # Current program version number
 
 getch: _Getch = _Getch()  # Initialized `_Getch` instance.
 
@@ -157,7 +157,7 @@ ver_dev: str = _PatcherAssets._get_dev_assets(
     'https://builds.bepinex.dev/projects/bepinex_be',
     2)  # dev/bleeding-edge build number
 
-patch_targetDir: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'  # target directory to patch
+patch_target: str = r'C:\Program Files (x86)\Steam\steamapps\common\Valheim'  # target directory to patch
 
 log_fh: str = r'.\logs\VBPatcherLog.log'  # Log file path
 

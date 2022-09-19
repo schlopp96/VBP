@@ -41,7 +41,7 @@ class _Patcher:
 
     @staticmethod
     def _patch(patch_src: str, patch_dst: str, patch_ver: int | str) -> None:
-        """Apply patch files (:param:`patch_src`) to target directory (:param:`patch_dst`).
+        """Deploy patch files to target directory.
 
         - Overwrites any existing patch files.
 
@@ -66,7 +66,7 @@ class _Patcher:
                 patch_src, patch_dst,
                 dirs_exist_ok=True)  # Copy patch files to target directory.
 
-            unlink(f'{VBPatcher.appglobals.globals.patch_targetDir}/.gitkeep'
+            unlink(f'{VBPatcher.appglobals.globals.patch_target}/.gitkeep'
                    )  # Remove .gitkeep file.
 
             patch_bar.start(
@@ -98,12 +98,12 @@ class _Patcher:
                 f'Prompting user for installation of BepInEx stable release {VBPatcher.appglobals.globals.ver_dev} patch...\n'
             )
             confirmStable: str = input(
-                f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.globals.ver_stable} in location:\n\n>> "{VBPatcher.appglobals.globals.patch_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
+                f'\nReally patch BepInEx to latest stable-release {VBPatcher.appglobals.globals.ver_stable} in location:\n\n>> "{VBPatcher.appglobals.globals.patch_target}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
 
             if confirmStable.lower() in {'yes', 'y'}:
                 self._patch(VBPatcher.appglobals.globals.patch_stable,
-                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.patch_target,
                             VBPatcher.appglobals.globals.ver_stable)
                 return _startPrompt()  # Prompt user to start Valheim
 
@@ -113,7 +113,7 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'\nInvalid Input: "{confirmStable}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'Invalid Input: "{confirmStable}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue
@@ -132,12 +132,12 @@ class _Patcher:
                 f'Prompting user for installation of BepInEx development build {VBPatcher.appglobals.globals.ver_dev} patch...\n'
             )
             confirmLatest: str = input(
-                f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.globals.ver_dev} in location:\n\n>> "{VBPatcher.appglobals.globals.patch_targetDir}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
+                f'\nReally patch BepInEx to latest development build {VBPatcher.appglobals.globals.ver_dev} in location:\n\n>> "{VBPatcher.appglobals.globals.patch_target}"?\n\n> Enter [y] or [n]:\n{VBPatcher.appglobals.globals.textborder}\n> '
             )
 
             if confirmLatest.lower() in {'yes', 'y'}:
                 self._patch(VBPatcher.appglobals.globals.patch_dev,
-                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.patch_target,
                             VBPatcher.appglobals.globals.ver_dev)
                 return _startPrompt()  # Prompt user to start Valheim
 
@@ -147,7 +147,7 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'\nInvalid Input: "{confirmLatest}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'Invalid Input: "{confirmLatest}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue
@@ -171,11 +171,11 @@ class _Patcher:
 
             if confirmFull.lower() in {'yes', 'y'}:
                 self._patch(VBPatcher.appglobals.globals.patch_stable,
-                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.patch_target,
                             VBPatcher.appglobals.globals.ver_stable)
 
                 self._patch(VBPatcher.appglobals.globals.patch_dev,
-                            VBPatcher.appglobals.globals.patch_targetDir,
+                            VBPatcher.appglobals.globals.patch_target,
                             VBPatcher.appglobals.globals.ver_dev)
 
                 return _startPrompt()  # Prompt user to start Valheim
@@ -186,7 +186,7 @@ class _Patcher:
 
             else:
                 logger_stream.warning(
-                    f'\nInvalid Input: "{confirmFull}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                    f'Invalid Input: "{confirmFull}"\n\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
                 )
                 sleep(1.250)
                 continue

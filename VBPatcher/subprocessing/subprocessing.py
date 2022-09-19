@@ -91,6 +91,6 @@ def _startPrompt() -> None:
 
         else:
             logger_stream.warning(
-                f'\nInvalid Input: "{startPrompt}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
+                f'Invalid Input: "{startPrompt}"\n>> Must ONLY enter either [y] for "YES" or [n] for "NO".\n'
             )
             sleep(1.250)

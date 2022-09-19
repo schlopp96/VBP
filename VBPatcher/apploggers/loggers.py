@@ -23,6 +23,7 @@ class _LogGenerator():
 
         - :func:`error(self, msg) -> None`
             - Logs a message with level `ERROR`.
+            - Can optionally include exception information in log message.
 
         - :func:`critical(self, msg) -> None`
             - Logs a message with level `CRITICAL`.
@@ -37,13 +38,14 @@ class _LogGenerator():
     DEBUG = 10
     NOTSET = 0
 
-    def __init__(self,
-                 name: str,
-                 log_file: str,
-                 log_format: str = '[ %(asctime)s - %(name)s ] : %(message)s',
-                 datefmt: str = "%Y-%m-%d %H:%M:%S",
-                 level: int = INFO,
-                 stream: bool = False):
+    def __init__(
+            self,
+            log_file: str,
+            log_name: str = __name__,
+            log_format: str = '[ %(asctime)s - %(levelname)s ] : %(message)s',
+            datefmt: str = "%Y-%m-%d %H:%M:%S",
+            level: int = INFO,
+            stream: bool = False):
         """Initialize logger instance.
 
         - For the :param:`log_lvl` parameter, the level of logging can be any of the following:
@@ -58,35 +60,36 @@ class _LogGenerator():
 
         ---
 
-        :param name: Name of logger.
-        :type name: :class:`str`
-        :param log_file: file to create log entries.
+        :param log_name: Name of logger
+        :type log_name: :class:`str`
+        :param log_file: file to write log entries
         :type log_file: :class:`str`
         :param log_fmt: Initialize the formatter either with the specified format string, or a default as described above, defaults to '[%(asctime)s - %(levelname)s] : %(message)s'
         :type log_fmt: :class:`str`, optional
         :param date_fmt: set date formatting, defaults to "%Y-%m-%d %H:%M:%S"
         :type date_fmt: :class:`str`, optional
-        :param level: Set the logging level of this logger. Level must be an int or a str, defaults to `INFO`.
+        :param level: Set the logging level of this logger. Level must be an int or a str, defaults to `INFO`
         :type level: :class:`int`, optional
-        :param stream: If True, toggle streaming to stdout.
+        :param stream: If True, toggle streaming to stdout
         :type stream: :class:`bool`, optional
         :return: new logging class instance
         :rtype: `None`
         """
 
-        self.name = name
-        self.logger = logging.getLogger(name)
-        self.log_format = log_format
-        self.datefmt = datefmt
-        self.level = level
-        self.formatter = logging.Formatter(log_format, datefmt=datefmt)
-        self.log_file = log_file
-        self.fhandler = logging.FileHandler(log_file)
+        self.log_name: str = log_name
+        self.logger: logging.Logger = logging.getLogger(log_name)
+        self.log_format: str = log_format
+        self.datefmt: str = datefmt
+        self.level: int = level
+        self.formatter: logging.Formatter = logging.Formatter(log_format,
+                                                              datefmt=datefmt)
+        self.log_file: str = log_file
+        self.stream: bool = stream
+        self.fhandler: logging.FileHandler = logging.FileHandler(log_file)
+
         self.logger.addHandler(self.fhandler)
         self.fhandler.setFormatter(self.formatter)
         self.logger.setLevel(level)
-        self.stream = stream
-
         if stream:  # if stream is True, then toggle logging stream to stdout
             self.logger.addHandler(logging.StreamHandler())
 
@@ -94,10 +97,10 @@ class _LogGenerator():
         """Logs a message with level `DEBUG`.
 
         ---
-
-        :param msg: message to be logged.
+z
+        :param msg: message to be logged
         :type msg: :class:`str`
-        :return: creates log entry.
+        :return: creates log entry
         :rtype: `None`
         """
         return self.logger.debug(msg)
@@ -107,9 +110,9 @@ class _LogGenerator():
 
         ---
 
-        :param msg: message to be logged.
+        :param msg: message to be logged
         :type msg: :class:`str`
-        :return: creates log entry.
+        :return: creates log entry
         :rtype: `None`
         """
         return self.logger.info(msg)
@@ -119,39 +122,43 @@ class _LogGenerator():
 
         ---
 
-        :param msg: message to be logged.
+        :param msg: message to be logged
         :type msg: :class:`str`
-        :return: creates log entry.
+        :return: creates log entry
         :rtype: `None`
         """
         return self.logger.warning(msg)
 
-    def error(self, msg) -> None:
+    def error(self, msg, exc_info: bool = True) -> None:
         """Logs a message with level `ERROR`.
+
+        - Can optionally log exception info if :param:`exc_info` is `True`.
 
         ---
 
-        :param msg: message to be logged.
+        :param msg: message to be logged
         :type msg: :class:`str`
-        :return: creates log entry.
+        :param exc_info: toggle logging of exception info, defaults to `True`
+        :type exc_info: :class:`bool`, optional
+        :return: creates log entry
         :rtype: `None`
         """
-        return self.logger.error(msg, exc_info=True)
+        return self.logger.error(msg, exc_info=exc_info)
 
     def critical(self, msg) -> None:
         """Logs a message with level `CRITICAL`.
 
         ---
 
-        :param msg: message to be logged.
+        :param msg: message to be logged
         :type msg: :class:`str`
-        :return: creates log entry.
+        :return: creates log entry
         :rtype: `None`
         """
         return self.logger.critical(msg)
 
 
-logger: _LogGenerator = _LogGenerator('MAIN', log_fh)  # Main logging instance
+logger: _LogGenerator = _LogGenerator(log_fh, 'MAIN')  # Main logging instance
 
 logger_stream: _LogGenerator = _LogGenerator(
-    'STDOUT', log_fh, stream=True)  # Stdout streaming logging instance
+    log_fh, 'STDOUT', stream=True)  # Stdout streaming logging instance

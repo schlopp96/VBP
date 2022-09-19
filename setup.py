@@ -7,7 +7,7 @@ with open('requirements.txt', 'r') as fh2:
 
 setup(
     name='VBPatcher',
-    version='0.9.0',
+    version='0.9.1',
     description=
     'The Valheim BepInEx Patcher (VBPatcher) is a CLI application for patching the Unity modding plugin, BepInEx, to its latest release (whether stable or bleeding-edge).',
     url='https://github.com/schlopp96/VBPatcher',
