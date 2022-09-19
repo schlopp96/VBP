@@ -6,9 +6,9 @@
 
 ## About
 
-- _**V**alheim **B**epInEx **P**atcher_ (_**VBP**_) is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx), to its latest release (whether LTS or experimental).
+- _**V**alheim **B**epInEx **P**atcher_ (a.k.a. _**`VBP`**_) is a CLI application for patching the Unity modding plugin, [_**BepInEx**_](https://github.com/BepInEx/BepInEx), to its latest release (whether LTS or experimental).
 
-- _**VBP**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://www.nexusmods.com/site/mods/1) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
+- _**`VBP`**_ was originally created as a solution for an issue that occurs while using the [**_Vortex_**](https://www.nexusmods.com/site/mods/1) modding tool to mod the game _**Valheim**_, whilst having _**BepInEx**_ installed.
 
   - When opening **_Vortex_** to begin modding **_Valheim_**, the modding tool automatically downloads what it _incorrectly_ perceives to be the "latest" version of _**BepInEx**_ (a necessary requirement for the vast majority of mods available) which is generally incorrect, and often takes a long time to be fixed.
 
@@ -22,13 +22,19 @@
 
 ### **Using PIP** _(Recommended)_
 
-- To install _**VBP**_ using `pip`, enter the following:
+- To install _**`VBP`**_ using `pip`, enter the following:
 
   - ```shell
       python -m pip install VBPatcher
     ```
 
 - Done!
+
+- You may now start _**`VBP`**_ by entering the following command in your terminal:
+
+  - ```bash
+    vbpatcher
+    ```
 
 ### **Manual Installation** _(**NOT** Recommended)_
 
@@ -47,44 +53,6 @@
      ```
 
 - Done!
-
----
-
-## Usage
-
-- Make sure you **do not** have **Vortex**, **Thunderstore**, or any other modding tools running, and that you are done with any modding processes.
-
-- Each time Vortex is opened to mod Valheim, your BepInEx version will be downgraded again, so **I highly recommend running this script every time before playing!**
-
-1. Open the application, which can be run within a terminal using the following command:
-
-   - ```shell
-     vbpatcher
-     ```
-
-   - You can also run **VBPatcher** from the main program file:
-     - `~./VBPatcher/main.py`.
-
-2. Once the script is run, you will be presented with an option menu, allowing you to choose from the following commands:
-
-   - **[1].** Patch BepInEx to the latest stable release.
-   - **[2].** Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
-   - **[3].** Patch BepInEx first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation.
-   - **[4].** Check for and download new releases/builds of BepInEx.
-   - **[5].** Start Valheim.
-   - **[6].** Exit the application.
-
-3. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
-
-   - For example, once the option to apply a patch is confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
-
-4. Upon successful patching, the script will ask the user if they'd like to start _Valheim_.
-
-5. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
-
-6. If you choose to **NOT** run the game, the patcher will return to the main menu.
-
-- **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
 
 ---
 
@@ -108,40 +76,60 @@
 
 ---
 
-### Opening **VBPatcher**
+## Usage
 
-- Within a terminal, open **VBP** with the following command:
+- Make sure you **do not** have **Vortex**, **Thunderstore**, or any other modding tools running, and that you are done with any modding processes.
 
-  - ```shell
-      vbpatcher
-    ```
+- Each time Vortex is opened to mod Valheim, your BepInEx version will be downgraded again, so **I highly recommend running this script every time before playing!**
 
-  - ![alt](./assets/open_example.gif)
+1. Open the application, which, if installed using `pip`, can be immediately started by entering the following command within a terminal:
 
-- Or optionally within a python environment:
+   - ```shell
+     vbpatcher
+     ```
 
-  - ```python
-      >>> import VBPatcher # Import package
-      >>> VBPatcher.vbp()  # Call method to open program
-    ```
+    ![alt](./assets/open_example.gif)
 
-  - ```python
-      >>> from VBPatcher import vbp # Import package
-      >>> vbp() # Call method to open program
-    ```
+   - Otherwise, you may also run _**`VBP`**_ from its main program file:
 
-  - ![alt](./assets/open_in_python_example.gif)
+     - `~./VBPatcher/main.py`.
 
-- From here, follow the on-screen prompts to operate the program.
-- Choose an operation to run by entering the corresponding number (1-6) and pressing enter.
+   - Or optionally within a python environment:
 
----
+   - ```python
+         >>> import VBPatcher # Import package
+         >>> VBPatcher.vbp()  # Call method to open program
+       ```
 
-## Usage Example
+   - ```python
+         >>> from VBPatcher import vbp # Import package
+         >>> vbp() # Call method to open program
+       ```
 
-- The following depicts using **VBPatcher** from a command line to first check for any new updates before installing the latest base/stable-release of BepInEx, then the newest dev-build/bleeding-edge patch builds:
+    ![alt](./assets/open_in_python_example.gif)
 
-- ![alt](./assets/usage_example.gif)
+1. Once the application is run and all dependencies are validated, an option menu is displayed, listing the following commands to choose from:
+
+   - **[1].** Patch BepInEx to the latest stable release.
+   - **[2].** Patch BepInEx to the latest developmental/experimental "bleeding-edge" build.
+   - **[3].** Patch BepInEx first with the latest stable release, and **then** with the latest experimental build to ensure a safe installation.
+   - **[4].** Check for and download new releases/builds of BepInEx.
+   - **[5].** Start Valheim.
+   - **[6].** Exit the application.
+
+2. Once an option is chosen, you will then be asked to confirm that the correct option/location is chosen.
+
+   - For example, once the option to apply a patch is confirmed, the script will begin patching the appropriate files immediately, and should finish in seconds.
+
+3. Upon successful patching, the script will ask the user if they'd like to start _Valheim_.
+
+4. If you choose to run the game, the patcher will automatically close itself after running the game's executable.
+
+5. If you choose to **NOT** run the game, the patcher will return to the main menu.
+
+- **_Note that you can also find the latest bleeding-edge-builds of BepInEx [here](https://builds.bepis.io/projects/bepinex_be)._**
+
+![alt](./assets/usage_example.gif)
 
 ---
 
