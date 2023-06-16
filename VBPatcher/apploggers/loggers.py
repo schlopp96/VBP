@@ -97,7 +97,7 @@ class _LogGenerator():
         """Logs a message with level `DEBUG`.
 
         ---
-z
+
         :param msg: message to be logged
         :type msg: :class:`str`
         :return: creates log entry

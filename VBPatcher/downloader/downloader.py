@@ -55,9 +55,10 @@ class _Downloader:
                                         stream=True)  # Download zip archive
             rq.raise_for_status()  # Check for HTTP errors
 
-            file_size: int = int(rq.headers.get('Content-Length'))  # File size
+            file_size: int | None = int(
+                rq.headers.get('Content-Length'))  # File size
             chunk_size: int = 1024  # 1 MB
-            prog_max: int = file_size // chunk_size  # Calculate progress bar max
+            prog_max: int | None = file_size // chunk_size  # Calculate progress bar max
 
             with open(
                     f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip',
@@ -66,7 +67,8 @@ class _Downloader:
                                        total=prog_max,
                                        unit='KB',
                                        desc='Downloading Stable Release',
-                                       file=sys.stdout):
+                                       file=sys.stdout,
+                                       colour='blue'):
                     patch_stable.write(chunk)
 
             logger_stream.info(
@@ -74,7 +76,7 @@ class _Downloader:
             )
             return patch_stable
 
-        except [Exception, HTTPError]:
+        except Exception:
             logger_stream.error(
                 f'Encountered error while downloading latest stable release zip archive...\n'
             )
@@ -111,7 +113,8 @@ class _Downloader:
                                        total=prog_max,
                                        unit='KB',
                                        desc='Downloading Dev-Build',
-                                       file=sys.stdout):
+                                       file=sys.stdout,
+                                       colour='red'):
                     patch_dev.write(chunk)
 
                 logger_stream.info(
@@ -140,29 +143,41 @@ class _Downloader:
 
         logger_stream.info('Unzipping patch files...')
 
+        # Files to be deleted
+        stable_deleted_files: list = [
+            './patch-files/stable/doorstop_config.ini',
+            f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip'
+        ]
+
+        dev_deleted_files: list = [
+            './patch-files/development/doorstop_config.ini',
+            f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip'
+        ]
+
         try:
-            if mode == 1:  # Unzip stable-release patch files
+            if mode == 1:
                 with ZipFile(filename) as archive:
                     archive.extractall(path='./patch-files/stable')
 
                 # Remove unnecessary files
-                os.unlink('./patch-files/stable/doorstop_config.ini')
-                os.unlink(
-                    f'./patch-files/stable/BepInEx_stable_{VBPatcher.appglobals.globals.ver_stable}.zip'
+                for i, file in enumerate(stable_deleted_files):
+                    os.unlink(stable_deleted_files[i])
+
+                logger_stream.info(
+                    f'Successfully unzipped archive!\n\n>> Deleted extra files...\n\n>> Patch ready for deployment!\n'
                 )
 
-            elif mode == 2:  # Unzip dev-build patch files
+            elif mode == 2:
                 with ZipFile(filename) as archive:
                     archive.extractall(path='./patch-files/development')
-                # Remove unnecessary files
-                os.unlink('./patch-files/development/doorstop_config.ini')
-                os.unlink(
-                    f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip'
-                )
 
-            logger_stream.info(
-                'Successfully unzipped archive!\n\n>> Deleted extra files...\n>> Patch ready for deployment!\n'
-            )
+                # Remove unnecessary files
+                for i, file in enumerate(dev_deleted_files):
+                    os.unlink(dev_deleted_files[i])
+
+                logger_stream.info(
+                    'Successfully unzipped archive!\n\n>> Deleted extra files...\n\n>> Patch ready for deployment!\n'
+                )
 
         except Exception:
             logger_stream.error(
@@ -189,6 +204,5 @@ class _Downloader:
                 f'./patch-files/development/BepInEx_dev_{VBPatcher.appglobals.globals.ver_dev}.zip',
                 2)
 
-            logger_stream.info('\n>> Press anything to continue...\n')
-            VBPatcher.appglobals.globals.getch(
-            )  # Wait for user input to continue
+        logger_stream.info('\n>> Press anything to continue...\n')
+        VBPatcher.appglobals.globals.getch()  # Wait for user input to continue

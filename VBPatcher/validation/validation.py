@@ -216,6 +216,7 @@ class _Validate:
             )
 
             VBPatcher.appglobals.globals.getch()
+
             bar.start('>> Exiting VBPatcher',
                       '>> VBPatcher has exited successfully!',
                       iter_total=3,
