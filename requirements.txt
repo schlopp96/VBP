@@ -1,4 +1,4 @@
 beautifulsoup4==4.11.1
 PyLoadBar==0.2.0
-setuptools>=58.1.0
+setuptools>=70.0.0
 tqdm==4.64.0
